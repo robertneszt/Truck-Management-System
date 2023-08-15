@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using TMS_APP.Constants;
 
 namespace TMS_APP.Models
@@ -8,11 +9,14 @@ namespace TMS_APP.Models
         [Key]
         public int Id { get; set; }
         [Required]
+        [DisplayName ("Customer Name")]
         public string CustomerName { get; set; }
 
         // [Required]
+        [DisplayName("Pick up Address")]
         public string PickupLocationAddress { get; set; }
         //[Required]
+        [DisplayName("Pick City")]
         public string PickupLocationCity { get; set; }
         // [Required]
         public string PickupLocationCountry { get; set; }
