@@ -25,7 +25,7 @@ namespace TMS_APP.Data
                 EmailConfirmed = true
             };
 
-            var userInDb = userMgr.FindByEmailAsync(admin.Email);
+            var userInDb = await userMgr.FindByEmailAsync(admin.Email);
             if (userInDb is null)
             {
                 await userMgr.CreateAsync(admin, "Admin@123");
