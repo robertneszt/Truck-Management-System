@@ -18,6 +18,11 @@ namespace TMS_APP.Controllers
             return View();
         }
 
+        public IActionResult Dispatch()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
