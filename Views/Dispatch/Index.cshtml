@@ -1,0 +1,12 @@
+﻿@*
+    
+*@
+@{
+    ViewData["Title"] = "Dispatch Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Welcome to dispatch dash</h2>
+
+<a asp-controller="TripsController" asp-action="Index"> Trip Dashboard</a>
+<a asp-controller="UserWithRolesController" asp-action="ListUsersWithRoles">Driver Management</a>

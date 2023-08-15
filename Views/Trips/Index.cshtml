@@ -16,18 +16,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.CustomerName)
             </th>
-            <th>
+           @*  <th>
                 @Html.DisplayNameFor(model => model.PickupLocationAddress)
-            </th>
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.PickupLocationCity)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PickupLocationCountry)
             </th>
-            <th>
+           @*  <th>
                 @Html.DisplayNameFor(model => model.DeliveryLocationAddress)
-            </th>
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.DeliveryLocationCity)
             </th>
@@ -40,7 +40,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.DeliveryDate)
             </th>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.ShipmentWeight)
             </th>
             <th>
@@ -48,13 +48,13 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Quantity)
-            </th>
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
-            <th>
+           @*  <th>
                 @Html.DisplayNameFor(model => model.DriverName)
-            </th>
+            </th> *@
             <th></th>
         </tr>
     </thead>
@@ -64,18 +64,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CustomerName)
             </td>
-            <td>
+            @* <td>
                 @Html.DisplayFor(modelItem => item.PickupLocationAddress)
-            </td>
+            </td> *@
             <td>
                 @Html.DisplayFor(modelItem => item.PickupLocationCity)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PickupLocationCountry)
             </td>
-            <td>
+           @*  <td>
                 @Html.DisplayFor(modelItem => item.DeliveryLocationAddress)
-            </td>
+            </td> *@
             <td>
                 @Html.DisplayFor(modelItem => item.DeliveryLocationCity)
             </td>
@@ -88,25 +88,25 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DeliveryDate)
             </td>
-            <td>
+            @* <td>
                 @Html.DisplayFor(modelItem => item.ShipmentWeight)
-            </td>
-            <td>
+            </td> *@
+           @*  <td>
                 @Html.DisplayFor(modelItem => item.TotalAmount)
-            </td>
-            <td>
+            </td> *@
+           @*  <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
+            </td> *@
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
-            <td>
+            @* <td>
                 @Html.DisplayFor(modelItem => item.DriverName)
-            </td>
+            </td> *@
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"><i class="fa fa-pencil"></i>Edit</a> 
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary"><i class="fa fa-eye"></i>Details</a> 
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa fa-trash"></i>Delete</a>
             </td>
         </tr>
 }
