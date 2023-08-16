@@ -1,17 +1,15 @@
-﻿@{
-    Layout = "~/Views/Shared/_LayoutForDriver.cshtml";
-}
+﻿
 
 @model Driver
 
 @{
-    ViewData["Title"] = Model.User.lastName+ "'s Profile";
-    Layout = "~/Views/Shared/_Layout.cshtml"; // Use your layout file
+   
+    Layout = "~/Views/Shared/_LayoutForDriver.cshtml";
 }
 
 <h2>@ViewData["Title"]</h2>
 
-<div>
+@*<div>
     <h3>Account Information</h3>
     <p><strong>Driver ID:</strong> @Model._id</p>
     <p><strong>Full Name:</strong> @Model.User.firstName @Model.User.lastName</p>
@@ -19,4 +17,66 @@
     <p><strong>Phone:</strong> @Model.User.phone</p>
     <p><strong>Pay Rate:</strong> @Model.PayRate</p>
     <p><strong>Availability:</strong> @Model.Availability</p>
+</div>*@
+
+<div>
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Account Information</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <form method="post" class="" enctype="multipart/form-data">
+            <input asp-for=@Model._id hidden/>
+            <input asp-for="User.Id" hidden />
+            <div class="row">
+                <div class="col-10">
+                    <div class="border p-3">
+                        @*<div asp-validation-summary="ModelOnly"></div>*@
+                        <div class="form-floating py-2 col-12">
+                            <label asp-for="User.firstName" class="ms-2"></label>
+                            <input asp-for="User.firstName" class="form-control border-0 shadow" disabled />
+                            <span asp-validation-for="User.firstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating py-2 col-12">
+                            <label asp-for="User.lastName" class="ms-2"></label>
+                            <input asp-for="User.lastName" class="form-control border-0 shadow" disabled/>
+                            <span asp-validation-for="User.lastName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating py-2 col-12">
+                            <label asp-for="User.email" class="ms-2"></label>
+                            <input asp-for="User.email" class="form-control border-0 shadow" disabled />
+                            <span asp-validation-for="User.email" class="text-danger"></span>
+                        </div>
+                      
+                        <div class="form-floating py-2 col-12">
+                            <label asp-for="User.phone" class="ms-2"></label>
+                            <input asp-for="User.phone" class="form-control border-0 shadow" disabled />
+                            <span asp-validation-for="User.phone" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating py-2 col-12">
+                            <div class="form-check">
+                                <label>Availability</label>
+                                <br />
+                                <input class="form-check-input" type="checkbox" asp-for=@Model.Availability />
+                                <label class="form-check-label">Available</label>
+                            </div>
+                        </div>
+
+                       @* <div class="form-floating py-2 col-12">
+                            <input type="file" name="file" class="form-control border-0 shadow" />
+                            <label asp-for="book.ImageUrl" class="ms-2"></label>
+                        </div>*@
+
+        </form>
+             <div class="col-6 col-md-3">
+                <a asp-controller="Driver" asp-action="Edit" class="btn btn-primary form-control border"> Edit</a>
+            </div>
+    </div>
+</div>
 </div>
