@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TMS_APP.Data;
 
@@ -11,9 +12,11 @@ using TMS_APP.Data;
 namespace TMS_APP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230815034214_tripinfo")]
+    partial class tripinfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,39 +231,6 @@ namespace TMS_APP.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("TMS_APP.Models.Driver", b =>
-                {
-                    b.Property<int>("_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("_id"));
-
-                    b.Property<bool>("Availability")
-                        .HasColumnType("bit");
-
-                    b.Property<decimal>("PayRate")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("_id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Drivers");
-
-                    b.HasData(
-                        new
-                        {
-                            _id = 1001,
-                            Availability = true,
-                            PayRate = 10m,
-                            UserId = 100
-                        });
-                });
-
             modelBuilder.Entity("TMS_APP.Models.Trip", b =>
                 {
                     b.Property<int>("Id")
@@ -288,7 +258,7 @@ namespace TMS_APP.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DriverName")
+                    b.Property<string>("DriverNAme")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -322,64 +292,6 @@ namespace TMS_APP.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Trip");
-                });
-
-            modelBuilder.Entity("TMS_APP.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("firstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("lastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("role")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users2");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 100,
-                            email = "user@example.com",
-                            firstName = "danny",
-                            lastName = "yang",
-                            password = "password",
-                            phone = "87654321",
-                            role = 2
-                        },
-                        new
-                        {
-                            Id = 101,
-                            email = "user2@example.com",
-                            firstName = "danny2",
-                            lastName = "yang",
-                            password = "password2",
-                            phone = "87654321",
-                            role = 0
-                        });
                 });
 
             modelBuilder.Entity("TMS_APP.Models.ApplicationUser", b =>
@@ -461,17 +373,6 @@ namespace TMS_APP.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("TMS_APP.Models.Driver", b =>
-                {
-                    b.HasOne("TMS_APP.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

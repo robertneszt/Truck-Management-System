@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TMS_APP.Data;
 
@@ -11,9 +12,11 @@ using TMS_APP.Data;
 namespace TMS_APP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230815183457_added-userdriver")]
+    partial class addeduserdriver
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -288,10 +291,6 @@ namespace TMS_APP.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DriverName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("PickupDate")
                         .HasColumnType("datetime2");
 
@@ -352,9 +351,6 @@ namespace TMS_APP.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("role")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Users2");
@@ -367,8 +363,7 @@ namespace TMS_APP.Migrations
                             firstName = "danny",
                             lastName = "yang",
                             password = "password",
-                            phone = "87654321",
-                            role = 2
+                            phone = "87654321"
                         },
                         new
                         {
@@ -377,8 +372,7 @@ namespace TMS_APP.Migrations
                             firstName = "danny2",
                             lastName = "yang",
                             password = "password2",
-                            phone = "87654321",
-                            role = 0
+                            phone = "87654321"
                         });
                 });
 
@@ -407,6 +401,9 @@ namespace TMS_APP.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("_id")
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
