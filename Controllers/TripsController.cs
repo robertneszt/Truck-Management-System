@@ -22,9 +22,9 @@ namespace TMS_APP.Controllers
         // GET: Trips
         public async Task<IActionResult> Index()
         {
-            return _context.Trip != null ?
-                        View(await _context.Trip.ToListAsync()) :
-                        Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
+              return _context.Trip != null ? 
+                          View(await _context.Trip.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
         }
 
         // GET: Trips/Details/5
@@ -56,7 +56,7 @@ namespace TMS_APP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CustomerName,PickupLocationAddress,PickupLocationCity,PickupLocationCountry,DeliveryLocationAddress,DeliveryLocationCity,DeliveryLocationCountry,PickupDate,DeliveryDate,ShipmentWeight,TotalAmount,Quantity,Status")] Trip trip)
+        public async Task<IActionResult> Create([Bind("Id,CustomerName,PickupLocationAddress,PickupLocationCity,PickupLocationCountry,DeliveryLocationAddress,DeliveryLocationCity,DeliveryLocationCountry,PickupDate,DeliveryDate,ShipmentWeight,TotalAmount,Quantity,Status,DriverName")] Trip trip)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace TMS_APP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerName,PickupLocationAddress,PickupLocationCity,PickupLocationCountry,DeliveryLocationAddress,DeliveryLocationCity,DeliveryLocationCountry,PickupDate,DeliveryDate,ShipmentWeight,TotalAmount,Quantity,Status")] Trip trip)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerName,PickupLocationAddress,PickupLocationCity,PickupLocationCountry,DeliveryLocationAddress,DeliveryLocationCity,DeliveryLocationCountry,PickupDate,DeliveryDate,ShipmentWeight,TotalAmount,Quantity,Status,DriverName")] Trip trip)
         {
             if (id != trip.Id)
             {
@@ -150,14 +150,14 @@ namespace TMS_APP.Controllers
             {
                 _context.Trip.Remove(trip);
             }
-
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TripExists(int id)
         {
-            return (_context.Trip?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Trip?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
