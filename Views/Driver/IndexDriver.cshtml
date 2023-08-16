@@ -1,0 +1,109 @@
+﻿@model IEnumerable<TMS_APP.Models.Trip>
+
+@{
+    ViewData["Title"] = "IndexDriver";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerName)
+            </th>
+            @*  <th>
+            @Html.DisplayNameFor(model => model.PickupLocationAddress)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.PickupLocationCity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickupLocationCountry)
+            </th>
+            @*  <th>
+            @Html.DisplayNameFor(model => model.DeliveryLocationAddress)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryLocationCity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryLocationCountry)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PickupDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryDate)
+            </th>
+            @* <th>
+            @Html.DisplayNameFor(model => model.ShipmentWeight)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.TotalAmount)
+            </th>
+            <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            @*  <th>
+            @Html.DisplayNameFor(model => model.DriverName)
+            </th> *@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerName)
+                </td>
+                @* <td>
+            @Html.DisplayFor(modelItem => item.PickupLocationAddress)
+            </td> *@
+                <td>
+                    @Html.DisplayFor(modelItem => item.PickupLocationCity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PickupLocationCountry)
+                </td>
+                @*  <td>
+            @Html.DisplayFor(modelItem => item.DeliveryLocationAddress)
+            </td> *@
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryLocationCity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryLocationCountry)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PickupDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryDate)
+                </td>
+                @* <td>
+            @Html.DisplayFor(modelItem => item.ShipmentWeight)
+            </td> *@
+                @*  <td>
+            @Html.DisplayFor(modelItem => item.TotalAmount)
+            </td> *@
+                @*  <td>
+            @Html.DisplayFor(modelItem => item.Quantity)
+            </td> *@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                @* <td>
+            @Html.DisplayFor(modelItem => item.DriverName)
+            </td> *@
+            </tr>
+        }
+    </tbody>
+</table>
+

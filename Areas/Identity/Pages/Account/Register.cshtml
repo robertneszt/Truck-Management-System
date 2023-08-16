@@ -13,7 +13,23 @@
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <input asp-for="Input.UserName" class="form-control" autocomplete="UserName" aria-required="true" placeholder="username" />
+                <label asp-for="Input.UserName">UserName</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.FirstName" class="form-control" autocomplete="FirstName" aria-required="true" placeholder="firstname" />
+                <label asp-for="Input.FirstName">FirstName</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.DateOfBirth" class="form-control" autocomplete="DateOfBirth" aria-required="true" placeholder="DateOfBirth" />
+                <label asp-for="Input.DateOfBirth">DateOfBirth</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.HireDate" class="form-control" autocomplete="HireDate" aria-required="true" placeholder="HireDate" />
+                <label asp-for="Input.HireDate">HireDate</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" autocomplete="Email" aria-required="true" placeholder="Email" />
                 <label asp-for="Input.Email">Email</label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
             </div>

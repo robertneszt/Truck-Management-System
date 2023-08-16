@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using TMS_APP.Constants;
+using TMS_APP.Models;
 
 namespace TMS_APP.Areas.Identity.Pages.Account
 {
@@ -30,7 +31,7 @@ namespace TMS_APP.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-
+        private ApplicationUser _applicationUser;
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
@@ -98,6 +99,23 @@ namespace TMS_APP.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Display(Name = "FirstName")]
+            public string FirstName{ get; set; }
+
+            [Required]
+            [Display(Name = "UserName ")]
+            public string UserName { get; set; }
+
+            [Required]
+            [Display(Name = "DateOfBirth ")]
+            public DateOnly DateOfBirth { get; set; }
+
+            [Required]
+            [Display(Name = "HireDate")]
+            public DateOnly HireDate { get; set; }
+
         }
 
 

@@ -26,6 +26,12 @@ namespace TMS_APP.Controllers
                           View(await _context.Trip.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
         }
+        public async Task<IActionResult> IndexDriver()
+        {
+            return _context.Trip != null ?
+                        View("Views/Driver/IndexDriver.cshtml", await _context.Trip.ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
+        }
 
         // GET: Trips/Details/5
         public async Task<IActionResult> Details(int? id)
