@@ -1,0 +1,55 @@
+﻿@model IEnumerable<TMS_APP.Models.Driver>
+
+@{
+    ViewData["Title"] = "Driver Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Driver Management</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.User.firstName)</th>
+            <th>@Html.DisplayNameFor(model => model.User.lastName)</th>
+            <th>@Html.DisplayNameFor(model => model.User.email)</th>
+            <th>@Html.DisplayNameFor(model => model.User.phone)</th>
+            <th>@Html.DisplayNameFor(model => model.PayRate)</th>
+            <th>@Html.DisplayNameFor(model => model.Availability)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var driver in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => driver.User.firstName)</td>
+                <td>@Html.DisplayFor(modelItem => driver.User.lastName)</td>
+                <td>@Html.DisplayFor(modelItem => driver.User.email)</td>
+                <td>@Html.DisplayFor(modelItem => driver.User.phone)</td>
+                <td>@Html.DisplayFor(modelItem => driver.PayRate)</td>
+                <td>@Html.DisplayFor(modelItem => driver.Availability)</td>
+                <td>
+                    <form asp-action="UpdatePayRate" asp-controller="Dispatch" method="post">
+                        <input type="hidden" name="driverId" value="@driver._id" />
+                        <input type="text" name="newPayRate" placeholder="New Pay Rate" />
+                        <input type="submit" value="Update Pay Rate" />
+                    </form>
+                    @if (driver.Availability)
+                    {
+                        <a asp-action="RemoveDriverFromWorkPool" asp-route-driverId="@driver._id">Mark as Unavailable</a>
+                    }
+                    else
+                    {
+                        <a asp-action="AddDriverToWorkPool" asp-route-driverId="@driver._id">Mark as Available</a>
+                    }
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
