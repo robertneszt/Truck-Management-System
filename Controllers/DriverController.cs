@@ -112,6 +112,7 @@ namespace TMS_APP.Controllers
                 user.firstName=obj.User.firstName; 
                 user.lastName=obj.User.lastName;
                 user.email=obj.User.email;
+                user.phone = obj.User.phone;
                 driver.Availability=obj.Availability;
                 _unitOfWork.Save();
                 TempData["success"] = "You account updated successfully";
