@@ -2,8 +2,8 @@
 
 namespace TMS_APP.Repository.IRepository
 {
-    public interface IDriverRepository : IRepository<User>
+    public interface IDriverRepository : IRepository<Driver>
     {
-        void Update (User user);
+        void Update (Driver driver);
     }
 }

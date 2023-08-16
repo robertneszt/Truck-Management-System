@@ -27,7 +27,8 @@ namespace TMS_APP.Controllers
             // Simulate user authentication
             if (IsValidUser(model.email, model.password))
             {
-                
+                HttpContext.Session.SetString("UserEmail", model.email);
+                //HttpContext.Session.SetInt32("UserId", 123);
                 return RedirectToAction("Index"); // Redirect to home page
             }
 
@@ -37,7 +38,7 @@ namespace TMS_APP.Controllers
 
         private bool IsValidUser(string email, string password)
         {
-            User user = _unitOfWork.driver.Get(c=>c.email==email);
+            User user = _unitOfWork.user.Get(c=>c.email==email);
             if (user == null|| user.password != password)
             {
                return false;
@@ -51,13 +52,22 @@ namespace TMS_APP.Controllers
 
         public IActionResult Index()
         {
-          return View();
+            string userEmail = HttpContext.Session.GetString("UserEmail");
+
+            User user = _unitOfWork.user.Get(c => c.email == userEmail);
+           
+            return View(user);
         }
 
         public IActionResult Account()
         {
-           
-            return View();
+            string userEmail = HttpContext.Session.GetString("UserEmail");
+
+            User user = _unitOfWork.user.Get(c => c.email == userEmail);
+
+            Driver driver = _unitOfWork.driver.Get(d => d.UserId == user.Id);
+            return View(driver);
+
         }
         public IActionResult Dashboard()
         {

@@ -4,10 +4,10 @@ using TMS_APP.Repository.IRepository;
 
 namespace TMS_APP.Repository
 {
-    public class DriverRepository: Repository<Driver>, IDriverRepository
+    public class UserRepository: Repository<User>, IUserRepository
     {
         private ApplicationDbContext _db;
-        public DriverRepository(ApplicationDbContext db) : base(db)
+        public UserRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
@@ -17,7 +17,7 @@ namespace TMS_APP.Repository
                _db.SaveChanges();
            }*/
 
-        public void Update(Driver obj)
+        public void Update(User obj)
         {
             _db.Update(obj);
         }

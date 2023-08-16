@@ -1,0 +1,22 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutForDriver.cshtml";
+}
+
+@model Driver
+
+@{
+    ViewData["Title"] = Model.User.lastName+ "'s Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Use your layout file
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <h3>Account Information</h3>
+    <p><strong>Driver ID:</strong> @Model._id</p>
+    <p><strong>Full Name:</strong> @Model.User.firstName @Model.User.lastName</p>
+    <p><strong>Email:</strong> @Model.User.email</p>
+    <p><strong>Phone:</strong> @Model.User.phone</p>
+    <p><strong>Pay Rate:</strong> @Model.PayRate</p>
+    <p><strong>Availability:</strong> @Model.Availability</p>
+</div>
