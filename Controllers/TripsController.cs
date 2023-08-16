@@ -5,18 +5,22 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using TMS_APP.Data;
 using TMS_APP.Models;
+using TMS_APP.Repository.IRepository;
 
 namespace TMS_APP.Controllers
 {
     public class TripsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public TripsController(ApplicationDbContext context)
+        private readonly IUnitOfWork _unitOfWork;
+        
+        public TripsController(ApplicationDbContext context, IUnitOfWork unitOfWork)
         {
             _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: Trips
@@ -48,7 +52,21 @@ namespace TMS_APP.Controllers
         // GET: Trips/Create
         public IActionResult Create()
         {
-            return View();
+
+            DriverTripViewModel tripView = new()
+            {
+                
+                DriverList = _unitOfWork.driver.GetAll().Select(u => new SelectListItem
+              {
+                  Text = (u.User?.firstName ?? "") + " " + (u.User?.firstName??""),
+                  Value = u._id.ToString()
+              }),
+                trip = new Trip()
+
+            };
+            Console.WriteLine(_unitOfWork.driver.Get(c => c.User.Id == 100));
+            return View(tripView);
+                    
         }
 
         // POST: Trips/Create
@@ -56,7 +74,9 @@ namespace TMS_APP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CustomerName,PickupLocationAddress,PickupLocationCity,PickupLocationCountry,DeliveryLocationAddress,DeliveryLocationCity,DeliveryLocationCountry,PickupDate,DeliveryDate,ShipmentWeight,TotalAmount,Quantity,Status,DriverName")] Trip trip)
+
+        //Weiguang commented out
+       /* public async Task<IActionResult> Create([Bind("Id,CustomerName,PickupLocationAddress,PickupLocationCity,PickupLocationCountry,DeliveryLocationAddress,DeliveryLocationCity,DeliveryLocationCountry,PickupDate,DeliveryDate,ShipmentWeight,TotalAmount,Quantity,Status,DriverName")] Trip trip)
         {
             if (ModelState.IsValid)
             {
@@ -65,6 +85,20 @@ namespace TMS_APP.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(trip);
+        }*/
+
+
+        //Weiguang modified the create method
+
+        public async Task<IActionResult> Create(DriverTripViewModel driverTripView)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(driverTripView.trip);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
         }
 
         // GET: Trips/Edit/5

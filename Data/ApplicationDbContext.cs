@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using TMS_APP.Constants;
 using TMS_APP.Models;
 
 namespace TMS_APP.Data
@@ -11,11 +12,12 @@ namespace TMS_APP.Data
             : base(options)
         {
         }
+        public DbSet<User> Users2 { get; set; }
+        public DbSet<Driver> Drivers { get; set; }
         public DbSet<Trip> Trip { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
 
-        public DbSet<User> Users2 { get; set; }
-        public DbSet<Driver> Drivers { get; set; }
+   
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,9 +41,57 @@ namespace TMS_APP.Data
                    UserId=100,
                    PayRate=10,
                    Availability=true
+                },
+                 new Driver
+                 {
+                     _id = 1002,
+                     UserId = 101,
+                     PayRate = 10,
+                     Availability = true
+                 }
+                );
+            modelBuilder.Entity<Trip>().HasData(
+                new Trip
+                {
+                    Id =1,
+                    CustomerName = "John Doe",
+                    PickupLocationAddress = "123 Main St",
+                    PickupLocationCity = "Exampleville",
+                    PickupLocationCountry = "Country A",
+                    DeliveryLocationAddress = "456 Elm St", // Provide a value for this property
+                    DeliveryLocationCity = "Destination City",
+                    DeliveryLocationCountry = "Country B",
+                    PickupDate = DateTime.Now,
+                    DeliveryDate = DateTime.Now.AddDays(1),
+                    ShipmentWeight = 100.5m,
+                    TotalAmount = 250.75m,
+                    Quantity = 3,
+                    Status = TripStatus.Assigned,
+                    DriverName = "Jane Smith",
+                    DriverId = 1001 // Assuming you have a driver with this ID
+                },
+                new Trip
+                {
+                    Id = 2,
+                    CustomerName = "Alice Johnson",
+                    PickupLocationAddress = "789 Oak St",
+                    PickupLocationCity = "Sampletown",
+                    PickupLocationCountry = "Country C",
+                    DeliveryLocationAddress = "987 Maple St",
+                    DeliveryLocationCity = "Destinationville",
+                    DeliveryLocationCountry = "Country D",
+                    PickupDate = DateTime.Now.AddDays(2),
+                    DeliveryDate = DateTime.Now.AddDays(3),
+                    ShipmentWeight = 75.0m,
+                    TotalAmount = 150.25m,
+                    Quantity = 2,
+                    Status = TripStatus.Unassigned,
+                    DriverName=" Smith John",
+                    DriverId=1002
+
                 }
                 );
-    }
+        }
 
 
 

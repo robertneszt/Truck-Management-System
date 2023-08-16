@@ -3,8 +3,23 @@
 }
 @model User
 
-<h1>Welcome @Model.firstName to Driver Home Page</h1>
+<h1>Welcome @Model.firstName to Driver Dashboard</h1>
+<div class="container-fluid">
 
-<p>This is the content of the home page.</p>
-
-Driver home page
+<div class="row">
+    <div class="col-6 col-md-3">
+        <a asp-controller="Driver" asp-action="Account" class="btn btn-dark form-control border"> My Profile</a>
+    </div>
+        <div class="col-6 col-md-3">
+            <a asp-controller="Driver" asp-action="MyTrips" class="btn btn-dark form-control border"> View my Trips</a>
+        </div>
+</div>
+    <div class="row">
+        <div class="col-6 col-md-3">
+            <a asp-controller="Driver" asp-action="Trips" class="btn btn-dark form-control border"> Available Trips</a>
+        </div>
+        <div class="col-6 col-md-3">
+            <a asp-controller="Driver" asp-action="Pay" class="btn btn-dark form-control border"> Pay</a>
+        </div>
+    </div>
+</div>

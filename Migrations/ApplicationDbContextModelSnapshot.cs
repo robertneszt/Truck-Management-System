@@ -258,6 +258,13 @@ namespace TMS_APP.Migrations
                             Availability = true,
                             PayRate = 10m,
                             UserId = 100
+                        },
+                        new
+                        {
+                            _id = 1002,
+                            Availability = true,
+                            PayRate = 10m,
+                            UserId = 101
                         });
                 });
 
@@ -287,6 +294,9 @@ namespace TMS_APP.Migrations
                     b.Property<string>("DeliveryLocationCountry")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DriverId")
+                        .HasColumnType("int");
 
                     b.Property<string>("DriverName")
                         .IsRequired()
@@ -321,7 +331,49 @@ namespace TMS_APP.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DriverId");
+
                     b.ToTable("Trip");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CustomerName = "John Doe",
+                            DeliveryDate = new DateTime(2023, 8, 17, 19, 0, 42, 234, DateTimeKind.Local).AddTicks(5455),
+                            DeliveryLocationAddress = "456 Elm St",
+                            DeliveryLocationCity = "Destination City",
+                            DeliveryLocationCountry = "Country B",
+                            DriverId = 1001,
+                            DriverName = "Jane Smith",
+                            PickupDate = new DateTime(2023, 8, 16, 19, 0, 42, 234, DateTimeKind.Local).AddTicks(5402),
+                            PickupLocationAddress = "123 Main St",
+                            PickupLocationCity = "Exampleville",
+                            PickupLocationCountry = "Country A",
+                            Quantity = 3m,
+                            ShipmentWeight = 100.5m,
+                            Status = 2,
+                            TotalAmount = 250.75m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CustomerName = "Alice Johnson",
+                            DeliveryDate = new DateTime(2023, 8, 19, 19, 0, 42, 234, DateTimeKind.Local).AddTicks(5467),
+                            DeliveryLocationAddress = "987 Maple St",
+                            DeliveryLocationCity = "Destinationville",
+                            DeliveryLocationCountry = "Country D",
+                            DriverId = 1002,
+                            DriverName = " Smith John",
+                            PickupDate = new DateTime(2023, 8, 18, 19, 0, 42, 234, DateTimeKind.Local).AddTicks(5464),
+                            PickupLocationAddress = "789 Oak St",
+                            PickupLocationCity = "Sampletown",
+                            PickupLocationCountry = "Country C",
+                            Quantity = 2m,
+                            ShipmentWeight = 75.0m,
+                            Status = 3,
+                            TotalAmount = 150.25m
+                        });
                 });
 
             modelBuilder.Entity("TMS_APP.Models.User", b =>
@@ -472,6 +524,17 @@ namespace TMS_APP.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TMS_APP.Models.Trip", b =>
+                {
+                    b.HasOne("TMS_APP.Models.Driver", "driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("driver");
                 });
 #pragma warning restore 612, 618
         }
