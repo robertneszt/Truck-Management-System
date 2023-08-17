@@ -34,12 +34,14 @@ namespace TMS_APP.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     HireDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PayRate = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     Availability = table.Column<bool>(type: "bit", nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -261,8 +263,8 @@ namespace TMS_APP.Migrations
                 columns: new[] { "Id", "CustomerName", "DeliveryDate", "DeliveryLocationAddress", "DeliveryLocationCity", "DeliveryLocationCountry", "DriverId", "DriverName", "PickupDate", "PickupLocationAddress", "PickupLocationCity", "PickupLocationCountry", "Quantity", "ShipmentWeight", "Status", "TotalAmount" },
                 values: new object[,]
                 {
-                    { 1, "John Doe", new DateTime(2023, 8, 17, 19, 0, 42, 234, DateTimeKind.Local).AddTicks(5455), "456 Elm St", "Destination City", "Country B", 1001, "Jane Smith", new DateTime(2023, 8, 16, 19, 0, 42, 234, DateTimeKind.Local).AddTicks(5402), "123 Main St", "Exampleville", "Country A", 3m, 100.5m, 2, 250.75m },
-                    { 2, "Alice Johnson", new DateTime(2023, 8, 19, 19, 0, 42, 234, DateTimeKind.Local).AddTicks(5467), "987 Maple St", "Destinationville", "Country D", 1002, " Smith John", new DateTime(2023, 8, 18, 19, 0, 42, 234, DateTimeKind.Local).AddTicks(5464), "789 Oak St", "Sampletown", "Country C", 2m, 75.0m, 3, 150.25m }
+                    { 1, "John Doe", new DateTime(2023, 8, 18, 13, 3, 6, 264, DateTimeKind.Local).AddTicks(3298), "456 Elm St", "Destination City", "Country B", 1001, "Jane Smith", new DateTime(2023, 8, 17, 13, 3, 6, 264, DateTimeKind.Local).AddTicks(3259), "123 Main St", "Exampleville", "Country A", 3m, 100.5m, 2, 250.75m },
+                    { 2, "Alice Johnson", new DateTime(2023, 8, 20, 13, 3, 6, 264, DateTimeKind.Local).AddTicks(3311), "987 Maple St", "Destinationville", "Country D", 1002, " Smith John", new DateTime(2023, 8, 19, 13, 3, 6, 264, DateTimeKind.Local).AddTicks(3309), "789 Oak St", "Sampletown", "Country C", 2m, 75.0m, 3, 150.25m }
                 });
 
             migrationBuilder.CreateIndex(

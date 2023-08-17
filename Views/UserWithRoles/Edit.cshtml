@@ -1,0 +1,86 @@
+﻿@using TMS_APP.Constants;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model TMS_APP.Models.DTO.UserWithRolesViewModel
+
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <div class="card shadow border-0 my-4">
+        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="text-white py-2">Account Information</h2>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <form method="post" enctype="multipart/form-data">
+                <input asp-for=@Model.UserId hidden />
+                @*<input asp-for="User.Id" hidden />*@
+                <div class="row">
+                    <div class="col-10">
+                        <div class="border p-3">
+                            <div class="form-floating py-2 col-12">
+                                <label asp-for="@Model.UserName" class="ms-2"></label>
+                                <input asp-for=@Model.UserName class="form-control border-0 shadow" disabled/>
+                                <span asp-validation-for=@Model.UserName class="text-danger"></span>
+                            </div>
+                            <div class="form-floating py-2 col-12">
+                                <label asp-for=@Model.PayRate class="ms-2"></label>
+                                <input asp-for=@Model.PayRate class="form-control border-0 shadow" />
+                                <span asp-validation-for=@Model.PayRate class="text-danger"></span>
+                            </div>
+
+                            @*<div class="form-floating py-2 col-12">
+                                <label asp-for=@Model.Email class="ms-2"></label>
+                                <input asp-for=@Model.Email class="form-control border-0 shadow" />
+                                <span asp-validation-for=@Model.Email class="text-danger"></span>
+                            </div>*@
+
+                            <div class="form-group"> <label asp-for="Status" class="control-label"></label> 
+                                <select asp-for="Status" class="form-control"> @foreach (var status in Enum.GetValues(typeof(UserStatus)))
+                                    {
+                                        <option value="@status">@status</option>
+                                    } </select> <span asp-validation-for="Status" class="text-danger"></span> 
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="UserRoles" class="control-label"></label>
+                                <select asp-for="UserRoles" class="form-control">
+                                    @foreach (var role in Enum.GetValues(typeof(Roles)))
+                                    {
+                                        <option value="@role">@role</option>
+                                    }
+                                </select> <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-floating py-2 col-12">
+                                <div class="form-check">
+                                    <label>Availability</label>
+                                    <br />
+                                    <input class="form-check-input" type="checkbox" asp-for=@Model.Availability />
+                                    <label class="form-check-label">Available</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-md-3">
+                                    <button type="submit" class="btn btn-primary form-control">
+                                        Update
+                                    </button>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <a asp-controller="UserWithRoles" asp-action="ListUsersWithRoles" class="btn btn-dark form-control border"> Cancel</a>
+                                </div>
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

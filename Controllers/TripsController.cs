@@ -56,10 +56,10 @@ namespace TMS_APP.Controllers
             DriverTripViewModel tripView = new()
             {
                 
-                DriverList = _unitOfWork.driver.GetAll().Select(u => new SelectListItem
+              DriverList = _unitOfWork.user.GetAll().Select(u => new SelectListItem
               {
-                  Text = (u.User?.firstName ?? "") + " " + (u.User?.firstName??""),
-                  Value = u._id.ToString()
+                  Text = (u.firstName ?? "") + " " + (u.lastName??""),
+                  Value = u.Id.ToString()
               }),
                 trip = new Trip()
 

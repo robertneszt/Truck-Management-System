@@ -3,24 +3,42 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using TMS_APP.Constants;
 using TMS_APP.Data;
 using TMS_APP.Models;
 using TMS_APP.Models.DTO;
 using TMS_APP.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
+using TMS_APP.Controllers;
+using System.Security.Claims;
 
-namespace TMS_APP.Controllers
+namespace TMS_APP.Areas.Driver.Controllers
 {
+    [Area("Driver")]
+    [Authorize(Roles=RoleD.Role_Driver)]
     public class DriverController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ILogger<UserWithRolesController> _logger;
+        public List<ApplicationUser> Users;
 
-        public DriverController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment, ApplicationDbContext context)
+        public DriverController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment, ApplicationDbContext context, UserManager<ApplicationUser> userManager,
+                                  RoleManager<IdentityRole> roleManager,
+                                  SignInManager<ApplicationUser> signInManager,
+                                  ILogger<UserWithRolesController> logger)
         {
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _roleManager = roleManager;
+            _logger = logger;
 
         }
 
@@ -31,7 +49,7 @@ namespace TMS_APP.Controllers
             return View();
         }
 
-
+/*
         [HttpPost]
         public IActionResult Login(User model)
         {
@@ -61,38 +79,39 @@ namespace TMS_APP.Controllers
             }
             // Simulate user validation
 
-        }
+        }*/
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            string userEmail = HttpContext.Session.GetString("UserEmail");
+            //string userEmail = HttpContext.Session.GetString("UserEmail");
+          /*  var userEmail = User.FindFirstValue(ClaimTypes.Email);
+            if (userEmail != null)
+            {
+                ApplicationUser? user =await _userManager.FindByEmailAsync(userEmail);
+                return View(user);
+            }*/
 
-            User user = _unitOfWork.user.Get(c => c.email == userEmail);
+            var user = _userManager.GetUserAsync(User).Result;
 
             return View(user);
+           
+
+            
         }
 
         [AuthorizeUser]
-        public IActionResult Account()
+        public async Task<IActionResult> Account()
         {
-            if (HttpContext.Session == null)
-            {
-                return RedirectToAction("Login");
-            }
+            var user = _userManager.GetUserAsync(User).Result;
 
-            string userEmail = HttpContext.Session.GetString("UserEmail");
-
-            User user = _unitOfWork.user.Get(c => c.email == userEmail);
-
-            Driver driver = _unitOfWork.driver.Get(d => d.UserId == user.Id);
-            return View(driver);
+            return View(user);
 
         }
 
         [AuthorizeUser]
         public IActionResult Edit()
         {
-            if (HttpContext.Session == null)
+            /*if (HttpContext.Session == null)
             {
                 return RedirectToAction("Login");
             }
@@ -100,27 +119,32 @@ namespace TMS_APP.Controllers
 
             User user = _unitOfWork.user.Get(c => c.email == userEmail);
 
-            Driver driver = _unitOfWork.driver.Get(d => d.UserId == user.Id);
-            return View(driver);
+            Driver driver = _unitOfWork.driver.Get(d => d.UserId == user.Id);*/
+
+            var user = _userManager.GetUserAsync(User).Result;
+
+            return View(user);
 
         }
 
         [HttpPost]
 
-        public IActionResult Edit(Driver obj)
+        public IActionResult Edit(ApplicationUser obj)
         {
-
+/*
             string userEmail = HttpContext.Session.GetString("UserEmail");
             User user = _unitOfWork.user.Get(c => c.email == userEmail);
-            Driver driver = _unitOfWork.driver.Get(d => d.UserId == user.Id);
+            Driver driver = _unitOfWork.driver.Get(d => d.UserId == user.Id);*/
+
+            var user = _userManager.GetUserAsync(User).Result;
 
             if (ModelState.IsValid)
             {
-                user.firstName = obj.User.firstName;
-                user.lastName = obj.User.lastName;
-                user.email = obj.User.email;
-                user.phone = obj.User.phone;
-                driver.Availability = obj.Availability;
+                user.FirstName = obj.FirstName;
+                user.lastName = obj.lastName;
+                user.Email = obj.Email;
+                user.PhoneNumber = obj.PhoneNumber;
+                user.Availability = obj.Availability;
                 _unitOfWork.Save();
                 TempData["success"] = "You account updated successfully";
                 return RedirectToAction("Account");
@@ -183,20 +207,20 @@ namespace TMS_APP.Controllers
                         Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
         }
 
-        public async Task<IActionResult> MyTrips()
+       /* public async Task<IActionResult> MyTrips()
         {
             string userEmail = HttpContext.Session.GetString("UserEmail");
             User user = _unitOfWork.user.Get(c => c.email == userEmail);
 
             Driver driver = _unitOfWork.driver.Get(c => c.UserId == user.Id);
 
-            /* Trip trip = _context.Trip.FirstOrDefault(c => c.DriverId == driver._id);*/
+            *//* Trip trip = _context.Trip.FirstOrDefault(c => c.DriverId == driver._id);*//*
 
 
             return _context.Trip.Where(c => c.DriverId == driver._id) != null ?
                         View(await _context.Trip.Where(c => c.DriverId == driver._id).ToListAsync()) :
                         Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
-        }
+        }*/
 
         /* internal class AuthorizeUserAttribute : Attribute
          {
