@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using TMS_APP.Constants;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -29,10 +30,34 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">About Us</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Contact Us</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Employee Login</a></li>
-                        <li class="nav-item"><a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Dispatch">Dispatch Dashboard</a></li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Contact Us</a>
+                        </li>
+                        
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="UserWithRoles" asp-action="ListUsersWithRoles">Admin DashBoard</a>
+                            </li>
+
+                        }
+                        else if (User.IsInRole(RoleD.Role_Dispatcher))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Dispatch">Dispatch Dashboard</a>
+                            </li>
+                        }
+                        else if (User.IsInRole(RoleD.Role_Driver))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Driver" asp-controller="Driver" asp-action="Index" >Driver Dashboard</a>
+                            </li>
+                        }
+                       
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

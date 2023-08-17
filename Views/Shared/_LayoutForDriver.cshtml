@@ -5,23 +5,60 @@
     <title>@ViewData["Title"] - TMS App</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~\Views\Shared\_LayoutForDriver.cshtml.css" />
+
+  
 </head>
 <body>
-    <div class="banner">
+    <header >
         <img src="~/images/banner-1.png" alt="Banner Image" height=auto width="100%">
-    </div>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/MicrosoftTeams-image.png" width="100" height="60" alt="logo" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Contact Us</a>
+                        </li>
+                        <li>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Employee Login</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Dispatch">Dispatch Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Driver" asp-action="Index">Driver Dashboard</a>
+                        </li>
+                    </ul>
+                    
+                </div>
+            </div>
+        </nav>
+    </header>
+   @* <div class="banner">
+        <img src="~/images/banner-1.png" alt="Banner Image" height=auto width="100%">
+    </div>*@
     <div class="container-fluid">
         <div class="row">
             <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
                 <div class="position-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" asp-controller="Home" asp-action="Index">
+                            <a class="nav-link active" asp-controller="Driver" asp-action="Index">
                                 Home
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Driver" asp-action="Dashboard">
+                            <a class="nav-link" asp-controller="Driver" asp-action="Trips">
                                 Dashboard
                             </a>
                         </li>

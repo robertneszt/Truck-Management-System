@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace TMS_APP.Migrations
 {
     /// <inheritdoc />
-    public partial class initialrelease : Migration
+    public partial class initdata : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,12 +34,14 @@ namespace TMS_APP.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     HireDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PayRate = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     Availability = table.Column<bool>(type: "bit", nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -59,28 +63,21 @@ namespace TMS_APP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Trip",
+                name: "Users2",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PickupLocationAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PickupLocationCity = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PickupLocationCountry = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DeliveryLocationAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DeliveryLocationCity = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DeliveryLocationCountry = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PickupDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DeliveryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ShipmentWeight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    firstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    role = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Trip", x => x.Id);
+                    table.PrimaryKey("PK_Users2", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -189,6 +186,87 @@ namespace TMS_APP.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Drivers",
+                columns: table => new
+                {
+                    _id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    PayRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Availability = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Drivers", x => x._id);
+                    table.ForeignKey(
+                        name: "FK_Drivers_Users2_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users2",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Trip",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PickupLocationAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PickupLocationCity = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PickupLocationCountry = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DeliveryLocationAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DeliveryLocationCity = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DeliveryLocationCountry = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PickupDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeliveryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ShipmentWeight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    DriverName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DriverId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trip", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Trip_Drivers_DriverId",
+                        column: x => x.DriverId,
+                        principalTable: "Drivers",
+                        principalColumn: "_id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users2",
+                columns: new[] { "Id", "email", "firstName", "lastName", "password", "phone", "role" },
+                values: new object[,]
+                {
+                    { 100, "user@example.com", "danny", "yang", "password", "87654321", 2 },
+                    { 101, "user2@example.com", "danny2", "yang", "password2", "87654321", 0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Drivers",
+                columns: new[] { "_id", "Availability", "PayRate", "UserId" },
+                values: new object[,]
+                {
+                    { 1001, true, 10m, 100 },
+                    { 1002, true, 10m, 101 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Trip",
+                columns: new[] { "Id", "CustomerName", "DeliveryDate", "DeliveryLocationAddress", "DeliveryLocationCity", "DeliveryLocationCountry", "DriverId", "DriverName", "PickupDate", "PickupLocationAddress", "PickupLocationCity", "PickupLocationCountry", "Quantity", "ShipmentWeight", "Status", "TotalAmount" },
+                values: new object[,]
+                {
+                    { 1, "John Doe", new DateTime(2023, 8, 18, 13, 3, 6, 264, DateTimeKind.Local).AddTicks(3298), "456 Elm St", "Destination City", "Country B", 1001, "Jane Smith", new DateTime(2023, 8, 17, 13, 3, 6, 264, DateTimeKind.Local).AddTicks(3259), "123 Main St", "Exampleville", "Country A", 3m, 100.5m, 2, 250.75m },
+                    { 2, "Alice Johnson", new DateTime(2023, 8, 20, 13, 3, 6, 264, DateTimeKind.Local).AddTicks(3311), "987 Maple St", "Destinationville", "Country D", 1002, " Smith John", new DateTime(2023, 8, 19, 13, 3, 6, 264, DateTimeKind.Local).AddTicks(3309), "789 Oak St", "Sampletown", "Country C", 2m, 75.0m, 3, 150.25m }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -227,6 +305,16 @@ namespace TMS_APP.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Drivers_UserId",
+                table: "Drivers",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Trip_DriverId",
+                table: "Trip",
+                column: "DriverId");
         }
 
         /// <inheritdoc />
@@ -255,6 +343,12 @@ namespace TMS_APP.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Drivers");
+
+            migrationBuilder.DropTable(
+                name: "Users2");
         }
     }
 }

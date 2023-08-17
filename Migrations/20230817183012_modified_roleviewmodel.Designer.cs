@@ -12,8 +12,8 @@ using TMS_APP.Data;
 namespace TMS_APP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230815183457_added-userdriver")]
-    partial class addeduserdriver
+    [Migration("20230817183012_modified_roleviewmodel")]
+    partial class modified_roleviewmodel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,7 +77,7 @@ namespace TMS_APP.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -145,12 +145,12 @@ namespace TMS_APP.Migrations
 
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("ApplicationUser");
 
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -175,7 +175,7 @@ namespace TMS_APP.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -197,7 +197,7 @@ namespace TMS_APP.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -212,7 +212,7 @@ namespace TMS_APP.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -261,6 +261,13 @@ namespace TMS_APP.Migrations
                             Availability = true,
                             PayRate = 10m,
                             UserId = 100
+                        },
+                        new
+                        {
+                            _id = 1002,
+                            Availability = true,
+                            PayRate = 10m,
+                            UserId = 101
                         });
                 });
 
@@ -288,6 +295,13 @@ namespace TMS_APP.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeliveryLocationCountry")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DriverId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DriverName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -320,7 +334,49 @@ namespace TMS_APP.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DriverId");
+
                     b.ToTable("Trip");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CustomerName = "John Doe",
+                            DeliveryDate = new DateTime(2023, 8, 18, 14, 30, 12, 74, DateTimeKind.Local).AddTicks(5183),
+                            DeliveryLocationAddress = "456 Elm St",
+                            DeliveryLocationCity = "Destination City",
+                            DeliveryLocationCountry = "Country B",
+                            DriverId = 1001,
+                            DriverName = "Jane Smith",
+                            PickupDate = new DateTime(2023, 8, 17, 14, 30, 12, 74, DateTimeKind.Local).AddTicks(5130),
+                            PickupLocationAddress = "123 Main St",
+                            PickupLocationCity = "Exampleville",
+                            PickupLocationCountry = "Country A",
+                            Quantity = 3m,
+                            ShipmentWeight = 100.5m,
+                            Status = 2,
+                            TotalAmount = 250.75m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CustomerName = "Alice Johnson",
+                            DeliveryDate = new DateTime(2023, 8, 20, 14, 30, 12, 74, DateTimeKind.Local).AddTicks(5194),
+                            DeliveryLocationAddress = "987 Maple St",
+                            DeliveryLocationCity = "Destinationville",
+                            DeliveryLocationCountry = "Country D",
+                            DriverId = 1002,
+                            DriverName = " Smith John",
+                            PickupDate = new DateTime(2023, 8, 19, 14, 30, 12, 74, DateTimeKind.Local).AddTicks(5191),
+                            PickupLocationAddress = "789 Oak St",
+                            PickupLocationCity = "Sampletown",
+                            PickupLocationCountry = "Country C",
+                            Quantity = 2m,
+                            ShipmentWeight = 75.0m,
+                            Status = 3,
+                            TotalAmount = 150.25m
+                        });
                 });
 
             modelBuilder.Entity("TMS_APP.Models.User", b =>
@@ -351,6 +407,9 @@ namespace TMS_APP.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("role")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users2");
@@ -363,7 +422,8 @@ namespace TMS_APP.Migrations
                             firstName = "danny",
                             lastName = "yang",
                             password = "password",
-                            phone = "87654321"
+                            phone = "87654321",
+                            role = 2
                         },
                         new
                         {
@@ -372,39 +432,41 @@ namespace TMS_APP.Migrations
                             firstName = "danny2",
                             lastName = "yang",
                             password = "password2",
-                            phone = "87654321"
+                            phone = "87654321",
+                            role = 0
                         });
                 });
 
             modelBuilder.Entity("TMS_APP.Models.ApplicationUser", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.ApplicationUser");
 
                     b.Property<bool>("Availability")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("HireDate")
+                    b.Property<DateTime?>("HireDate")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("PayRate")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("_id")
-                        .HasColumnType("int");
+                    b.Property<string>("lastName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -418,25 +480,25 @@ namespace TMS_APP.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserRole<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
@@ -444,16 +506,16 @@ namespace TMS_APP.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.ApplicationUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -469,6 +531,17 @@ namespace TMS_APP.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TMS_APP.Models.Trip", b =>
+                {
+                    b.HasOne("TMS_APP.Models.Driver", "driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("driver");
                 });
 #pragma warning restore 612, 618
         }

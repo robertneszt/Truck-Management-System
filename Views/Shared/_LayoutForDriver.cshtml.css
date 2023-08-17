@@ -47,13 +47,14 @@ button.accept-policy {
   line-height: 60px;
 }
 
-.banner {
-    text-align: center;
-    background-color: #f0f0f0;
+#banner_driver {
+    /*text-align: center;
+    background-color: #f0f0f0;*/
+    background: url("~/images/banner-1.png");
     padding: 10px 0;
 }
 
-    .banner img {
+#banner_driver img {
         max-width: 100%;
         height: auto;
     }

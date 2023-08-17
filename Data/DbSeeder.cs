@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using TMS_APP.Constants;
+using TMS_APP.Models;
 
 namespace TMS_APP.Data
 {
@@ -7,7 +8,7 @@ namespace TMS_APP.Data
     {
         public static async Task SeedDefaultData(IServiceProvider service)
         {
-            var userMgr = service.GetService<UserManager<IdentityUser>>();
+            var userMgr = service.GetService<UserManager<ApplicationUser>>();
             var roleMgr = service.GetService<RoleManager<IdentityRole>>();
 
             //adding some roles to db
@@ -18,7 +19,7 @@ namespace TMS_APP.Data
 
             // create admin user
 
-            var admin = new IdentityUser
+          /*  var admin = new ApplicationUser
             {
                 UserName = "admin@gmail.com",
                 Email = "admin@gmail.com",
@@ -31,7 +32,7 @@ namespace TMS_APP.Data
                 await userMgr.CreateAsync(admin, "Admin@123");
                 await userMgr.AddToRoleAsync(admin, Roles.Admin.ToString());
             }
-
+*/
 
 
         }

@@ -1,21 +1,10 @@
-﻿@model Driver
-
+﻿@model TMS_APP.Models.ApplicationUser
 @{
 
     Layout = "~/Views/Shared/_LayoutForDriver.cshtml";
 }
 
 <h2>@ViewData["Title"]</h2>
-
-@*<div>
-    <h3>Account Information</h3>
-    <p><strong>Driver ID:</strong> @Model._id</p>
-    <p><strong>Full Name:</strong> @Model.User.firstName @Model.User.lastName</p>
-    <p><strong>Email:</strong> @Model.User.email</p>
-    <p><strong>Phone:</strong> @Model.User.phone</p>
-    <p><strong>Pay Rate:</strong> @Model.PayRate</p>
-    <p><strong>Availability:</strong> @Model.Availability</p>
-</div>*@
 
 <div>
     <div class="card shadow border-0 my-4">
@@ -28,33 +17,32 @@
         </div>
         <div class="container">
             <form method="post"  enctype="multipart/form-data">
-                <input asp-for=@Model._id hidden />
-                <input asp-for="User.Id" hidden />
+                <input asp-for=@Model.Id hidden />
+                @*<input asp-for="User.Id" hidden />*@
                 <div class="row">
                     <div class="col-10">
                         <div class="border p-3">
-                            @*<div asp-validation-summary="ModelOnly"></div>*@
                             <div class="form-floating py-2 col-12">
-                                <label asp-for="User.firstName" class="ms-2"></label>
-                                <input asp-for="User.firstName" class="form-control border-0 shadow" />
-                                <span asp-validation-for="User.firstName" class="text-danger"></span>
+                                <label asp-for="@Model.FirstName" class="ms-2"></label>
+                                <input asp-for=@Model.FirstName class="form-control border-0 shadow" />
+                                <span asp-validation-for=@Model.FirstName class="text-danger"></span>
                             </div>
                             <div class="form-floating py-2 col-12">
-                                <label asp-for="User.lastName" class="ms-2"></label>
-                                <input asp-for="User.lastName" class="form-control border-0 shadow" />
-                                <span asp-validation-for="User.lastName" class="text-danger"></span>
-                            </div>
-
-                            <div class="form-floating py-2 col-12">
-                                <label asp-for="User.email" class="ms-2"></label>
-                                <input asp-for="User.email" class="form-control border-0 shadow"  />
-                                <span asp-validation-for="User.email" class="text-danger"></span>
+                                <label asp-for=@Model.lastName class="ms-2"></label>
+                                <input asp-for=@Model.lastName class="form-control border-0 shadow" />
+                                <span asp-validation-for=@Model.lastName class="text-danger"></span>
                             </div>
 
                             <div class="form-floating py-2 col-12">
-                                <label asp-for="User.phone" class="ms-2"></label>
-                                <input asp-for="User.phone" class="form-control border-0 shadow" />
-                                <span asp-validation-for="User.phone" class="text-danger"></span>
+                                <label asp-for=@Model.Email class="ms-2"></label>
+                                <input asp-for=@Model.Email class="form-control border-0 shadow" />
+                                <span asp-validation-for=@Model.Email class="text-danger"></span>
+                            </div>
+
+                            <div class="form-floating py-2 col-12">
+                                <label asp-for=@Model.PhoneNumber class="ms-2"></label>
+                                <input asp-for=@Model.PhoneNumber class="form-control border-0 shadow" />
+                                <span asp-validation-for=@Model.PhoneNumber class="text-danger"></span>
                             </div>
 
                             <div class="form-floating py-2 col-12">
@@ -65,12 +53,6 @@
                                     <label class="form-check-label">Available</label>
                                 </div>
                             </div>
-
-                            @* <div class="form-floating py-2 col-12">
-                            <input type="file" name="file" class="form-control border-0 shadow" />
-                            <label asp-for="book.ImageUrl" class="ms-2"></label>
-                            </div>*@
-
                             <div class="row">
                                 <div class="col-6 col-md-3">
                                     <button type="submit" class="btn btn-primary form-control">
