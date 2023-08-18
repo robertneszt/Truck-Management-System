@@ -49,6 +49,10 @@ namespace TMS_APP.Controllers
                 {
                     UserId = user.Id,
                     UserName = user.UserName,
+                    FirstName=user.FirstName,
+                    LastName=user.LastName,
+                    DateOfBirth=user.DateOfBirth,
+                    HireDate=user.HireDate,
                     Email = user.Email,
                     Roles = roles,
                     Status = user.Status.ToString(),
@@ -132,9 +136,16 @@ namespace TMS_APP.Controllers
             var UserRolemodel = new UserWithRolesViewModel
             {
                 UserId = user.Id,
-                UserName = userName,
-                PayRate = payRate,
-                Availability = availability,
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,             
+                DateOfBirth = user.DateOfBirth,
+                HireDate = user.HireDate,
+                Gender = user.Gender,
+                PayRate = user.PayRate,
+                Availability = user.Availability,
+                /*Roles = roles, */// Join the roles using a separator  in the view page <p>Roles: @string.Join(", ", Model.Roles)</p>
+                Password = user.PasswordHash,
                 Status = user.Status.ToString() ?? "Suspended", // Assuming you've added a property for user status
                 AllRoles = roles,
                 UserRoles = userRoles
@@ -155,24 +166,53 @@ namespace TMS_APP.Controllers
                 return NotFound();
             }
 
-            // update the role of the user
+            // //update the role of the user
 
-            var currentRoles = await _userManager.GetRolesAsync(user);
+            //var currentRoles = await _userManager.GetRolesAsync(user);
+            //var newRolesToAdd = model.SelectedRoles;
 
-            //  
-           
             //If you want to set a default value for model.SelectedRoles, it's important to ensure that you're assigning a valid collection(list, array, etc.) of role names.If you want to set a default role when no roles are selected, you might consider something like this:
 
-            if (model.SelectedRoles == null || !model.SelectedRoles.Any())
-            {
-                model.SelectedRoles = new List<string> { Constants.Roles.Driver.ToString() }; // Assigning a default role as driver
-            }
-            var newRolesToAdd = model.SelectedRoles.Except(currentRoles);
-            var rolesToRemove = currentRoles.Except(model.SelectedRoles);
-            await _userManager.AddToRolesAsync(user, newRolesToAdd);
+            //if (model.SelectedRoles == null || !model.SelectedRoles.Any())
+            //{
+            //    model.SelectedRoles = new List<string> { Constants.Roles.Driver.ToString() }; // Assigning a default role as driver
+            //}
+
+            //var newRolesToAdd = model.SelectedRoles.Except(currentRoles);
+            //var rolesToRemove = currentRoles.Except(model.SelectedRoles);
+            //await _userManager.AddToRolesAsync(user, newRolesToAdd);
+            //await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
+
+            //var selectedRole = model.SelectedRoles;
+            //await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            //await _userManager.AddToRolesAsync(user, selectedRole);
+
+
+            //// option 2
+            //if (model.SelectedRoles == null)
+            //{
+            //    // If model.SelectedRoles is null, initialize it with an empty collection
+            //    model.SelectedRoles = new List<string>();
+            //}
+
+            //var newRolesToAdd = model.SelectedRoles.Except(currentRoles);
+            //var rolesToRemove = currentRoles.Except(model.SelectedRoles);
+
+            //await _userManager.AddToRolesAsync(user, newRolesToAdd);
+            //await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
+
+            //// option 3 
+            ////
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            var rolesToAdd = model.UserRoles.Except(currentRoles);
+            var rolesToRemove = currentRoles.Except(model.UserRoles);
+
+            await _userManager.AddToRolesAsync(user, rolesToAdd);
             await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
 
-            //user.UserName = model.UserName;
+ 
+            ////user.UserName = model.UserName;
             user.PayRate = model.PayRate;
             user.Availability = model.Availability;
             user.FirstName = model.FirstName;
