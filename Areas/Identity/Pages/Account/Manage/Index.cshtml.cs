@@ -87,7 +87,7 @@ namespace TMS_APP.Areas.Identity.Pages.Account.Manage
             {
                 PhoneNumber = phoneNumber,
                 FirstName = foundUser.Result.FirstName,
-                LastName= foundUser.Result.lastName,
+                LastName= foundUser.Result.LastName,
                 DOB= foundUser.Result.DateOfBirth
             };
         }
@@ -136,10 +136,10 @@ namespace TMS_APP.Areas.Identity.Pages.Account.Manage
                 SaveUser.FirstName = Input.FirstName;
                
             }
-            var lastName = SaveUser.lastName;
+            var lastName = SaveUser.LastName;
             if (Input.LastName  != lastName)
             {
-                SaveUser.lastName = Input.LastName;
+                SaveUser.LastName = Input.LastName;
 
             }
 

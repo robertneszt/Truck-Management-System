@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TMS_APP.Models.Trip>
+﻿@model IEnumerable<TMS_APP.Models.DTO.DriverTripViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -14,29 +14,29 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CustomerName)
+                @Html.DisplayNameFor(model => model.trip.CustomerName)
             </th>
           
             <th>
-                @Html.DisplayNameFor(model => model.PickupLocationCity)
+                @Html.DisplayNameFor(model => model.trip.PickupLocationCity)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PickupLocationCountry)
+                @Html.DisplayNameFor(model => model.trip.PickupLocationCountry)
             </th>
            @*  <th>
                 @Html.DisplayNameFor(model => model.DeliveryLocationAddress)
             </th> *@
             <th>
-                @Html.DisplayNameFor(model => model.DeliveryLocationCity)
+                @Html.DisplayNameFor(model => model.trip.DeliveryLocationCity)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DeliveryLocationCountry)
+                @Html.DisplayNameFor(model => model.trip.DeliveryLocationCountry)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PickupDate)
+                @Html.DisplayNameFor(model => model.trip.PickupDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DeliveryDate)
+                @Html.DisplayNameFor(model => model.trip.DeliveryDate)
             </th>
             @* <th>
                 @Html.DisplayNameFor(model => model.ShipmentWeight)
@@ -48,43 +48,44 @@
                 @Html.DisplayNameFor(model => model.Quantity)
             </th> *@
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                @Html.DisplayNameFor(model => model.trip.Status)
             </th>
              <th>
-                @Html.DisplayNameFor(model => model.DriverId)
+                @Html.DisplayNameFor(model => model.trip.DriverId)
             </th> 
             <th></th>
+            <th style="width:fit-content">Update Status</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.CustomerName)
+                @Html.DisplayFor(modelItem => item.trip.CustomerName)
             </td>
             @* <td>
                 @Html.DisplayFor(modelItem => item.PickupLocationAddress)
             </td> *@
             <td>
-                @Html.DisplayFor(modelItem => item.PickupLocationCity)
+                    @Html.DisplayFor(modelItem => item.trip.PickupLocationCity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PickupLocationCountry)
+                    @Html.DisplayFor(modelItem => item.trip.PickupLocationCountry)
             </td>
            @*  <td>
                 @Html.DisplayFor(modelItem => item.DeliveryLocationAddress)
             </td> *@
             <td>
-                @Html.DisplayFor(modelItem => item.DeliveryLocationCity)
+                    @Html.DisplayFor(modelItem => item.trip.DeliveryLocationCity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DeliveryLocationCountry)
+                    @Html.DisplayFor(modelItem => item.trip.DeliveryLocationCountry)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PickupDate)
+                    @Html.DisplayFor(modelItem => item.trip.PickupDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DeliveryDate)
+                    @Html.DisplayFor(modelItem => item.trip.DeliveryDate)
             </td>
             @* <td>
                 @Html.DisplayFor(modelItem => item.ShipmentWeight)
@@ -96,18 +97,54 @@
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td> *@
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
+                    @Html.DisplayFor(modelItem => item.trip.Status)
             </td>
              <td>
-                @Html.DisplayFor(modelItem => item.DriverId)
+                    @Html.DisplayFor(modelItem => item.trip.DriverId)
             </td> 
             <td>
                  <div class="btn-group" role="group">
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"><i class="fa fa-pencil"></i>Edit</a>
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-eye"></i>Details</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"><i class="fa fa-trash"></i>Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.trip.Id" class="btn btn-primary"><i class="fa fa-pencil"></i>Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.trip.Id" class="btn btn-info"><i class="fa fa-eye"></i>Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.trip.Id" class="btn btn-danger"><i class="fa fa-trash"></i>Delete</a>
                 </div>
                   
+            </td>
+            <td>
+                    @if (item.trip.Status != TMS_APP.Constants.TripStatus.Unassigned)
+                    {
+                        <form asp-action="UpdateStatus" asp-controller="Trips" method="post">
+                            <div class="row">
+                                <input type="hidden" name="tripId" value="@item.trip.Id" />                     
+                            <div class="form-group col-9">
+                                @*<label asp-for="@item.trip.Status" class="control-label"></label>*@
+                                <select asp-for="@item.trip.Status" name="newStatus" class="form-control">
+                                
+                                    <option value=1>In Progress</option>
+                                    <option value=3>Unassigned</option>
+                                    <option value=0>Completed</option>
+
+                                </select>
+                                <span asp-validation-for="@item.Status" class="text-danger"></span>
+                            </div>
+                            <div class="col-2"><input type="submit" value="update" /></div>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-action="UpdateDriver" asp-controller="Trips" method="post">
+                        <div class="form-group">
+                                <input type="hidden" name="tripId" value="@item.trip.Id" />
+                                <select asp-for="@item.trip.DriverId" name="selectedDriver" asp-items="@item.DriverList" class="form-select border-0 shadow">
+                                <option disabled selected>--Select Driver--</option>
+                            </select>
+                                <span asp-validation-for="@item.trip.DriverId" class="text-danger"></span>
+                        </div>
+                            <div class="col-2"><input type="submit" value="update" /></div>
+                        </form>
+                    }
+                   
             </td>
         </tr>
 }

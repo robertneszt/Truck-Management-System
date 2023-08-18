@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using TMS_APP.Constants;
 using TMS_APP.Data;
 using TMS_APP.Models;
 using TMS_APP.Models.DTO;
@@ -42,9 +43,51 @@ namespace TMS_APP.Controllers
         // GET: Trips
         public async Task<IActionResult> Index()
         {
-              return _dbcontext.Trip != null ? 
-                          View(await _dbcontext.Trip.ToListAsync()) :
+            var userDriver = new List<UserWithRolesViewModel>();
+            var users = await _userManager.Users.ToListAsync();
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                if (roles.Contains("Driver") && user.Availability == true)
+                {
+                    userDriver.Add(new UserWithRolesViewModel
+                    {
+                        UserId = user.Id,
+                        FirstName = user.FirstName,
+                        UserName = user.UserName,
+                        LastName = user.LastName,
+                        Availability = user.Availability,
+                        PayRate = user.PayRate,
+                        PhoneNumber = user.PhoneNumber,
+                        Email = user.Email
+
+                    });
+                }
+
+            }
+            List<DriverTripViewModel> tripViewModels = new List<DriverTripViewModel>();
+            List<Trip> tripList = await _dbcontext.Trip.ToListAsync();
+
+            foreach (var trip in tripList)
+            {
+                var TripDirverView = new DriverTripViewModel()
+                {
+                    trip = trip,
+                    DriverList = userDriver.Select(u => new SelectListItem
+                    {
+                        Text = u.UserName.ToString(),
+                        Value = u.UserId.ToString()
+                    })
+
+                };
+                tripViewModels.Add(TripDirverView);
+            }
+           
+
+            return tripViewModels != null ?
+                          View(tripViewModels):
                           Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
+
         }
 
         // GET: Trips/Details/5
@@ -80,10 +123,10 @@ namespace TMS_APP.Controllers
                         UserId = user.Id,
                         FirstName = user.FirstName,
                         UserName = user.UserName,
-                        LastName = user.lastName,
+                        LastName = user.LastName,
                         Availability = user.Availability,
                         PayRate = user.PayRate,
-                        PhoneNumber = user.PhoneNumber,
+                        /*PhoneNumber = user.PhoneNumber,*/
                         Email = user.Email
                        
                     });
@@ -132,11 +175,16 @@ namespace TMS_APP.Controllers
             {
                 Trip trip = driverTripView.trip;
                 trip.DriverId = driverTripView.trip.DriverId;
-
                 var driver = await _userManager.FindByIdAsync(trip.DriverId);
-
-                trip.DriverName=driver?.lastName+""+driver?.lastName;
-                
+                if (driver != null)
+                {
+                    trip.DriverName = driver?.LastName + "" + driver?.LastName;
+                    trip.Status = Constants.TripStatus.Assigned;
+                    _dbcontext.Update(trip);
+                    await _dbcontext.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                trip.Status= Constants.TripStatus.Unassigned;
                 _dbcontext.Update(trip);
                 await _dbcontext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -164,7 +212,7 @@ namespace TMS_APP.Controllers
                         UserId = user.Id,
                         FirstName = user.FirstName,
                         UserName = user.UserName,
-                        LastName = user.lastName,
+                        LastName = user.LastName,
                         Availability = user.Availability,
                        /* PayRate = user.PayRate,
                         PhoneNumber = user.PhoneNumber,
@@ -217,9 +265,15 @@ namespace TMS_APP.Controllers
                     trip.DriverId = TripDirverView.trip.DriverId;
 
                     var driver = await _userManager.FindByIdAsync(trip.DriverId);
-
-                    trip.DriverName = driver?.lastName + "" + driver?.lastName;
-
+                    if (driver != null)
+                    {
+                        trip.DriverName = driver?.LastName + "" + driver?.LastName;
+                        trip.Status = Constants.TripStatus.Assigned;
+                        _dbcontext.Update(trip);
+                        await _dbcontext.SaveChangesAsync();
+                        
+                    }
+                    trip.Status = Constants.TripStatus.Unassigned;
                     _dbcontext.Update(trip);
                     await _dbcontext.SaveChangesAsync();
                 }
@@ -271,9 +325,100 @@ namespace TMS_APP.Controllers
             {
                 _dbcontext.Trip.Remove(trip);
             }
-            
             await _dbcontext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateStatus(int? tripId, DriverTripViewModel TripDirverView, TripStatus newStatus)
+        {
+            if (tripId != TripDirverView.TripId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var trip = await _dbcontext.Trip.FindAsync(tripId);
+                    if (trip != null)
+                    {
+                        trip.Status = newStatus;
+
+                        if (trip.Status == TripStatus.Unassigned)
+                        {
+                            trip.DriverId = null;
+                            trip.DriverName = null;
+
+                            _dbcontext.Update(trip);
+                            await _dbcontext.SaveChangesAsync();
+                            return RedirectToAction("Index");
+                        }
+
+                        _dbcontext.Update(trip);
+                        await _dbcontext.SaveChangesAsync();
+                        return RedirectToAction("Index");
+                    }
+                        
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!TripExists(TripDirverView.trip.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                
+            }
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateDriver(int? tripId, DriverTripViewModel TripDirverView,string selectedDriver)
+        {
+            if (tripId != TripDirverView.TripId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var trip = await _dbcontext.Trip.FindAsync(tripId);
+                    if (trip != null)
+                    {
+                        trip.DriverId = selectedDriver;
+                        var driver = await _userManager.FindByIdAsync(trip.DriverId);
+                        if (driver != null)
+                        {
+                            trip.DriverName = driver?.LastName + "" + driver?.LastName;
+                            trip.Status = TripStatus.Assigned;
+                            _dbcontext.Update(trip);
+                            await _dbcontext.SaveChangesAsync();
+                            return RedirectToAction("Index");
+                        }
+                    }
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!TripExists(TripDirverView.trip.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return RedirectToAction("Index");
         }
 
         private bool TripExists(int id)
