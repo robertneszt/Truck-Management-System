@@ -9,13 +9,12 @@ using TMS_APP.Models;
 using TMS_APP.Models.DTO;
 using TMS_APP.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
-using TMS_APP.Controllers;
 using System.Security.Claims;
 
-namespace TMS_APP.Areas.Driver.Controllers
+namespace TMS_APP.Controllers
 {
-    [Area("Driver")]
-    [Authorize(Roles=RoleD.Role_Driver)]
+    
+    [Authorize(Roles = RoleD.Role_Driver)]
     public class DriverController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -49,54 +48,54 @@ namespace TMS_APP.Areas.Driver.Controllers
             return View();
         }
 
-/*
-        [HttpPost]
-        public IActionResult Login(User model)
-        {
-            // Simulate user authentication
-            if (IsValidUser(model.email, model.password))
-            {
-                HttpContext.Session.SetString("UserEmail", model.email);
-                HttpContext.Session.SetString("Role", "Driver");
-                HttpContext.Session.SetInt32("UserId", 123);
-                return RedirectToAction("Index"); // Redirect to home page
-            }
+        /*
+                [HttpPost]
+                public IActionResult Login(User model)
+                {
+                    // Simulate user authentication
+                    if (IsValidUser(model.email, model.password))
+                    {
+                        HttpContext.Session.SetString("UserEmail", model.email);
+                        HttpContext.Session.SetString("Role", "Driver");
+                        HttpContext.Session.SetInt32("UserId", 123);
+                        return RedirectToAction("Index"); // Redirect to home page
+                    }
 
-            ModelState.AddModelError("", "Invalid email or password.");
-            return View(model);
-        }
+                    ModelState.AddModelError("", "Invalid email or password.");
+                    return View(model);
+                }
 
-        private bool IsValidUser(string email, string password)
-        {
-            User user = _unitOfWork.user.Get(c => c.email == email);
-            if (user == null || user.password != password)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-            // Simulate user validation
+                private bool IsValidUser(string email, string password)
+                {
+                    User user = _unitOfWork.user.Get(c => c.email == email);
+                    if (user == null || user.password != password)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                    // Simulate user validation
 
-        }*/
+                }*/
 
         public async Task<IActionResult> Index()
         {
             //string userEmail = HttpContext.Session.GetString("UserEmail");
-          /*  var userEmail = User.FindFirstValue(ClaimTypes.Email);
-            if (userEmail != null)
-            {
-                ApplicationUser? user =await _userManager.FindByEmailAsync(userEmail);
-                return View(user);
-            }*/
+            /*  var userEmail = User.FindFirstValue(ClaimTypes.Email);
+              if (userEmail != null)
+              {
+                  ApplicationUser? user =await _userManager.FindByEmailAsync(userEmail);
+                  return View(user);
+              }*/
 
             var user = _userManager.GetUserAsync(User).Result;
 
             return View(user);
-           
 
-            
+
+
         }
 
         [AuthorizeUser]
@@ -131,10 +130,10 @@ namespace TMS_APP.Areas.Driver.Controllers
 
         public IActionResult Edit(ApplicationUser obj)
         {
-/*
-            string userEmail = HttpContext.Session.GetString("UserEmail");
-            User user = _unitOfWork.user.Get(c => c.email == userEmail);
-            Driver driver = _unitOfWork.driver.Get(d => d.UserId == user.Id);*/
+            /*
+                        string userEmail = HttpContext.Session.GetString("UserEmail");
+                        User user = _unitOfWork.user.Get(c => c.email == userEmail);
+                        Driver driver = _unitOfWork.driver.Get(d => d.UserId == user.Id);*/
 
             var user = _userManager.GetUserAsync(User).Result;
 
@@ -207,20 +206,20 @@ namespace TMS_APP.Areas.Driver.Controllers
                         Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
         }
 
-       /* public async Task<IActionResult> MyTrips()
-        {
-            string userEmail = HttpContext.Session.GetString("UserEmail");
-            User user = _unitOfWork.user.Get(c => c.email == userEmail);
+        /* public async Task<IActionResult> MyTrips()
+         {
+             string userEmail = HttpContext.Session.GetString("UserEmail");
+             User user = _unitOfWork.user.Get(c => c.email == userEmail);
 
-            Driver driver = _unitOfWork.driver.Get(c => c.UserId == user.Id);
+             Driver driver = _unitOfWork.driver.Get(c => c.UserId == user.Id);
 
-            *//* Trip trip = _context.Trip.FirstOrDefault(c => c.DriverId == driver._id);*//*
+             *//* Trip trip = _context.Trip.FirstOrDefault(c => c.DriverId == driver._id);*//*
 
 
-            return _context.Trip.Where(c => c.DriverId == driver._id) != null ?
-                        View(await _context.Trip.Where(c => c.DriverId == driver._id).ToListAsync()) :
-                        Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
-        }*/
+             return _context.Trip.Where(c => c.DriverId == driver._id) != null ?
+                         View(await _context.Trip.Where(c => c.DriverId == driver._id).ToListAsync()) :
+                         Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
+         }*/
 
         /* internal class AuthorizeUserAttribute : Attribute
          {

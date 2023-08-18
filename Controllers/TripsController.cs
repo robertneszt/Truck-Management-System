@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TMS_APP.Data;
 using TMS_APP.Models;
+using TMS_APP.Models.DTO;
 using TMS_APP.Repository.IRepository;
 
 namespace TMS_APP.Controllers
@@ -50,23 +52,25 @@ namespace TMS_APP.Controllers
         }
 
         // GET: Trips/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var users = await _context.Users.ToListAsync();
 
-            DriverTripViewModel tripView = new()
-            {
-                
-              DriverList = _unitOfWork.user.GetAll().Select(u => new SelectListItem
-              {
-                  Text = (u.firstName ?? "") + " " + (u.lastName??""),
-                  Value = u.Id.ToString()
-              }),
-                trip = new Trip()
 
-            };
-            Console.WriteLine(_unitOfWork.driver.Get(c => c.User.Id == 100));
-            return View(tripView);
-                    
+
+
+            var TripDirverView = new DriverTripViewModel() {
+                trip = new Trip(),
+                DriverList = users.Select(u => new SelectListItem
+                {
+                    Text = u.FirstName,
+                    Value = u.Id.ToString()
+                })
+            
+            };       
+
+            return View(TripDirverView);
+
         }
 
         // POST: Trips/Create
@@ -90,10 +94,13 @@ namespace TMS_APP.Controllers
 
         //Weiguang modified the create method
 
-        public async Task<IActionResult> Create(DriverTripViewModel driverTripView)
+        public async Task<IActionResult> Create(DriverTripViewModel? driverTripView)
         {
             if (ModelState.IsValid)
             {
+                Trip trip = driverTripView.trip;
+                trip.DriverId = driverTripView.User.Id;
+                
                 _context.Add(driverTripView.trip);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

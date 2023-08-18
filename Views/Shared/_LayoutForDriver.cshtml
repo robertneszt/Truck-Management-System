@@ -11,8 +11,7 @@
 </head>
 <body>
     <header >
-        <img src="~/images/banner-1.png" alt="Banner Image" height=auto width="100%">
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
 
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/MicrosoftTeams-image.png" width="100" height="60" alt="logo" /></a>
@@ -28,25 +27,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Contact Us</a>
                         </li>
-                        <li>
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Employee Login</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Dispatch">Dispatch Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Driver" asp-action="Index">Driver Dashboard</a>
-                        </li>
+            
                     </ul>
                     
                 </div>
             </div>
         </nav>
     </header>
-   @* <div class="banner">
+    <div class="banner">
         <img src="~/images/banner-1.png" alt="Banner Image" height=auto width="100%">
-    </div>*@
+    </div>
     <div class="container-fluid">
         <div class="row">
             <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
@@ -78,9 +68,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="index">
-                                Log out
-                            </a>
+                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                            </form>
                         </li>
                         <!-- Add more sidebar items here -->
                     </ul>
