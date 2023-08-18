@@ -53,7 +53,7 @@ namespace YourApplication.Controllers
                     {
                         UserId = user.Id,
                         FirstName = user.FirstName,
-                        LastName = user.lastName,
+                        LastName = user.LastName,
                         Availability = user.Availability,
                         PayRate = user.PayRate,
                         PhoneNumber = user.PhoneNumber,

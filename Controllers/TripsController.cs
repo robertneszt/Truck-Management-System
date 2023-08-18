@@ -55,7 +55,7 @@ namespace TMS_APP.Controllers
                         UserId = user.Id,
                         FirstName = user.FirstName,
                         UserName = user.UserName,
-                        LastName = user.lastName,
+                        LastName = user.LastName,
                         Availability = user.Availability,
                         PayRate = user.PayRate,
                         PhoneNumber = user.PhoneNumber,
@@ -123,10 +123,10 @@ namespace TMS_APP.Controllers
                         UserId = user.Id,
                         FirstName = user.FirstName,
                         UserName = user.UserName,
-                        LastName = user.lastName,
+                        LastName = user.LastName,
                         Availability = user.Availability,
                         PayRate = user.PayRate,
-                        PhoneNumber = user.PhoneNumber,
+                        /*PhoneNumber = user.PhoneNumber,*/
                         Email = user.Email
                        
                     });
@@ -178,7 +178,7 @@ namespace TMS_APP.Controllers
                 var driver = await _userManager.FindByIdAsync(trip.DriverId);
                 if (driver != null)
                 {
-                    trip.DriverName = driver?.lastName + "" + driver?.lastName;
+                    trip.DriverName = driver?.LastName + "" + driver?.LastName;
                     trip.Status = Constants.TripStatus.Assigned;
                     _dbcontext.Update(trip);
                     await _dbcontext.SaveChangesAsync();
@@ -212,7 +212,7 @@ namespace TMS_APP.Controllers
                         UserId = user.Id,
                         FirstName = user.FirstName,
                         UserName = user.UserName,
-                        LastName = user.lastName,
+                        LastName = user.LastName,
                         Availability = user.Availability,
                        /* PayRate = user.PayRate,
                         PhoneNumber = user.PhoneNumber,
@@ -267,7 +267,7 @@ namespace TMS_APP.Controllers
                     var driver = await _userManager.FindByIdAsync(trip.DriverId);
                     if (driver != null)
                     {
-                        trip.DriverName = driver?.lastName + "" + driver?.lastName;
+                        trip.DriverName = driver?.LastName + "" + driver?.LastName;
                         trip.Status = Constants.TripStatus.Assigned;
                         _dbcontext.Update(trip);
                         await _dbcontext.SaveChangesAsync();
@@ -398,7 +398,7 @@ namespace TMS_APP.Controllers
                         var driver = await _userManager.FindByIdAsync(trip.DriverId);
                         if (driver != null)
                         {
-                            trip.DriverName = driver?.lastName + "" + driver?.lastName;
+                            trip.DriverName = driver?.LastName + "" + driver?.LastName;
                             trip.Status = TripStatus.Assigned;
                             _dbcontext.Update(trip);
                             await _dbcontext.SaveChangesAsync();

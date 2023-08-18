@@ -40,6 +40,8 @@ namespace TMS_APP.Models.DTO
         [AllowNull]
         public string? Password { get; set; }   
         public string? NewPassword { get; set; }
+        [AllowNull]
+        public string? PhoneNumber { get; set; }
 
 
     }
