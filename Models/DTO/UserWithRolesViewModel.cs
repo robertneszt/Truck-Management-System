@@ -13,14 +13,18 @@ namespace TMS_APP.Models.DTO
         public string? FirstName { get; set; }
         [AllowNull]
         public string? LastName { get; set; }
-        [AllowNull]
-        public string? PhoneNumber { get; set; }
+       
         [AllowNull]
         public ApplicationUser? User { get; set; }
         [AllowNull]
         public IList<string>? Roles { get; set; }
         [AllowNull]
         public string? Email { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        [AllowNull]
+        public DateTime? HireDate { get; set; }
+        [AllowNull]
+        public string? Gender { get; set; }
         [AllowNull]
         public double? PayRate { get; set; }
         [AllowNull]
@@ -33,6 +37,10 @@ namespace TMS_APP.Models.DTO
         public IList<string>? UserRoles { get; set; }
         [AllowNull]
         public IEnumerable<string>? SelectedRoles { get; set; }
+        [AllowNull]
+        public string? Password { get; set; }   
+        public string? NewPassword { get; set; }
+
 
     }
 }

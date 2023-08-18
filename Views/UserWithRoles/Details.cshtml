@@ -1,0 +1,110 @@
+﻿@using TMS_APP.Constants;
+@model TMS_APP.Models.DTO.UserWithRolesViewModel
+
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <div class="card shadow border-0 my-4">
+        <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="text-white py-2">Account Information</h2>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <form method="post" enctype="multipart/form-data">
+                <input asp-for=@Model.UserId hidden />
+                
+                <div class="row">
+                    <div class="col-10">
+                        <div class="border p-3">
+                            <div class="form-floating py-2 col-12">
+                                <label asp-for="@Model.UserName" class="ms-2"></label>
+                                <input asp-for=@Model.UserName class="form-control border-0 shadow" disabled />
+                                <span asp-validation-for=@Model.UserName class="text-danger"></span>
+                            </div>
+
+                            <div class="form-floating py-2 col-12">
+                                <label asp-for="@Model.FirstName" class="ms-2"></label>
+                                <input asp-for=@Model.FirstName class="form-control border-0 shadow" disabled />
+                                <span asp-validation-for=@Model.FirstName class="text-danger"></span>
+                            </div>
+                            
+                            <div class="form-floating py-2 col-12">
+                                <label asp-for="@Model.LastName" class="ms-2"></label>
+                                <input asp-for=@Model.LastName class="form-control border-0 shadow" disabled />
+                                <span asp-validation-for=@Model.LastName class="text-danger"></span>
+                            </div>
+
+
+
+                            <div class="form-floating py-2 col-12">
+                                <label asp-for=@Model.PayRate class="ms-2"></label>
+                                <input asp-for=@Model.PayRate class="form-control border-0 shadow" disable />
+                                <span asp-validation-for=@Model.PayRate class="text-danger"></span>
+                            </div>               
+                            
+                            <div class="form-floating py-2 col-12">
+                                <label asp-for=@Model.Status class="ms-2"></label>
+                                <input asp-for=@Model.Status class="form-control border-0 shadow" disable/>
+                                <span asp-validation-for=@Model.Status class="text-danger"></span>
+                            </div> 
+                             
+                             
+                             <div class="form-floating py-2 col-12">
+                                <label asp-for=@Model.Roles class="ms-2"></label>
+                                @*<input asp-for=@Model.Roles class="form-control border-0 shadow" disable />*@ 
+                                @*directly binding an IList<string>
+                                    property to an input field might not work as expected since input fields are generally used for single values.*@
+
+                                <span asp-validation-for=@Model.Roles class="text-danger"></span>
+                                <p></p>
+                                <p></p>
+                                <p>@string.Join(", ", Model.Roles)</p>
+
+                            </div>
+                                            
+  
+                             <div class="form-floating py-2 col-12">
+                                <label asp-for=@Model.Availability class="ms-2"></label>
+                                <input asp-for=@Model.Availability class="form-control border-0 shadow" disable />
+                                <span asp-validation-for=@Model.Availability class="text-danger"></span>
+                            </div>  
+                             
+                             <div class="form-floating py-2 col-12">
+                                <label asp-for=@Model.DateOfBirth class="ms-2"></label>
+                                <input asp-for=@Model.DateOfBirth class="form-control border-0 shadow" disable />
+                                <span asp-validation-for=@Model.DateOfBirth class="text-danger"></span>
+                            </div>     
+                             
+                             <div class="form-floating py-2 col-12">
+                                <label asp-for=@Model.HireDate class="ms-2"></label>
+                                <input asp-for=@Model.HireDate class="form-control border-0 shadow" disable />
+                                <span asp-validation-for=@Model.HireDate class="text-danger"></span>
+                            </div>
+
+@*
+                            <div class="form-floating py-2 col-12">
+                            <label asp-for=@Model.Password class="ms-2"></label>
+                                <input asp-for=@Model.Password class="form-control border-0 shadow" disable />
+                                <span asp-validation-for=@Model.Password class="text-danger"></span>
+                            </div>*@
+
+
+                            <div class="row">
+                                <div class="col-6 col-md-3">
+                                    <a asp-action="Edit" asp-route-id="@Model.UserId" class="btn btn-blue form-control border">Edit</a>
+                                </div> 
+                                <div class="col-6 col-md-3">
+                                    <a asp-controller="UserWithRoles" asp-action="ListUsersWithRoles" class="btn btn-dark form-control border"> Back to List</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
