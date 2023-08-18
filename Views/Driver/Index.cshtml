@@ -4,16 +4,16 @@
 @model TMS_APP.Models.ApplicationUser
 
 <h1>Welcome @Model.FirstName to Driver Dashboard</h1>
-@*<div class="container-fluid">
+<div class="container-fluid">
 
-<div class="row">
-    <div class="col-6 col-md-3">
-        <a asp-area="Driver" asp-controller="Driver" asp-action="Account" class="btn btn-dark form-control border"> My Profile</a>
-    </div>
+    <div class="row">
+        <div class="col-6 col-md-3">
+            <a asp-area="Driver" asp-controller="Driver" asp-action="Account" class="btn btn-dark form-control border"> My Profile</a>
+        </div>
         <div class="col-6 col-md-3">
             <a asp-controller="Driver" asp-action="MyTrips" class="btn btn-dark form-control border"> View my Trips</a>
         </div>
-</div>
+    </div>
     <div class="row">
         <div class="col-6 col-md-3">
             <a asp-controller="Driver" asp-action="Trips" class="btn btn-dark form-control border"> Available Trips</a>
@@ -22,4 +22,4 @@
             <a asp-controller="Driver" asp-action="Pay" class="btn btn-dark form-control border"> Pay</a>
         </div>
     </div>
-</div>*@
+</div>

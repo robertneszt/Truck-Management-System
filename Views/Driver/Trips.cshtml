@@ -1,10 +1,10 @@
-﻿@*@model IEnumerable<TMS_APP.Models.Trip>
+﻿@model IEnumerable<TMS_APP.Models.Trip>
 
 @{
     Layout = "~/Views/Shared/_LayoutForDriver.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Available Trips</h1>
 
 
 <table class="table">
@@ -32,9 +32,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DeliveryDate)
-            </th>
+            @*</th>
             playNameFor(model => model.Quantity)
-            </th> 
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
@@ -82,4 +82,3 @@
         }
     </tbody>
 </table>
-*@

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TMS_APP.Migrations
 {
     /// <inheritdoc />
-    public partial class initdata : Migration
+    public partial class mainfrommainBeforedrivertrip : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

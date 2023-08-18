@@ -19,7 +19,7 @@ namespace TMS_APP.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbcontext;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -33,7 +33,7 @@ namespace TMS_APP.Controllers
         {
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
-            _context = context;
+            _dbcontext = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
@@ -98,7 +98,7 @@ namespace TMS_APP.Controllers
 
         }
 
-        [AuthorizeUser]
+      
         public async Task<IActionResult> Account()
         {
             var user = _userManager.GetUserAsync(User).Result;
@@ -107,7 +107,7 @@ namespace TMS_APP.Controllers
 
         }
 
-        [AuthorizeUser]
+       
         public IActionResult Edit()
         {
             /*if (HttpContext.Session == null)
@@ -151,8 +151,7 @@ namespace TMS_APP.Controllers
             return View();
         }
 
-
-        [AuthorizeUser]
+               
         public IActionResult pwdReset()
         {
             if (HttpContext.Session == null)
@@ -193,47 +192,24 @@ namespace TMS_APP.Controllers
 
         public async Task<IActionResult> Trips()
         {
-            /*string userEmail = HttpContext.Session.GetString("UserEmail");
-            User user = _unitOfWork.user.Get(c => c.email == userEmail);
-            
-                Driver driver= _unitOfWork.driver.Get(c => c.UserId == user.Id);
 
-                Trip trip = _context.Trip.FirstOrDefault(c => c.DriverId == driver._id);*/
+            List<Trip> myTrips = await _dbcontext.Trip.Where(c => c.Status==TripStatus.Unassigned).ToListAsync();
 
-
-            return _context.Trip != null ?
-                        View(await _context.Trip.ToListAsync()) :
-                        Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
+            return myTrips != null ? View(myTrips) :
+                        Problem("No Trips available now.Please check with the dispatcher!");
         }
 
-        /* public async Task<IActionResult> MyTrips()
-         {
-             string userEmail = HttpContext.Session.GetString("UserEmail");
-             User user = _unitOfWork.user.Get(c => c.email == userEmail);
-
-             Driver driver = _unitOfWork.driver.Get(c => c.UserId == user.Id);
-
-             *//* Trip trip = _context.Trip.FirstOrDefault(c => c.DriverId == driver._id);*//*
-
-
-             return _context.Trip.Where(c => c.DriverId == driver._id) != null ?
-                         View(await _context.Trip.Where(c => c.DriverId == driver._id).ToListAsync()) :
-                         Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
-         }*/
-
-        /* internal class AuthorizeUserAttribute : Attribute
-         {
-         }*/
-
-        internal class AuthorizeUserAttribute : Attribute
+        public async Task<IActionResult> MyTrips()
         {
-            public void OnAuthorization(AuthorizationFilterContext context)
-            {
-                if (!context.HttpContext.User.Identity.IsAuthenticated)
-                {
-                    context.Result = new RedirectToActionResult("Login", "Driver", null);
-                }
-            }
+            
+            var user =await _userManager.GetUserAsync(User);
+
+            List<Trip> myTrips = await _dbcontext.Trip.Where(c => c.DriverId == user.Id).ToListAsync();
+
+
+            return myTrips!= null ? View(myTrips) :
+                        Problem("You have no trips assigned yet. Please check with your dispatcher!");
         }
+
     }
 }

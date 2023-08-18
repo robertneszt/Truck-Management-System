@@ -37,18 +37,18 @@
     <div class="banner">
         <img src="~/images/banner-1.png" alt="Banner Image" height=auto width="100%">
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid" >
         <div class="row">
-            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar navbar-text bg-gradient" >
                 <div class="position-sticky">
                     <ul class="nav flex-column">
-                        <li class="nav-item">
+                        @*<li class="nav-item">
                             <a class="nav-link active" asp-controller="Driver" asp-action="Index">
                                 Home
                             </a>
-                        </li>
+                        </li>*@
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Driver" asp-action="Trips">
+                            <a class="nav-link" asp-controller="Driver" asp-action="Index">
                                 Dashboard
                             </a>
                         </li>
@@ -57,19 +57,19 @@
                                 Account
                             </a>
                         </li>
-                        <li class="nav-item">
+                        @*<li class="nav-item">
                             <a class="nav-link" asp-controller="Driver" asp-action="Pay">
                                 Pay
                             </a>
-                        </li>
+                        </li>*@
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Driver" asp-action="pwdReset">
-                                Reset Password
+                            <a class="nav-link"asp-area="Identity" asp-page="/Account/Manage/ChangePassword" >
+                                Change Password
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                        <li class="nav-item mt-5">
+                            <form class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button type="submit" class="nav-link btn btn-link">Logout</button>
                             </form>
                         </li>
                         <!-- Add more sidebar items here -->

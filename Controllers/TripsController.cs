@@ -16,32 +16,46 @@ namespace TMS_APP.Controllers
 {
     public class TripsController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
-        
-        public TripsController(ApplicationDbContext context, IUnitOfWork unitOfWork)
+        private readonly ApplicationDbContext _dbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ILogger<UserWithRolesController> _logger;
+        private readonly ApplicationDbContext _dbcontext;
+        public List<ApplicationUser> Users;
+        public TripsController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager,
+                                  RoleManager<IdentityRole> roleManager,
+                                  SignInManager<ApplicationUser> signInManager,
+                                  ILogger<UserWithRolesController> logger
+                                  )
         {
-            _context = context;
-            _unitOfWork = unitOfWork;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _roleManager = roleManager;
+            _logger = logger;
+            _dbcontext = dbContext;
+
+
         }
 
         // GET: Trips
         public async Task<IActionResult> Index()
         {
-              return _context.Trip != null ? 
-                          View(await _context.Trip.ToListAsync()) :
+              return _dbcontext.Trip != null ? 
+                          View(await _dbcontext.Trip.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
         }
 
         // GET: Trips/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Trip == null)
+            if (id == null || _dbcontext.Trip == null)
             {
                 return NotFound();
             }
 
-            var trip = await _context.Trip
+            var trip = await _dbcontext.Trip
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (trip == null)
             {
@@ -54,17 +68,35 @@ namespace TMS_APP.Controllers
         // GET: Trips/Create
         public async Task<IActionResult> Create()
         {
-            var users = await _context.Users.ToListAsync();
+            var userDriver = new List<UserWithRolesViewModel>();
+            var users = await _userManager.Users.ToListAsync();
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                if (roles.Contains("Driver") && user.Availability == true)
+                {
+                    userDriver.Add(new UserWithRolesViewModel
+                    {
+                        UserId = user.Id,
+                        FirstName = user.FirstName,
+                        UserName = user.UserName,
+                        LastName = user.lastName,
+                        Availability = user.Availability,
+                        PayRate = user.PayRate,
+                        PhoneNumber = user.PhoneNumber,
+                        Email = user.Email
+                       
+                    });
+                }
 
-
-
+            }
 
             var TripDirverView = new DriverTripViewModel() {
                 trip = new Trip(),
-                DriverList = users.Select(u => new SelectListItem
+                DriverList = userDriver.Select(u => new SelectListItem
                 {
-                    Text = u.FirstName,
-                    Value = u.Id.ToString()
+                    Text = u.UserName.ToString(),
+                    Value = u.UserId.ToString()
                 })
             
             };       
@@ -84,8 +116,8 @@ namespace TMS_APP.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(trip);
-                await _context.SaveChangesAsync();
+                _dbcontext.Add(trip);
+                await _dbcontext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(trip);
@@ -99,10 +131,14 @@ namespace TMS_APP.Controllers
             if (ModelState.IsValid)
             {
                 Trip trip = driverTripView.trip;
-                trip.DriverId = driverTripView.User.Id;
+                trip.DriverId = driverTripView.trip.DriverId;
+
+                var driver = await _userManager.FindByIdAsync(trip.DriverId);
+
+                trip.DriverName=driver.lastName+""+driver.lastName;
                 
-                _context.Add(driverTripView.trip);
-                await _context.SaveChangesAsync();
+                _dbcontext.Update(trip);
+                await _dbcontext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View();
@@ -111,17 +147,54 @@ namespace TMS_APP.Controllers
         // GET: Trips/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Trip == null)
+            if (id == null || _dbcontext.Trip == null)
             {
                 return NotFound();
             }
 
-            var trip = await _context.Trip.FindAsync(id);
-            if (trip == null)
+            var userDriver = new List<UserWithRolesViewModel>();
+            var users = await _userManager.Users.ToListAsync();
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                if (roles.Contains("Driver")&&user.Availability==true)
+                {
+                    userDriver.Add(new UserWithRolesViewModel
+                    {
+                        UserId = user.Id,
+                        FirstName = user.FirstName,
+                        UserName = user.UserName,
+                        LastName = user.lastName,
+                        Availability = user.Availability,
+                       /* PayRate = user.PayRate,
+                        PhoneNumber = user.PhoneNumber,
+                        Email = user.Email*/
+
+                    });
+
+                }
+
+            }
+
+            var theTrip = await _dbcontext.Trip.FindAsync(id);
+            if (theTrip == null)
             {
                 return NotFound();
             }
-            return View(trip);
+
+            var TripDirverView = new DriverTripViewModel()
+            {
+                trip = theTrip,
+                DriverList = userDriver.Select(u => new SelectListItem
+                {
+                    Text = u.UserName.ToString(),
+                    Value = u.UserId.ToString()
+                })
+
+            };
+
+            
+            return View(TripDirverView);
         }
 
         // POST: Trips/Edit/5
@@ -129,9 +202,9 @@ namespace TMS_APP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerName,PickupLocationAddress,PickupLocationCity,PickupLocationCountry,DeliveryLocationAddress,DeliveryLocationCity,DeliveryLocationCountry,PickupDate,DeliveryDate,ShipmentWeight,TotalAmount,Quantity,Status,DriverName")] Trip trip)
+        public async Task<IActionResult> Edit(int id, DriverTripViewModel TripDirverView)
         {
-            if (id != trip.Id)
+            if (id != TripDirverView.trip.Id)
             {
                 return NotFound();
             }
@@ -140,12 +213,19 @@ namespace TMS_APP.Controllers
             {
                 try
                 {
-                    _context.Update(trip);
-                    await _context.SaveChangesAsync();
+                    Trip trip = TripDirverView.trip;
+                    trip.DriverId = TripDirverView.trip.DriverId;
+
+                    var driver = await _userManager.FindByIdAsync(trip.DriverId);
+
+                    trip.DriverName = driver.lastName + "" + driver.lastName;
+
+                    _dbcontext.Update(trip);
+                    await _dbcontext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TripExists(trip.Id))
+                    if (!TripExists(TripDirverView.trip.Id))
                     {
                         return NotFound();
                     }
@@ -156,18 +236,18 @@ namespace TMS_APP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(trip);
+            return View(TripDirverView);
         }
 
         // GET: Trips/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Trip == null)
+            if (id == null || _dbcontext.Trip == null)
             {
                 return NotFound();
             }
 
-            var trip = await _context.Trip
+            var trip = await _dbcontext.Trip
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (trip == null)
             {
@@ -182,23 +262,23 @@ namespace TMS_APP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Trip == null)
+            if (_dbcontext.Trip == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
             }
-            var trip = await _context.Trip.FindAsync(id);
+            var trip = await _dbcontext.Trip.FindAsync(id);
             if (trip != null)
             {
-                _context.Trip.Remove(trip);
+                _dbcontext.Trip.Remove(trip);
             }
             
-            await _context.SaveChangesAsync();
+            await _dbcontext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TripExists(int id)
         {
-          return (_context.Trip?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_dbcontext.Trip?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
