@@ -163,7 +163,7 @@ namespace TMS_APP.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("Availability")
+                    b.Property<bool>("Availability")
                         .HasColumnType("bit");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -359,13 +359,13 @@ namespace TMS_APP.Migrations
                         {
                             Id = 1,
                             CustomerName = "John Doe",
-                            DeliveryDate = new DateTime(2023, 8, 18, 15, 23, 51, 98, DateTimeKind.Local).AddTicks(7789),
+                            DeliveryDate = new DateTime(2023, 8, 18, 21, 48, 58, 972, DateTimeKind.Local).AddTicks(313),
                             DeliveryLocationAddress = "456 Elm St",
                             DeliveryLocationCity = "Destination City",
                             DeliveryLocationCountry = "Country B",
                             DriverId = 1001,
                             DriverName = "Jane Smith",
-                            PickupDate = new DateTime(2023, 8, 17, 15, 23, 51, 98, DateTimeKind.Local).AddTicks(7719),
+                            PickupDate = new DateTime(2023, 8, 17, 21, 48, 58, 972, DateTimeKind.Local).AddTicks(251),
                             PickupLocationAddress = "123 Main St",
                             PickupLocationCity = "Exampleville",
                             PickupLocationCountry = "Country A",
@@ -378,13 +378,13 @@ namespace TMS_APP.Migrations
                         {
                             Id = 2,
                             CustomerName = "Alice Johnson",
-                            DeliveryDate = new DateTime(2023, 8, 20, 15, 23, 51, 98, DateTimeKind.Local).AddTicks(7811),
+                            DeliveryDate = new DateTime(2023, 8, 20, 21, 48, 58, 972, DateTimeKind.Local).AddTicks(329),
                             DeliveryLocationAddress = "987 Maple St",
                             DeliveryLocationCity = "Destinationville",
                             DeliveryLocationCountry = "Country D",
                             DriverId = 1002,
                             DriverName = " Smith John",
-                            PickupDate = new DateTime(2023, 8, 19, 15, 23, 51, 98, DateTimeKind.Local).AddTicks(7807),
+                            PickupDate = new DateTime(2023, 8, 19, 21, 48, 58, 972, DateTimeKind.Local).AddTicks(326),
                             PickupLocationAddress = "789 Oak St",
                             PickupLocationCity = "Sampletown",
                             PickupLocationCountry = "Country C",

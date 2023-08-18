@@ -7,18 +7,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
- 
-
- 
-
-<a asp-area="Identity" asp-controller="Account" asp-action="Register" class="btn btn-primary">Register new user</a>
-
- 
-
- 
-
-<h3>All Users</h3>
-<br />
 
  
 
@@ -68,8 +56,11 @@
     }
 </style>
 
- 
+<a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary">Register New User</a>
 
+<br />
+<h3>All Users: </h3>
+<br />
 <table>
 <thead>
 <tr>
@@ -77,6 +68,8 @@
 <th>Email</th>
 <th>Roles</th>
 <th>Active</th>
+<th>PayRate</th>
+
 <th>Actions</th>
 </tr>
 </thead>
@@ -88,10 +81,13 @@
 <td>@user.Email</td>
 <td>@string.Join(", ", user.Roles)</td>
 <td>@user.Status</td>
+<td>@user.PayRate</td>
+
+                
 <td>
 <a asp-action="Edit" asp-route-id="@user.UserId">Edit</a> |
 <a asp-action="Details" asp-route-id="@user.UserId">Details</a> |
-                  @*  <a asp-action="Delete" asp-route-id="@user.UserId">Delete</a>*@
+@*  <a asp-action="Delete" asp-route-id="@user.UserId">Delete</a>*@
 </td>
 </tr>
         }

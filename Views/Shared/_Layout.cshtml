@@ -1,4 +1,6 @@
-﻿@using TMS_APP.Constants;
+﻿@using System.Security.Claims;
+@using TMS_APP.Constants;
+@using TMS_APP.Models;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +39,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Contact Us</a>
                         </li>
-                        
+
+                           
+
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item">

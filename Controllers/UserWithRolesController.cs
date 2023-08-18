@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TMS_APP.Constants;
 using TMS_APP.Data;
+using TMS_APP.Migrations;
 using TMS_APP.Models;
 using TMS_APP.Models.DTO;
+using static TMS_APP.Models.User;
 
 namespace TMS_APP.Controllers
 {
@@ -49,18 +51,47 @@ namespace TMS_APP.Controllers
                     UserName = user.UserName,
                     Email = user.Email,
                     Roles = roles,
-                    Status = user.Status.ToString()
+                    Status = user.Status.ToString(),
+                    PayRate=user.PayRate
                 });
             }
                 return View(usersWithRoles);
             
         }
-
-        public ActionResult Details(int id)
+        // GET: UserWithRolesController/Details/5
+        public async Task<ActionResult> Details(string id)
         {
+            var user = await _userManager.FindByIdAsync(id);
 
-            return View();
+            if (user == null)
+            {
+                // Handle scenario when user is not found
+                return NotFound();
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var userWithRoleViewModel = new UserWithRolesViewModel
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Status = user.Status.ToString(),
+                DateOfBirth = user.DateOfBirth,
+                HireDate = user.HireDate,
+                Gender = user.Gender,
+                PayRate = user.PayRate,
+                Availability = user.Availability,
+                Roles = roles, // Join the roles using a separator  in the view page <p>Roles: @string.Join(", ", Model.Roles)</p>
+                Password = user.PasswordHash
+            };
+
+            return View(userWithRoleViewModel);
         }
+
+
+
 
         // GET: UserRoleController/Create
         public ActionResult Create()
@@ -68,7 +99,7 @@ namespace TMS_APP.Controllers
             return View();
         }
 
-        // POST: UserRoleController/Create
+        // POST: UserRolesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -83,7 +114,7 @@ namespace TMS_APP.Controllers
             }
         }
 
-        // GET: UserRoleController/Edit/5
+        // GET: UserWithRolesController/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -98,7 +129,6 @@ namespace TMS_APP.Controllers
             var userName = user.UserName;
 
 
-
             var UserRolemodel = new UserWithRolesViewModel
             {
                 UserId = user.Id,
@@ -110,44 +140,8 @@ namespace TMS_APP.Controllers
                 UserRoles = userRoles
             };
 
-
-
             return View(UserRolemodel);
         }
-
-
-
-
-
-        //[HttpGet]
-        //public EditUser(string id)
-        //{
-        //    var user = await _userManager.FindByIdAsync(id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-
-
-        //    var roles = _roleManager.Roles.ToList();
-        //    var userRoles = await _userManager.GetRolesAsync(user);
-
-
-
-        //    var UserRolemodel = new UserWithRolesViewModel
-        //    {
-        //        UserId = user.Id,
-        //        UserName = user.UserName,
-        //        Status = user.UserName, // Assuming you've added a property for user status
-        //        AllRoles = roles,
-        //        UserRoles = userRoles
-        //    };
-
-
-
-        //    return View(UserRolemodel);
-        //}
 
         // POST: UserRoleController/Edit/5
         [HttpPost]
@@ -166,13 +160,12 @@ namespace TMS_APP.Controllers
             var currentRoles = await _userManager.GetRolesAsync(user);
 
             //  
-            //It looks like you're trying to set a default value for model.SelectedRoles when it's null.However, model.SelectedRoles seems to be a collection(probably a list of strings representing role names), so assigning a single string(Roles.Driver.ToString()) as a default value might not work correctly.
-
+           
             //If you want to set a default value for model.SelectedRoles, it's important to ensure that you're assigning a valid collection(list, array, etc.) of role names.If you want to set a default role when no roles are selected, you might consider something like this:
 
             if (model.SelectedRoles == null || !model.SelectedRoles.Any())
             {
-                model.SelectedRoles = new List<string> { Roles.Driver.ToString() }; // Assigning a default role as driver
+                model.SelectedRoles = new List<string> { Constants.Roles.Driver.ToString() }; // Assigning a default role as driver
             }
             var newRolesToAdd = model.SelectedRoles.Except(currentRoles);
             var rolesToRemove = currentRoles.Except(model.SelectedRoles);
@@ -182,11 +175,22 @@ namespace TMS_APP.Controllers
             //user.UserName = model.UserName;
             user.PayRate = model.PayRate;
             user.Availability = model.Availability;
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.DateOfBirth = model.DateOfBirth;
+            user.HireDate = model.HireDate;
+            user.Gender = model.Gender;
+            user.PayRate = model.PayRate;
 
+         
 
-            //// try to get the user status
-            //user.Status = model.Status;
+            //var changePasswordResult = await _userManager.ChangePasswordAsync(user, CurrentPassword, model.NewPassword);
+            //if (!changePasswordResult.Succeeded)
+            //{
+            //    // Handle password change failure
+            //}
 
+            //user.PasswordHash = model.NewPassword;
 
             // Parse the user's status string to UserStatus enum
             if (Enum.TryParse(model.Status, out UserStatus statusEnum))
@@ -198,7 +202,6 @@ namespace TMS_APP.Controllers
                 // Handle the case where parsing fails, set a default status or handle an error
                 user.Status = UserStatus.Suspended; // Replace DefaultStatus with the default value
             }
-
 
             // Update the user's properties to the database
             var result = await _userManager.UpdateAsync(user);
