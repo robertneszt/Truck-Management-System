@@ -135,7 +135,7 @@ namespace TMS_APP.Controllers
 
                 var driver = await _userManager.FindByIdAsync(trip.DriverId);
 
-                trip.DriverName=driver.lastName+""+driver.lastName;
+                trip.DriverName=driver?.lastName+""+driver?.lastName;
                 
                 _dbcontext.Update(trip);
                 await _dbcontext.SaveChangesAsync();
@@ -218,7 +218,7 @@ namespace TMS_APP.Controllers
 
                     var driver = await _userManager.FindByIdAsync(trip.DriverId);
 
-                    trip.DriverName = driver.lastName + "" + driver.lastName;
+                    trip.DriverName = driver?.lastName + "" + driver?.lastName;
 
                     _dbcontext.Update(trip);
                     await _dbcontext.SaveChangesAsync();
