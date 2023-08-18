@@ -1,12 +1,38 @@
-﻿@*
-
-*@
-@{
+﻿@{
     ViewData["Title"] = "Dispatch Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Welcome to dispatch dashboard</h2>
+<style>
+    /* Additional CSS styles specific to this view */
+    .dashboard-title {
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
 
-<a class="btn btn-success btn-lg" asp-controller="Trips" asp-action="Index"> Trip Dashboard</a>
-<a class="btn btn-dark btn-lg" asp-controller="Dispatch" asp-action="DriverManagement">Driver Management</a>
+    .dashboard-image {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .dashboard-buttons {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .dashboard-btn {
+        margin: 0 10px;
+    }
+</style>
+
+<h2 class="dashboard-title">Welcome to Dispatch Dashboard</h2>
+
+<img src="~/img/eta.png" alt="Additional Image" class="dashboard-image" />
+
+<div class="dashboard-buttons">
+    <a class="btn btn-success btn-lg dashboard-btn" asp-controller="Trips" asp-action="Index">Trip Dashboard</a>
+    <a class="btn btn-dark btn-lg dashboard-btn" asp-controller="Dispatch" asp-action="DriverManagement">Driver Management</a>
+</div>
+

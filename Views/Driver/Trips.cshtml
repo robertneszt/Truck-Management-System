@@ -1,10 +1,10 @@
-﻿@*@model IEnumerable<TMS_APP.Models.Trip>
+﻿@model IEnumerable<TMS_APP.Models.Trip>
 
 @{
     Layout = "~/Views/Shared/_LayoutForDriver.cshtml";
 }
 
-<h1>My Trips</h1>
+<h1>Available Trips</h1>
 
 
 <table class="table">
@@ -20,7 +20,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.PickupLocationCountry)
             </th>
-            
+           
             <th>
                 @Html.DisplayNameFor(model => model.DeliveryLocationCity)
             </th>
@@ -32,14 +32,13 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DeliveryDate)
-            </th>
-         
+            @*</th>
+            playNameFor(model => model.Quantity)
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Status)
             </th>
-              <th>
-            @Html.DisplayNameFor(model => model.DriverName)
-            </th> 
+          
             <th></th>
         </tr>
     </thead>
@@ -50,14 +49,14 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.CustomerName)
                 </td>
-           
+          
                 <td>
                     @Html.DisplayFor(modelItem => item.PickupLocationCity)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PickupLocationCountry)
                 </td>
-              
+            
                 <td>
                     @Html.DisplayFor(modelItem => item.DeliveryLocationCity)
                 </td>
@@ -70,19 +69,16 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.DeliveryDate)
                 </td>
-          
+            
                 <td>
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>
-                 <td>
-            @Html.DisplayFor(modelItem => item.DriverName)
-            </td> 
+            
                 <td>
-             
+                 
 
                 </td>
             </tr>
         }
     </tbody>
 </table>
-*@

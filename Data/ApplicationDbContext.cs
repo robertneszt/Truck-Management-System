@@ -19,7 +19,7 @@ namespace TMS_APP.Data
 
    
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+      /*  protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             SeedData(modelBuilder);
@@ -92,7 +92,7 @@ namespace TMS_APP.Data
                 }
                 );
         }
-
+*/
 
 
     }

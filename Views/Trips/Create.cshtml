@@ -1,5 +1,5 @@
 ﻿@*@model TMS_APP.Models.Trip*@
-@model DriverTripViewModel
+@model TMS_APP.Models.DTO.DriverTripViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -52,12 +52,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="trip.PickupDate" class="control-label"></label>
-                <input asp-for="trip.PickupDate" class="form-control" />
+                <input type="date" asp-for="trip.PickupDate" class="form-control" />
                 <span asp-validation-for="trip.PickupDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="trip.DeliveryDate" class="control-label"></label>
-                <input asp-for="trip.DeliveryDate" class="form-control" />
+                <input type="date" asp-for="trip.DeliveryDate" class="form-control" />
                 <span asp-validation-for="trip.DeliveryDate" class="text-danger"></span>
             </div>
             <div class="form-group">

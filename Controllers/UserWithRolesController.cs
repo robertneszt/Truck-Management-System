@@ -18,7 +18,7 @@ namespace TMS_APP.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager; 
         private readonly ILogger<UserWithRolesController> _logger;
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _dbcontext;
         public List<ApplicationUser> Users;
 
         public UserWithRolesController(UserManager<ApplicationUser> userManager,
@@ -31,7 +31,7 @@ namespace TMS_APP.Controllers
             _signInManager = signInManager;
             _roleManager = roleManager;
             _logger = logger;
-            _context = context;
+            _dbcontext = context;
         }
 
 
@@ -41,7 +41,7 @@ namespace TMS_APP.Controllers
         public async Task<IActionResult> ListUsersWithRoles()
         {
             var usersWithRoles = new List<UserWithRolesViewModel>();
-            var users = await _context.Users.ToListAsync();
+            var users = await _dbcontext.Users.ToListAsync();
             foreach (var user in users)
             {
                 var roles = await _userManager.GetRolesAsync(user);
@@ -245,7 +245,7 @@ namespace TMS_APP.Controllers
 
             // Update the user's properties to the database
             var result = await _userManager.UpdateAsync(user);
-            await _context.SaveChangesAsync(); // Make sure to await this call
+            await _dbcontext.SaveChangesAsync(); // Make sure to await this call
 
             if (result.Succeeded)
             {
