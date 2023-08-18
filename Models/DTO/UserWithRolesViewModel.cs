@@ -10,6 +10,12 @@ namespace TMS_APP.Models.DTO
         [AllowNull]
         public string? UserName { get; set; }
         [AllowNull]
+        public string? FirstName { get; set; }
+        [AllowNull]
+        public string? LastName { get; set; }
+        [AllowNull]
+        public string? PhoneNumber { get; set; }
+        [AllowNull]
         public ApplicationUser? User { get; set; }
         [AllowNull]
         public IList<string>? Roles { get; set; }

@@ -75,6 +75,7 @@ namespace TMS_APP.Areas.Identity.Pages.Account.Manage
             public DateTime? DOB { get; set; }
         }
 
+       
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
