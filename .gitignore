@@ -481,3 +481,5 @@ appsettings.json
 .vs/
 bin/
 obj/
+Migrations/20230816053928_RemoveUsers2Table.cs
+Migrations/20230816053928_RemoveUsers2Table.cs

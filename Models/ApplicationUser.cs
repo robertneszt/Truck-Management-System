@@ -9,7 +9,7 @@ namespace TMS_APP.Models
         [AllowNull]
         public string? FirstName { get; set; }
         [AllowNull]
-        public string? lastName { get; set; }
+        public string? LastName { get; set; }
         [AllowNull]
         public Constants.UserStatus Status { get; set; }
         [AllowNull]

@@ -140,7 +140,7 @@ namespace TMS_APP.Controllers
             if (ModelState.IsValid)
             {
                 user.FirstName = obj.FirstName;
-                user.lastName = obj.lastName;
+                user.LastName = obj.LastName;
                 user.Email = obj.Email;
                 user.PhoneNumber = obj.PhoneNumber;
                 user.Availability = obj.Availability;
