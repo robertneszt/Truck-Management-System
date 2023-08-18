@@ -12,7 +12,8 @@ namespace TMS_APP.Models.DTO
         [AllowNull]
         public string? CustomerName { get; set; }
         [DisplayName("Status")]
-        public TripStatus? Status { get; set; }
+        public string? Status { get; set; }
+       
         [AllowNull]
 
         [DisplayName("Driver Name")]
