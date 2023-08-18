@@ -12,8 +12,8 @@ using TMS_APP.Data;
 namespace TMS_APP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230817190457_updateUserModel")]
-    partial class updateUserModel
+    [Migration("20230818051134_mainfrommainBefore-drivertrip")]
+    partial class mainfrommainBeforedrivertrip
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -209,8 +209,8 @@ namespace TMS_APP.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("PayRate")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double?>("PayRate")
+                        .HasColumnType("float");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
@@ -272,22 +272,6 @@ namespace TMS_APP.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Drivers");
-
-                    b.HasData(
-                        new
-                        {
-                            _id = 1001,
-                            Availability = true,
-                            PayRate = 10m,
-                            UserId = 100
-                        },
-                        new
-                        {
-                            _id = 1002,
-                            Availability = true,
-                            PayRate = 10m,
-                            UserId = 101
-                        });
                 });
 
             modelBuilder.Entity("TMS_APP.Models.Trip", b =>
@@ -299,103 +283,53 @@ namespace TMS_APP.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CustomerName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeliveryLocationAddress")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeliveryLocationCity")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DeliveryLocationCountry")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DriverId")
-                        .HasColumnType("int");
+                    b.Property<string>("DriverId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DriverName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("PickupDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PickupLocationAddress")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PickupLocationCity")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PickupLocationCountry")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Quantity")
+                    b.Property<decimal?>("Quantity")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("ShipmentWeight")
+                    b.Property<decimal?>("ShipmentWeight")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalAmount")
+                    b.Property<decimal?>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DriverId");
-
                     b.ToTable("Trip");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CustomerName = "John Doe",
-                            DeliveryDate = new DateTime(2023, 8, 18, 15, 4, 56, 780, DateTimeKind.Local).AddTicks(4868),
-                            DeliveryLocationAddress = "456 Elm St",
-                            DeliveryLocationCity = "Destination City",
-                            DeliveryLocationCountry = "Country B",
-                            DriverId = 1001,
-                            DriverName = "Jane Smith",
-                            PickupDate = new DateTime(2023, 8, 17, 15, 4, 56, 780, DateTimeKind.Local).AddTicks(4821),
-                            PickupLocationAddress = "123 Main St",
-                            PickupLocationCity = "Exampleville",
-                            PickupLocationCountry = "Country A",
-                            Quantity = 3m,
-                            ShipmentWeight = 100.5m,
-                            Status = 2,
-                            TotalAmount = 250.75m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CustomerName = "Alice Johnson",
-                            DeliveryDate = new DateTime(2023, 8, 20, 15, 4, 56, 780, DateTimeKind.Local).AddTicks(4880),
-                            DeliveryLocationAddress = "987 Maple St",
-                            DeliveryLocationCity = "Destinationville",
-                            DeliveryLocationCountry = "Country D",
-                            DriverId = 1002,
-                            DriverName = " Smith John",
-                            PickupDate = new DateTime(2023, 8, 19, 15, 4, 56, 780, DateTimeKind.Local).AddTicks(4878),
-                            PickupLocationAddress = "789 Oak St",
-                            PickupLocationCity = "Sampletown",
-                            PickupLocationCountry = "Country C",
-                            Quantity = 2m,
-                            ShipmentWeight = 75.0m,
-                            Status = 3,
-                            TotalAmount = 150.25m
-                        });
                 });
 
             modelBuilder.Entity("TMS_APP.Models.User", b =>
@@ -432,28 +366,6 @@ namespace TMS_APP.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users2");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 100,
-                            email = "user@example.com",
-                            firstName = "danny",
-                            lastName = "yang",
-                            password = "password",
-                            phone = "87654321",
-                            role = 2
-                        },
-                        new
-                        {
-                            Id = 101,
-                            email = "user2@example.com",
-                            firstName = "danny2",
-                            lastName = "yang",
-                            password = "password2",
-                            phone = "87654321",
-                            role = 0
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -516,17 +428,6 @@ namespace TMS_APP.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TMS_APP.Models.Trip", b =>
-                {
-                    b.HasOne("TMS_APP.Models.Driver", "driver")
-                        .WithMany()
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("driver");
                 });
 #pragma warning restore 612, 618
         }

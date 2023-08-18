@@ -13,51 +13,64 @@ namespace TMS_APP.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [DisplayName ("Customer Name")]
-        public string CustomerName { get; set; }
-                
+
+        [AllowNull]
+        public string? CustomerName { get; set; }
+        [AllowNull]
         [DisplayName("Pick up Address")]
-        public string PickupLocationAddress { get; set; }
+        public string? PickupLocationAddress { get; set; }
+        [AllowNull]
         [DisplayName("Pick City")]
-        public string PickupLocationCity { get; set; }
-      
+        public string? PickupLocationCity { get; set; }
+        [AllowNull]
+
         [DisplayName("Pick Country")]
-        public string PickupLocationCountry { get; set; }
-       
+        public string? PickupLocationCountry { get; set; }
+        [AllowNull]
+
         [DisplayName("Delivery Address")]
-        public string DeliveryLocationAddress { get; set; }
-       
+        public string? DeliveryLocationAddress { get; set; }
+        [AllowNull]
+
         [DisplayName("Delivery City")]
-        public string DeliveryLocationCity { get; set; }
-        
+        public string? DeliveryLocationCity { get; set; }
+        [AllowNull]
+
         [DisplayName("Delivery Country")]
-        public string DeliveryLocationCountry { get; set; }
-      
+        public string? DeliveryLocationCountry { get; set; }
+        [AllowNull]
+
         [DisplayName("Pick Date")]
         public DateTime PickupDate { get; set; }
-      
+        [AllowNull]
+
         [DisplayName("Delivery Date")]
         public DateTime DeliveryDate { get; set; }
-       
+        [AllowNull]
+
         [DisplayName("Weight")]
-        public decimal ShipmentWeight { get; set; }
-       
+        public decimal? ShipmentWeight { get; set; }
+        [AllowNull]
+
         [DisplayName("Amount")]
-        public decimal TotalAmount { get; set; }
-      
+        public decimal? TotalAmount { get; set; }
+        [AllowNull]
+
         [DisplayName("Quantity")]
-        public decimal Quantity { get; set; }
-       
+        public decimal? Quantity { get; set; }
+        [AllowNull]
+
         [DisplayName("Status")]
         public TripStatus Status { get; set; }
-
-        [DisplayName("Driver Name")]
-        public string DriverName { get; set; }
+        [AllowNull]
 
         [DisplayName("Driver ID")]
-        public int DriverId { get; set; }
-        [ForeignKey("DriverId")]
-      
-        public Driver driver { get; set; }
+        public string? DriverId { get; set; }
+        [AllowNull]
+
+        [DisplayName("Driver Name")]
+        public string? DriverName { get; set; }
+
 
     }
 }
