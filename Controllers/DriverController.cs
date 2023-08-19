@@ -211,5 +211,24 @@ namespace TMS_APP.Controllers
                         Problem("You have no trips assigned yet. Please check with your dispatcher!");
         }
 
+        public async Task<IActionResult> payAdvise() {
+
+            var user = await _userManager.GetUserAsync(User);
+            List<DriverTripViewModel> tripViewModels = new List<DriverTripViewModel>();
+            List<Trip> tripList = await _dbcontext.Trip.Where(c => c.DriverId == user.Id).ToListAsync();
+
+            
+                var TripDirverView = new DriverTripViewModel()
+                {
+                    Trips = tripList,
+                    User = user
+
+                };
+                   
+            return TripDirverView != null ?
+                          View(TripDirverView) :
+                          Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
+        }
+
     }
 }

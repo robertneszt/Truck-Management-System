@@ -30,5 +30,9 @@ namespace TMS_APP.Models.DTO
         [AllowNull]
         [ValidateNever]
         public IEnumerable<SelectListItem> DriverList { get; set; }
+
+        [AllowNull]
+        [ValidateNever]
+        public List<Trip> Trips { get; set; }
     }
 }
