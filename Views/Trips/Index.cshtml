@@ -54,7 +54,7 @@
                 @Html.DisplayNameFor(model => model.trip.DriverId)
             </th> 
             <th></th>
-            <th style="width:fit-content">Update Status</th>
+            <th style="width:120px;">Update Status</th>
         </tr>
     </thead>
     <tbody>
@@ -110,43 +110,65 @@
                 </div>
                   
             </td>
-            <td>
+            
                     @if (item.trip.Status != TMS_APP.Constants.TripStatus.Unassigned)
                     {
-                        <form asp-action="UpdateStatus" asp-controller="Trips" method="post">
-                            <div class="row">
-                                <input type="hidden" name="tripId" value="@item.trip.Id" />                     
-                            <div class="form-group col-9">
-                                @*<label asp-for="@item.trip.Status" class="control-label"></label>*@
-                                <select asp-for="@item.trip.Status" name="newStatus" class="form-control">
-                                
-                                    <option value=1>In Progress</option>
-                                    <option value=3>Unassigned</option>
-                                    <option value=0>Completed</option>
+                        <form asp-action="UpdateStatus" asp-controller="Trips" method="post">                            
+                                <td>
+                        <input type="hidden" name="tripId" value="@item.trip.Id" />
+                        <div class="form-group flex-row">
+                                        @*<label asp-for="@item.trip.Status" class="control-label"></label>*@
+                            <select asp-for="@item.trip.Status" name="newStatus" class="form-control">
+                                <option disabled selected>--Select Status--</option>
+                                <option value=1>In Progress</option>
+                                <option value=3>Unassigned</option>
+                                <option value=0>Completed</option>
 
-                                </select>
-                                <span asp-validation-for="@item.Status" class="text-danger"></span>
-                            </div>
-                            <div class="col-2"><input type="submit" value="update" /></div>
-                            </div>
+                            </select>
+                            <span asp-validation-for="@item.Status" class="text-danger"></span>
+                        </div>
+                                </td>
+                                <td>
+
+                        <div class="col-2"><input type="submit" value="update" /></div>
+                    </td>
+                       
+                          
+                            
                         </form>
                     }
                     else
                     {
                         <form asp-action="UpdateDriver" asp-controller="Trips" method="post">
+                            <td>
+
+                            
                         <div class="form-group">
                                 <input type="hidden" name="tripId" value="@item.trip.Id" />
-                                <select asp-for="@item.trip.DriverId" name="selectedDriver" asp-items="@item.DriverList" class="form-select border-0 shadow">
-                                <option disabled selected>--Select Driver--</option>
+                               @*<select asp-for="@item.trip.DriverId" name="selectedDriver" asp-items="@item.DriverList" class="form-select border-0 shadow">*@
+                            <select asp-for="@item.trip.DriverId" name="selectedDriver" asp-items="@item.DriverList" class="form-control">
+                                    <option disabled selected>--Select Driver--</option>
                             </select>
                                 <span asp-validation-for="@item.trip.DriverId" class="text-danger"></span>
                         </div>
-                            <div class="col-2"><input type="submit" value="update" /></div>
+                    </td>
+                    <td>
+                        <div class="col-2"><input type="submit" value="update" /></div>
+                    </td>
+                            
                         </form>
                     }
                    
-            </td>
+            
         </tr>
-}
+        } 
     </tbody>
 </table>
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.Message");
+        };
+    </script>
+}

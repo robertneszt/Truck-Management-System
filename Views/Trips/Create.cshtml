@@ -26,9 +26,9 @@
                 <span asp-validation-for="trip.PickupLocationAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="trip.DeliveryLocationCity" class="control-label"></label>
-                <input asp-for="trip.DeliveryLocationCity" class="form-control" />
-                <span asp-validation-for="trip.DeliveryLocationCity" class="text-danger"></span>
+                <label asp-for="trip.PickupLocationCity" class="control-label"></label>
+                <input asp-for="trip.PickupLocationCity" class="form-control" />
+                <span asp-validation-for="trip.PickupLocationCity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="trip.PickupLocationCountry" class="control-label"></label>
@@ -52,12 +52,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="trip.PickupDate" class="control-label"></label>
-                <input type="date" asp-for="trip.PickupDate" class="form-control" />
+                <input type="date" asp-for="trip.PickupDate" class="form-control datepicker" />
                 <span asp-validation-for="trip.PickupDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="trip.DeliveryDate" class="control-label"></label>
-                <input type="date" asp-for="trip.DeliveryDate" class="form-control" />
+                <input type="date" asp-for="trip.DeliveryDate" class="form-control"  />
                 <span asp-validation-for="trip.DeliveryDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -92,11 +92,11 @@
                 <span asp-validation-for="DriverName" class="text-danger"></span>
             </div>*@
             <div class="form-group">
-                <select asp-for="@Model.trip.DriverId" asp-items="@Model.DriverList" class="form-select border-0 shadow">
-                    <option disabled selected>--Select Driver--</option>
+                <select asp-for="@Model.UserId" asp-items="@Model.DriverList" class="form-select border-0 shadow">
+                    <option value="" selected>--Select Driver--</option>
                 </select>
-                <label asp-for="@Model.trip.DriverId" class="ms-2"></label>
-                <span asp-validation-for="@Model.trip.DriverId" class="text-danger"></span>
+                <label asp-for="@Model.UserId" class="ms-2"></label>
+                <span asp-validation-for="@Model.UserId" class=" text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
