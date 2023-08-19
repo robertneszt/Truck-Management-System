@@ -75,7 +75,22 @@
                 </td>
             
                 <td>
-                 
+
+                    <form asp-action="TripsDetail" asp-controller="Trips" method="post">
+                <td>
+
+
+                    <div class="form-group">
+                        <input type="hidden" name="tripId" value="@item.Id" />
+                           
+                        <span asp-validation-for="@item.Id" class="text-danger"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="col-2"><input type="submit" value="ShowDetail" /></div>
+                </td>
+
+                </form>
 
                 </td>
             </tr>

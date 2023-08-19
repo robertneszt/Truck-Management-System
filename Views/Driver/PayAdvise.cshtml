@@ -12,7 +12,7 @@
 
     <div >
         <div >
-            <table class="table">
+            <table class="table border-dark">
                 <thead>
                 <th>
                     <strong>Pay Rate: </strong> @Model.User.PayRate
@@ -25,13 +25,47 @@
 </div>
 <hr />
 <br />
+<div class="row">
+<div class="col col-10">
+            <table class="table">
+                <thead>
+                <th>
+                    <strong>Total Load: </strong>
+                </th>
+                <th>
+                    <strong>Total Mileage: </strong>
+                </th>
+                <th><strong>Estimate Pay</strong></th>
+                </thead>
+                <tbody>
+                <td>
+                </td>
+                <td>
+                </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tbody>
+            </table>
+</div>
+<div class="col col-2">
+    <form>
+    <input type="text" hidden name="paySlipDate" />
+    <input type="date"  class="form-group"/>
+    <button type="submit" >GO</button>
+                </form>
+</div>
+        </div>
+        <hr />
+        <br />
         <table class="table">
             <thead>
             <th>
-                <strong>Total Load: </strong> 
+                <strong>Total Load: </strong>
             </th>
             <th>
-                <strong>Total Mileage: </strong> 
+                <strong>Total Mileage: </strong>
             </th>
             </thead>
             <tbody></tbody>

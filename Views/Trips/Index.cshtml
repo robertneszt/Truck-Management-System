@@ -120,29 +120,26 @@
                                         @*<label asp-for="@item.trip.Status" class="control-label"></label>*@
                             <select asp-for="@item.trip.Status" name="newStatus" class="form-control">
                                 <option disabled selected>--Select Status--</option>
-                                <option value=1>In Progress</option>
-                                <option value=3>Unassigned</option>
+                                <option value=3>In Progress</option>
+                                <option value=1>Delivered</option>
                                 <option value=0>Completed</option>
+                                <option value=5>Unassigned</option>
 
                             </select>
-                            <span asp-validation-for="@item.Status" class="text-danger"></span>
+                            <span asp-validation-for="@item.Status"  class="text-danger"></span>
+                            <span id="alertMessage" class="text-danger"></span>
                         </div>
+                        <span class="text-danger"></span>
                                 </td>
                                 <td>
-
                         <div class="col-2"><input type="submit" value="update" /></div>
                     </td>
-                       
-                          
-                            
                         </form>
                     }
                     else
                     {
                         <form asp-action="UpdateDriver" asp-controller="Trips" method="post">
                             <td>
-
-                            
                         <div class="form-group">
                                 <input type="hidden" name="tripId" value="@item.trip.Id" />
                                @*<select asp-for="@item.trip.DriverId" name="selectedDriver" asp-items="@item.DriverList" class="form-select border-0 shadow">*@
@@ -164,11 +161,20 @@
         } 
     </tbody>
 </table>
-@if (ViewBag.Message != null)
+@*@if (ViewBag.Message != null)
 {
     <script type="text/javascript">
         window.onload = function () {
             alert("@ViewBag.Message");
         };
     </script>
-}
+}*@
+
+<script>
+    // Check if the ViewBag.AlertMessage is not null or empty
+    var alertMessage = '@ViewBag.Message';
+    if (alertMessage) {
+        // Display the alert message using JavaScript's alert() function
+        alert(alertMessage);
+    }
+</script>
