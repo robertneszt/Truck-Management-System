@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TMS_APP.Constants;
@@ -174,20 +175,30 @@ namespace TMS_APP.Controllers
             if (ModelState.IsValid)
             {
                 Trip trip = driverTripView.trip;
-                trip.DriverId = driverTripView.trip.DriverId;
-                var driver = await _userManager.FindByIdAsync(trip.DriverId);
-                if (driver != null)
+
+                trip.DriverId = driverTripView.UserId;
+                if (trip.DriverId != null)
                 {
-                    trip.DriverName = driver?.LastName + "" + driver?.LastName;
-                    trip.Status = Constants.TripStatus.Assigned;
-                    _dbcontext.Update(trip);
-                    await _dbcontext.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    var driver = await _userManager.FindByIdAsync(trip.DriverId);
+                    if (driver != null)
+                    {
+                        trip.DriverName = driver?.FirstName + "" + driver?.LastName;
+                        trip.Status = TripStatus.Assigned;
+                        _dbcontext.Update(trip);
+                        await _dbcontext.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        trip.DriverName=null;
+                        trip.Status = TripStatus.Unassigned;
+                        _dbcontext.Update(trip);
+                        await _dbcontext.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
                 }
-                trip.Status= Constants.TripStatus.Unassigned;
-                _dbcontext.Update(trip);
-                await _dbcontext.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+               
+               
             }
             return View();
         }
@@ -354,11 +365,28 @@ namespace TMS_APP.Controllers
                             _dbcontext.Update(trip);
                             await _dbcontext.SaveChangesAsync();
                             return RedirectToAction("Index");
+                        }else if(trip.Status == TripStatus.InProgress)
+                        {
+                            List<Trip> myTrips = await _dbcontext.Trip.Where(c => c.Status == TripStatus.InProgress).ToListAsync();
+                            if (myTrips.FirstOrDefault(c => c.DriverId == trip.DriverId)!=null)
+                            {
+                                ViewBag.Message = string.Format("The Driver has another trip in progress!");
+                                return RedirectToAction("Index");
+                            }
+                            else
+                            {
+                                _dbcontext.Update(trip);
+                                await _dbcontext.SaveChangesAsync();
+                                return RedirectToAction("Index");
+                            }
+                        }
+                        else
+                        {
+                            _dbcontext.Update(trip);
+                            await _dbcontext.SaveChangesAsync();
+                            return RedirectToAction("Index");
                         }
 
-                        _dbcontext.Update(trip);
-                        await _dbcontext.SaveChangesAsync();
-                        return RedirectToAction("Index");
                     }
                         
                 }
@@ -398,7 +426,7 @@ namespace TMS_APP.Controllers
                         var driver = await _userManager.FindByIdAsync(trip.DriverId);
                         if (driver != null)
                         {
-                            trip.DriverName = driver?.LastName + "" + driver?.LastName;
+                            trip.DriverName = driver?.FirstName + " " + driver?.LastName;
                             trip.Status = TripStatus.Assigned;
                             _dbcontext.Update(trip);
                             await _dbcontext.SaveChangesAsync();
