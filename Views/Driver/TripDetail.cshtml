@@ -1,0 +1,172 @@
+﻿@model TMS_APP.Models.Trip
+
+@{
+    ViewData["Title"] = "TripDetail";
+    Layout = "~/Views/Shared/_LayoutForDriver.cshtml";
+}
+
+<h1>Trip Details</h1>
+<hr />
+<div class="row">
+    <div class="col-3">
+
+        <table class="table table-bordered">
+            <thead >
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+           
+            <tbody>
+
+            
+            <tr>
+                <td class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Id)
+                </td>
+                <td class="col-sm-8">
+                    @Html.DisplayFor(model => model.Id)
+                </td>
+            </tr>
+            <tr>
+
+
+                <td class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.CustomerName)
+                </td>
+                <td class="col-sm-8">
+                    @Html.DisplayFor(model => model.CustomerName)
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.PickupLocationAddress)
+                </td>
+                <td class="col-sm-8">
+                    @Html.DisplayFor(model => model.PickupLocationAddress)
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.PickupLocationCity)
+                </td>
+                <td class="col-sm-8">
+                    @Html.DisplayFor(model => model.PickupLocationCity)
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.PickupLocationCountry)
+                </td>
+                <td class="col-sm-8">
+                    @Html.DisplayFor(model => model.PickupLocationCountry)
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.DeliveryLocationAddress)
+                </td>
+                <td class="col-sm-8">
+                    @Html.DisplayFor(model => model.DeliveryLocationAddress)
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.DeliveryLocationCity)
+                </td>
+                <td class="col-sm-8">
+                    @Html.DisplayFor(model => model.DeliveryLocationCity)
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.DeliveryLocationCountry)
+                </td>
+                <td class="col-sm-8">
+                    @Html.DisplayFor(model => model.DeliveryLocationCountry)
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.PickupDate)
+                </td>
+                <td class="col-sm-8">
+                    @Html.DisplayFor(model => model.PickupDate)
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.DeliveryDate)
+                </td>
+                <td class="col-sm-8">
+                    @Html.DisplayFor(model => model.DeliveryDate)
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.ShipmentWeight)
+                </td>
+                <td class="col-sm-8">
+                    @Html.DisplayFor(model => model.ShipmentWeight)
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.TotalAmount)
+                </td>
+                <td class="col-sm-8">
+                    @Html.DisplayFor(model => model.TotalAmount)
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </td>
+                <td class="col-sm-8">
+                    @Html.DisplayFor(model => model.Quantity)
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Status)
+                </td>
+                <td class="col-sm-8">
+                    @Html.DisplayFor(model => model.Status)
+                </td>
+            </tr>
+            <tr>
+                <td class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.DriverName)
+                </td>
+                <td class="col-sm-8">
+                    @Html.DisplayFor(model => model.DriverName)
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-2">
+        <a asp-action="MyTrips">Back to List</a>
+    </div>
+   <div class="col-3">
+    @*<a asp-action="TripDetail" asp-route-id=@Model.Id class="btn btn-primary"><i class="fa fa-pencil"></i>Check Detail</a>*@
+    @if (Model.Status == TMS_APP.Constants.TripStatus.Assigned)
+    {
+        <form asp-action="ReleaseTrip" asp-controller="Driver" method="post">
+            <div class="form-group">
+                <input  type="hidden" name="tripId" value="@Model.Id" />
+                <input type="submit" value="Reject this Trip" class="btn btn-primary" />
+            </div>
+        </form>
+    }
+    </div>
+</div>

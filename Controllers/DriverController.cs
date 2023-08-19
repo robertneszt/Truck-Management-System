@@ -89,22 +89,15 @@ namespace TMS_APP.Controllers
                   ApplicationUser? user =await _userManager.FindByEmailAsync(userEmail);
                   return View(user);
               }*/
-
-            var user = _userManager.GetUserAsync(User).Result;
-
+            var user =await _userManager.GetUserAsync(User);
             return View(user);
-
-
-
         }
 
       
         public async Task<IActionResult> Account()
         {
-            var user = _userManager.GetUserAsync(User).Result;
-
+            var user =await _userManager.GetUserAsync(User);
             return View(user);
-
         }
 
        
@@ -121,21 +114,19 @@ namespace TMS_APP.Controllers
             Driver driver = _unitOfWork.driver.Get(d => d.UserId == user.Id);*/
 
             var user = _userManager.GetUserAsync(User).Result;
-
             return View(user);
-
         }
 
         [HttpPost]
 
-        public IActionResult Edit(ApplicationUser obj)
+        public async Task<IActionResult> Edit(ApplicationUser obj)
         {
             /*
                         string userEmail = HttpContext.Session.GetString("UserEmail");
                         User user = _unitOfWork.user.Get(c => c.email == userEmail);
                         Driver driver = _unitOfWork.driver.Get(d => d.UserId == user.Id);*/
 
-            var user = _userManager.GetUserAsync(User).Result;
+            var user =await _userManager.GetUserAsync(User);
 
             if (ModelState.IsValid)
             {
@@ -159,7 +150,6 @@ namespace TMS_APP.Controllers
                 return RedirectToAction("Login");
             }
             return View();
-
         }
 
         [HttpPost]
@@ -183,52 +173,79 @@ namespace TMS_APP.Controllers
                     ModelState.AddModelError(string.Empty, "User not found.");
                 }
             }
-
             return View(model); ;
 
         }
 
-
-
         public async Task<IActionResult> Trips()
         {
-
             List<Trip> myTrips = await _dbcontext.Trip.Where(c => c.Status==TripStatus.Unassigned).ToListAsync();
-
             return myTrips != null ? View(myTrips) :
                         Problem("No Trips available now.Please check with the dispatcher!");
         }
 
         public async Task<IActionResult> MyTrips()
         {
-            
             var user =await _userManager.GetUserAsync(User);
-
             List<Trip> myTrips = await _dbcontext.Trip.Where(c => c.DriverId == user.Id).ToListAsync();
-
-
             return myTrips!= null ? View(myTrips) :
                         Problem("You have no trips assigned yet. Please check with your dispatcher!");
         }
 
         public async Task<IActionResult> payAdvise() {
-
             var user = await _userManager.GetUserAsync(User);
             List<DriverTripViewModel> tripViewModels = new List<DriverTripViewModel>();
             List<Trip> tripList = await _dbcontext.Trip.Where(c => c.DriverId == user.Id).ToListAsync();
-
-            
                 var TripDirverView = new DriverTripViewModel()
                 {
                     Trips = tripList,
                     User = user
-
                 };
-                   
             return TripDirverView != null ?
                           View(TripDirverView) :
                           Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
         }
 
+        public async Task<IActionResult> TripDetail(int? id)
+        {
+            if (id == null || _dbcontext.Trip == null)
+            {
+                return NotFound();
+            }
+
+            var trip = await _dbcontext.Trip
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (trip == null)
+            {
+                return NotFound();
+            }
+            return View(trip);
+        }
+
+        public async Task<IActionResult> ReleaseTrip(int? tripId)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var trip = await _dbcontext.Trip.FindAsync(tripId);
+                    if (trip != null)
+                    {
+                        trip.Status = TripStatus.Unassigned;
+                        trip.DriverId = null;
+                        trip.DriverName = null;
+                        _dbcontext.Update(trip);
+                        await _dbcontext.SaveChangesAsync();
+                        return RedirectToAction("MyTrips");
+                    }  
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+            }
+
+            return View();
+        }
     }
 }
