@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TMS_APP.Data;
 
@@ -11,9 +12,11 @@ using TMS_APP.Data;
 namespace TMS_APP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230820174213_pulledFromGit")]
+    partial class pulledFromGit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,9 +297,6 @@ namespace TMS_APP.Migrations
                     b.Property<string>("DeliveryLocationCountry")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DeliveryLocationState")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("DriverId")
                         .HasColumnType("nvarchar(max)");
 
@@ -313,9 +313,6 @@ namespace TMS_APP.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PickupLocationCountry")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PickupLocationState")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Quantity")
