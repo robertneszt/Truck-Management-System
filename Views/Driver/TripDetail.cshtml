@@ -59,6 +59,14 @@
                     @Html.DisplayFor(model => model.PickupLocationCity)
                 </td>
             </tr>
+                <tr>
+                    <td class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.PickupLocationState)
+                    </td>
+                    <td class="col-sm-8">
+                        @Html.DisplayFor(model => model.PickupLocationState)
+                    </td>
+                </tr>
             <tr>
                 <td class="col-sm-4">
                     @Html.DisplayNameFor(model => model.PickupLocationCountry)
@@ -83,6 +91,14 @@
                     @Html.DisplayFor(model => model.DeliveryLocationCity)
                 </td>
             </tr>
+                <tr>
+                    <td class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.DeliveryLocationState)
+                    </td>
+                    <td class="col-sm-8">
+                        @Html.DisplayFor(model => model.DeliveryLocationState)
+                    </td>
+                </tr>
             <tr>
                 <td class="col-sm-4">
                     @Html.DisplayNameFor(model => model.DeliveryLocationCountry)
@@ -153,7 +169,19 @@
     </div>
     <div class="col-9">
 
-        <h1>Load info and Map goes here </h1>
+        
+        <form >
+            <label for="origin">Origin:</label>
+            <input type="text" value=" @Model.PickupLocationAddress  @Model.PickupLocationCity @Model.PickupLocationState @Model.PickupLocationCountry " id="origin">
+            <label for="destination">Destination:</label>
+            <input type="text" value="@Model.DeliveryLocationAddress  @Model.DeliveryLocationCity @Model.DeliveryLocationState @Model.DeliveryLocationCountry " id="destination">
+            <button type="button" onclick="calcRoute()">Get Route</button>
+           
+        </form>
+        
+        <div id="result"></div>
+        <br />
+        <div id="map" style="min-height:500px"></div>
 
     </div>
 </div>
@@ -197,6 +225,7 @@
             <form asp-action="InTransportation" asp-controller="Driver" method="post">
                 <div class="form-group">
                     <input type="hidden" name="tripId" value="@Model.Id" />
+                    <input type="text" hidden name="estimateDistance" id="estimateDistance" />
                     <input type="submit" value="In Progress" class="btn btn-primary" />
                 </div>
             </form>
@@ -212,3 +241,75 @@
         }
     </div>
 </div>
+
+<script>
+    function calculateDistance() {
+        var origin = document.getElementById('origin').value;
+        var destination = document.getElementById('destination').value;
+
+        var service = new google.maps.DistanceMatrixService();
+        
+        service.getDistanceMatrix(
+            {
+                origins: [origin],
+                destinations: [destination],
+                travelMode: 'DRIVING', // You can use other travel modes like 'WALKING' or 'BICYCLING'
+                unitSystem: google.maps.UnitSystem.METRIC,
+            },
+            function (response, status) {
+                if (status === 'OK') {
+                    var distance = response.rows[0].elements[0].distance.text;
+                    var duration = response.rows[0].elements[0].duration.text;
+                    document.getElementById('result').innerHTML = 'Distance: ' + distance + '<br>Duration: ' + duration;
+                    //document.getElementById('estimateDistance').innerHTML = distance;
+                } else {
+                    alert('Error: ' + status);
+                }
+            }
+        );
+
+        //Get route
+        //Doc: https://developers.google.com/maps/documentation/javascript/directions
+        //initMap
+        //var directionsDisplay;
+        function initMap() {
+             var directionsService = new google.maps.DirectionsService();
+             var directionsRenderer = new google.maps.DirectionsRenderer();
+             var ottawa = new google.maps.LatLng(45.4215, -75.6972);
+             var mapOptions = {
+            zoom: 7,
+            center: ottawa
+        }
+
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        directionsRenderer.setMap(map);
+
+            calcRoute(directionsService, directionsRenderer);
+         }
+        
+        initMap();
+       
+    }
+    function calcRoute(directionsService, directionsRenderer) {
+       // var directionsService = new google.maps.DirectionsService();
+       // var directionsRenderer = new google.maps.DirectionsRenderer();
+        var start = document.getElementById('origin').value;
+        var end = document.getElementById('destination').value;
+        var request = {
+            origin: start,
+            destination: end,
+            travelMode: 'DRIVING',
+            drivingOptions: {
+                departureTime: new Date(Date.now() + 1000),  // for the time N milliseconds from now.
+                trafficModel: 'optimistic'
+            }
+
+        };
+        directionsService.route(request, function (result, status) {
+            if (status == 'OK') {
+                directionsRenderer.setDirections(result);
+            }
+        });
+    }
+    
+</script>

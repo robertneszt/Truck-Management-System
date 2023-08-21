@@ -158,37 +158,44 @@ namespace TMS_APP.Controllers
 
         //Weiguang modified the create method
 
-        public async Task<IActionResult> Create(DriverTripViewModel? driverTripView)
+        public async Task<IActionResult> Create(DriverTripViewModel? driverTripView, string DriverId)
         {
             if (ModelState.IsValid)
             {
-                Trip trip = driverTripView.trip;
-
-                
-                if (driverTripView.UserId != null)
+                try
                 {
-                    trip.DriverId = driverTripView.UserId;
-                    var driver = await _userManager.FindByIdAsync(trip.DriverId);
-                    if (driver != null)
+
+                Trip trip = driverTripView.trip;
+                    if (trip != null)
                     {
-                        trip.DriverName = driver?.FirstName + "" + driver?.LastName;
-                        trip.Status = TripStatus.Assigned;
-                        _dbcontext.Update(trip);
-                        await _dbcontext.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        trip.DriverId=null;
-                        trip.DriverName=null;
-                        trip.Status = TripStatus.Unassigned;
-                        _dbcontext.Update(trip);
-                        await _dbcontext.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
+                        if (DriverId != null)
+                        {
+                            trip.DriverId = DriverId;
+                            var driver = await _userManager.FindByIdAsync(trip.DriverId);
+                            if (driver != null)
+                            {
+                                trip.DriverName = driver?.FirstName + " " + driver?.LastName;
+                                trip.Status = TripStatus.PendingAssign;
+                                _dbcontext.Update(trip);
+                                await _dbcontext.SaveChangesAsync();
+                                return RedirectToAction(nameof(Index));
+                            }
+                            else
+                            {
+                                trip.DriverId = null;
+                                trip.DriverName = null;
+                                trip.Status = TripStatus.Unassigned;
+                                _dbcontext.Update(trip);
+                                await _dbcontext.SaveChangesAsync();
+                                return RedirectToAction(nameof(Index));
+                            }
+                        }
                     }
                 }
-               
-               
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
             }
             return View();
         }

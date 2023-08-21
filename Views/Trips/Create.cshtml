@@ -156,11 +156,11 @@
                 <span asp-validation-for="DriverName" class="text-danger"></span>
             </div>*@
             <div class="form-group">
-                <select asp-for="@Model.UserId" asp-items="@Model.DriverList" class="form-select border-0 shadow">
+                <label>Select Driver</label>
+                <select asp-items="@Model.DriverList" class="form-select border-0 shadow" name="DriverId">
                     <option value="" selected>--Select Driver--</option>
                 </select>
-                <label asp-for="@Model.UserId" class="ms-2"></label>
-                <span asp-validation-for="@Model.UserId" class=" text-danger"></span>
+                
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
