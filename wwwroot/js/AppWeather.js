@@ -5,7 +5,7 @@
     deliveryState = document.querySelector('.deliveryState'),
     deliveryCountry = document.querySelector('.deliveryCountry'),
     contentDiv = document.getElementById('weatherContent');
-
+    
 
 const pickupCityName = (pickupCity.innerHTML).trim(),
     pickupStateName = (pickupState.innerHTML).trim(),  
@@ -74,4 +74,3 @@ function  LoadWeather() {
 }
 
 
-window.onload = LoadWeather
