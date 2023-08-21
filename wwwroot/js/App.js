@@ -1,7 +1,7 @@
 ﻿
 
 
-var config = {
+const config = {
     cUrl: 'https://countriesnow.space/api/v0.1/countries/',
     cUrlStates: 'https://countriesnow.space/api/v0.1/countries/states',
     cUrlCities:'https://countriesnow.space/api/v0.1/countries/state/cities'
