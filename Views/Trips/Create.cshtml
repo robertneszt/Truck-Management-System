@@ -1,19 +1,20 @@
-﻿@model TMS_APP.Models.DTO.DriverTripViewModel
+﻿@*@model TMS_APP.Models.Trip*@
+@model TMS_APP.Models.DTO.DriverTripViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    
 }
 
-<h1>Edit</h1>
+<h1>Create</h1>
 
 <h4>Trip</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="@Model.trip.Id" />
             <div class="form-group">
                 <label asp-for="trip.CustomerName" class="control-label"></label>
                 <input asp-for="trip.CustomerName" class="form-control" />
@@ -24,7 +25,7 @@
                 <input asp-for="trip.PickupLocationAddress" class="form-control" />
                 <span asp-validation-for="trip.PickupLocationAddress" class="text-danger"></span>
             </div>
-            <div class="form-group">
+         @*    <div class="form-group">
                 <label asp-for="trip.PickupLocationCountry" class="control-label"></label>
                 <input asp-for="trip.PickupLocationCountry" class="form-control" />
                 <span asp-validation-for="trip.PickupLocationCountry" class="text-danger"></span>
@@ -38,39 +39,39 @@
                 <label asp-for="trip.PickupLocationCity" class="control-label"></label>
                 <input asp-for="trip.PickupLocationCity" class="form-control" />
                 <span asp-validation-for="trip.PickupLocationCity" class="text-danger"></span>
-            </div>
-@* 
+            </div> *@
+
             <div class="form-group">
                 <label asp-for="trip.PickupLocationCountry" class="control-label"></label>
-                <select class="form-select Country" asp-for="trip.PickupLocationCountry" onchange="loadStates()">
-                    <option disabled selected></option>
+                <select class="form-select Country" asp-for="trip.PickupLocationCountry" onclick="loadCountries()" onchange="loadStates()">
+                    <option selected >Select Country</option>
                 </select>
-
+               
                 <span asp-validation-for="trip.PickupLocationCountry" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="trip.PickupLocationState" class="control-label"></label>
                 <select class="form-select State" asp-for="trip.PickupLocationState" onchange="loadCities()">
-                    <option disabled selected></option>
+                    <option selected>Select State/Province</option>
                 </select>
-
+               
                 <span asp-validation-for="trip.PickupLocationState" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="trip.PickupLocationCity" class="control-label"></label>
                 <select class="form-select City" asp-for="trip.PickupLocationCity">
-                    <option disabled selected></option>
+                    <option selected>Select City</option>
                 </select>
-
+               
                 <span asp-validation-for="trip.PickupLocationCity" class="text-danger"></span>
-            </div> *@
-            
+            </div>
+           
             <div class="form-group">
                 <label asp-for="trip.DeliveryLocationAddress" class="control-label"></label>
                 <input asp-for="trip.DeliveryLocationAddress" class="form-control" />
                 <span asp-validation-for="trip.DeliveryLocationAddress" class="text-danger"></span>
             </div>
-            <div class="form-group">
+          @*   <div class="form-group">
                 <label asp-for="trip.DeliveryLocationCountry" class="control-label"></label>
                 <input asp-for="trip.DeliveryLocationCountry" class="form-control" />
                 <span asp-validation-for="trip.DeliveryLocationCountry" class="text-danger"></span>
@@ -85,16 +86,42 @@
                 <label asp-for="trip.DeliveryLocationCity" class="control-label"></label>
                 <input asp-for="trip.DeliveryLocationCity" class="form-control" />
                 <span asp-validation-for="trip.DeliveryLocationCity" class="text-danger"></span>
+            </div> *@
+
+            <div class="form-group">
+                <label asp-for="trip.DeliveryLocationCountry" class="control-label"></label>
+                <select id="CountryDel" class="form-select " asp-for="trip.DeliveryLocationCountry"  onchange="loadDelStates()">
+                    <option selected>Select Country</option>
+                </select>
+               
+                <span asp-validation-for="trip.DeliveryLocationCountry" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="trip.DeliveryLocationState" class="control-label"></label>
+                <select id="StateDel" class="form-select " asp-for="trip.DeliveryLocationState" onchange="loadDelCities()">
+                    <option selected>Select State/Province</option>
+                </select>
+               
+                <span asp-validation-for="trip.DeliveryLocationState" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="trip.DeliveryLocationCity" class="control-label"></label>
+                <select id="CityDel" class="form-select " asp-for="trip.DeliveryLocationCity">
+                    <option selected>Select City</option>
+                </select>
+               
+                <span asp-validation-for="trip.DeliveryLocationCity" class="text-danger"></span>
             </div>
            
             <div class="form-group">
                 <label asp-for="trip.PickupDate" class="control-label"></label>
-                <input asp-for="trip.PickupDate" class="form-control" />
+                <input type="date" asp-for="trip.PickupDate" class="form-control" />
                 <span asp-validation-for="trip.PickupDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="trip.DeliveryDate" class="control-label"></label>
-                <input asp-for="trip.DeliveryDate" class="form-control" />
+                <input type="date" asp-for="trip.DeliveryDate" class="form-control"  />
                 <span asp-validation-for="trip.DeliveryDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -112,27 +139,31 @@
                 <input asp-for="trip.Quantity" class="form-control" />
                 <span asp-validation-for="trip.Quantity" class="text-danger"></span>
             </div>
-           @* <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control">
-                    
-                        <option selected value="">Please choose</option>
-                        <option value=1>In Progress</option>
-                        <option value=3>Unassigned</option>
-                        <option value=0>Completed</option>
-                    
+            @*<div class="form-group">
+                <label asp-for="trip.Status" class="control-label"></label>
+                <select asp-for="trip.Status" class="form-control">
+                    <option selected value="">Please choose</option>
+                    <option  value="1">In Progress</option>
+                    <option  value="3">Unassigned</option>
+                    <option  value="0">Completed</option>
                 </select>
-                <span asp-validation-for="Status" class="text-danger"></span>
+              
+                <span asp-validation-for="trip.Status" class="text-danger"></span>
+            </div>*@
+           @* <div class="form-group">
+                <label asp-for="DriverName" class="control-label"></label>
+                <input asp-for="DriverName" class="form-control" />
+                <span asp-validation-for="DriverName" class="text-danger"></span>
             </div>*@
             <div class="form-group">
-                <label class="ms-2">Select Driver</label>
-                <select asp-for="@Model.trip.DriverId" asp-items="@Model.DriverList" class="form-select border-0 shadow">
-                    <option disabled selected>--Select Driver--</option>
+                <select asp-for="@Model.UserId" asp-items="@Model.DriverList" class="form-select border-0 shadow">
+                    <option value="" selected>--Select Driver--</option>
                 </select>
-                <span asp-validation-for="@Model.trip.DriverId" class="text-danger"></span>
+                <label asp-for="@Model.UserId" class="ms-2"></label>
+                <span asp-validation-for="@Model.UserId" class=" text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -142,3 +173,4 @@
     <a asp-action="Index">Back to List</a>
 </div>
 <script src="~/js/App.js"></script>
+

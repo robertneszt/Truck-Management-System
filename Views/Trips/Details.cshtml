@@ -3,101 +3,136 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+   
+   
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Trip</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CustomerName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CustomerName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PickupLocationAddress)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PickupLocationAddress)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PickupLocationCity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PickupLocationCity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PickupLocationCountry)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PickupLocationCountry)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeliveryLocationAddress)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryLocationAddress)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeliveryLocationCity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryLocationCity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeliveryLocationCountry)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryLocationCountry)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PickupDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PickupDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DeliveryDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DeliveryDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ShipmentWeight)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ShipmentWeight)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalAmount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalAmount)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Quantity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Quantity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DriverName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DriverName)
-        </dd>
-    </dl>
+<div class="row">
+    <h1>Details</h1>
+   
+    <div id="weatherContent" class="column ">
+       
+    </div>
+    
 </div>
+<hr />
+    
+        <div class="row">
+            <h5>Trip</h5>
+
+            <dl>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CustomerName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CustomerName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PickupLocationAddress)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PickupLocationAddress)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PickupLocationCity)
+                </dt>
+                <dd class="col-sm-10 pickUpCity">
+                    @Html.DisplayFor(model => model.PickupLocationCity)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PickupLocationState)
+                </dt>
+                <dd class="col-sm-10 pickUpState">
+                    @Html.DisplayFor(model => model.PickupLocationState)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PickupLocationCountry)
+                </dt>
+                <dd class="col-sm-10 pickUpCountry">
+                    @Html.DisplayFor(model => model.PickupLocationCountry)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DeliveryLocationAddress)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DeliveryLocationAddress)
+                </dd>
+                <dt class="col-sm-2 ">
+                    @Html.DisplayNameFor(model => model.DeliveryLocationCity)
+                </dt>
+                <dd class="col-sm-10 deliveryCity">
+                    @Html.DisplayFor(model => model.DeliveryLocationCity)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DeliveryLocationState)
+                </dt>
+                <dd class="col-sm-10 deliveryState">
+                    @Html.DisplayFor(model => model.DeliveryLocationState)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DeliveryLocationCountry)
+                </dt>
+                <dd class="col-sm-10 deliveryCountry">
+                    @Html.DisplayFor(model => model.DeliveryLocationCountry)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PickupDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PickupDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DeliveryDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DeliveryDate)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ShipmentWeight)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ShipmentWeight)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.TotalAmount)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.TotalAmount)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Quantity)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Status)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Status)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DriverName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DriverName)
+                </dd>
+
+
+            </dl>
+
+
+
+        </div>
+
+    
+
+
+
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+<script src="~/js/AppWeather.js"></script>
