@@ -9,15 +9,40 @@
 
 <div class="row">
     <h1>Details</h1>
-   
-    <div id="weatherContent" class="column ">
-       
+</div>
+
+<div class="row flex-container">
+    <div class="column flex-item" id="weatherContent">
+        <h3>Weather Conditions</h3>
+        <!-- Add your weather data here -->
     </div>
 
-    <div id="distanceContent" class="column ">
+    <div class="column flex-item" id="convertedAmountsContent">
+        <h3>Total amount:</h3>
+        <div class="row">
+            <div class="col-sm-4">
+                <strong>Pick-Up</strong>
+            </div>
+            <div class="col-sm-8">
+                <span id="pickupConvertedAmount">N/A</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <strong>Delivery</strong>
+            </div>
+            <div class="col-sm-8">
+                <span id="deliveryConvertedAmount">N/A</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="column flex-item" id="distanceContent">
+        <!-- Add your distance content here -->
     </div>
 </div>
-<hr />
+
+
     
         <div class="row">
             <h5>Trip</h5>
@@ -128,10 +153,7 @@
 
         </div>
 
-    
-
-
-
+   
 
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
@@ -139,3 +161,68 @@
 </div>
 <script src="~/js/AppWeather.js"></script>
 <script src="~/js/distanceAPI.js"></script>
+
+<style>
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+    }
+
+    .flex-item {
+        flex: 1;
+        padding: 16px;
+    }
+
+</style>
+@section Scripts {
+    <script>
+        async function getExchangeRate() {
+            const baseCurrency = "CAD";
+            const apiKey = "e776c3a4758250753356228d03619958";
+
+            const pickupCountryElement = document.querySelector('.pickUpCountry');
+            const deliveryCountryElement = document.querySelector('.deliveryCountry');
+            const pickupCountry = pickupCountryElement.textContent.trim();
+            const deliveryCountry = deliveryCountryElement.textContent.trim();
+
+            const countryToCurrency = {
+                "United States": "USD",
+                "Canada": "CAD",
+                "Australia": "AUD",
+                // Add more country-currency mappings as needed
+            };
+
+            const pickupCurrency = countryToCurrency[pickupCountry];
+            const deliveryCurrency = countryToCurrency[deliveryCountry];
+
+            if (!pickupCurrency || !deliveryCurrency) {
+                console.error("Currency not found for pick-up or delivery country");
+                return;
+            }
+
+            const url = `https://api.exchangeratesapi.io/v1/latest?access_key=${apiKey}&base=${baseCurrency}&symbols=${pickupCurrency},${deliveryCurrency}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                const pickupExchangeRate = data.rates[pickupCurrency];
+                const deliveryExchangeRate = data.rates[deliveryCurrency];
+
+                const totalAmountElement = document.querySelector('.totalAmount');
+                const totalAmount = parseFloat(totalAmountElement.textContent);
+
+                const pickupConvertedAmount = (totalAmount * pickupExchangeRate).toFixed(2);
+                const deliveryConvertedAmount = (totalAmount * deliveryExchangeRate).toFixed(2);
+
+                document.getElementById('pickupConvertedAmount').textContent = `Total amount: ${totalAmount.toFixed(2)} ${baseCurrency} or ${pickupConvertedAmount} ${pickupCurrency}`;
+                document.getElementById('deliveryConvertedAmount').textContent = `Total amount: ${totalAmount.toFixed(2)} ${baseCurrency} or ${deliveryConvertedAmount} ${deliveryCurrency}`;
+            } catch (error) {
+                console.error("Error fetching exchange rate:", error);
+            }
+        }
+        window.onload = getExchangeRate;
+    </script>
+}
+
