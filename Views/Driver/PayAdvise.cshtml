@@ -6,70 +6,107 @@
 }
 @model TMS_APP.Models.DTO.DriverTripViewModel
 
-<h1>Pay Advise</h1>
+@if (Model != null)
+{
+    <h1>Pay Advise</h1>
 
-<div class="container-fluid">
+    <div class="container-fluid">
 
-    <div >
-        <div >
-            <table class="table border-dark">
+        <div>
+            <div>
+                <table class="table border-dark">
+                    <thead>
+                    <th>
+                        <strong>Pay Rate: </strong> @Model.User.PayRate
+                    </th>
+                    <th>
+                        <strong>My Total Trips: </strong> @Model.Trips.Count()
+                    </th>
+                    </thead>
+                </table>
+            </div>
+            <hr />
+            <br />
+            <h2>Current Trip and Pay Estimate</h2>
+            <table class="table table-bordered">
                 <thead>
-                <th>
-                    <strong>Pay Rate: </strong> @Model.User.PayRate
-                </th>
-                <th>
-                    <strong>My Total Trips: </strong> @Model.Trips.Count()
-                </th>
-                </thead>
-            </table>
-</div>
-<hr />
-<br />
-<div class="row">
-<div class="col col-10">
-            <table class="table">
-                <thead>
-                <th>
-                    <strong>Total Load: </strong>
-                </th>
-                <th>
-                    <strong>Total Mileage: </strong>
-                </th>
-                <th><strong>Estimate Pay</strong></th>
+                    <tr>
+                        <th>
+                            <strong>TripId: </strong>
+                        </th>
+                        <th>
+                            <strong>Estimate Mileage: </strong>
+                        </th>
+                        <th><strong>Estimate Pay</strong></th>
+                    </tr>
                 </thead>
                 <tbody>
-                <td>
-                </td>
-                <td>
-                </td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
-</div>
-<div class="col col-2">
-    <form>
-    <input type="text" hidden name="paySlipDate" />
-    <input type="date"  class="form-group"/>
-    <button type="submit" >GO</button>
-                </form>
-</div>
+            <hr />
+            <br />
+            <h2>Completed trips and Pay report</h2>
+            <div class="row">
+                <div class="col col-10">
+                    <table class="table">
+                        <thead>
+                            <tr>
+
+                        <th>
+                            <strong>Completed Trips(TripID): </strong>
+                        </th>
+                        <th>
+                            <strong>Mileage(Km) </strong>
+                        </th>
+                        <th><strong>Estimate Pay(CAD)</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col col-2">
+                    <form>
+                        <input type="text" hidden name="paySlipDate" />
+                        <input type="date" class="form-group" />
+                        <button type="submit">GO</button>
+                    </form>
+                </div>
+            </div>
+            <hr />
+            <br />
+           <div>
+               Chart goes here
+           </div>
         </div>
-        <hr />
-        <br />
-        <table class="table">
-            <thead>
-            <th>
-                <strong>Total Load: </strong>
-            </th>
-            <th>
-                <strong>Total Mileage: </strong>
-            </th>
-            </thead>
-            <tbody></tbody>
-        </table>
+
     </div>
 
-</div>
+}else
+{
+    <div class="alert-danger">
+
+        <h3> The page ecountered some issue, please contact your admin!</h3>
+
+    </div>
+}

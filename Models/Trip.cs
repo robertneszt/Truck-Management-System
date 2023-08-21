@@ -23,6 +23,9 @@ namespace TMS_APP.Models
         [DisplayName("Pick City")]
         public string? PickupLocationCity { get; set; }
         [AllowNull]
+        [DisplayName("Pick State/Province")]
+        public string? PickupLocationState { get; set; }
+        [AllowNull]
 
         [DisplayName("Pick Country")]
         public string? PickupLocationCountry { get; set; }
@@ -34,6 +37,9 @@ namespace TMS_APP.Models
 
         [DisplayName("Delivery City")]
         public string? DeliveryLocationCity { get; set; }
+        [AllowNull]
+        [DisplayName("Delivery State/Province")]
+        public string? DeliveryLocationState { get; set; }
         [AllowNull]
 
         [DisplayName("Delivery Country")]
@@ -70,7 +76,5 @@ namespace TMS_APP.Models
 
         [DisplayName("Driver Name")]
         public string? DriverName { get; set; }
-
-
-    }
+     }
 }

@@ -151,22 +151,64 @@
         </table>
 
     </div>
-</div>
+    <div class="col-9">
 
+        <h1>Load info and Map goes here </h1>
+
+    </div>
+</div>
+@if (Model.Status == TMS_APP.Constants.TripStatus.Assigned)
+{
+    <div class="form-check">
+       
+        <br />
+        <input class="form-check-input" style="width:1.5em;height:1.5em;" type="checkbox" name="Confirmed" />
+        <label class="form-check-label"><strong>** I verified and confirmed the load info before picking up!</strong></label>
+    </div>
+    
+}
+<br />
 <div class="row">
     <div class="col-2">
         <a asp-action="MyTrips">Back to List</a>
     </div>
    <div class="col-3">
     @*<a asp-action="TripDetail" asp-route-id=@Model.Id class="btn btn-primary"><i class="fa fa-pencil"></i>Check Detail</a>*@
-    @if (Model.Status == TMS_APP.Constants.TripStatus.Assigned)
-    {
-        <form asp-action="ReleaseTrip" asp-controller="Driver" method="post">
-            <div class="form-group">
-                <input  type="hidden" name="tripId" value="@Model.Id" />
-                <input type="submit" value="Reject this Trip" class="btn btn-primary" />
-            </div>
-        </form>
-    }
+    @if (Model.Status == TMS_APP.Constants.TripStatus.PendingAssign)
+        {
+            <form asp-action="ReleaseTrip" asp-controller="Driver" method="post">
+                <div class="form-group">
+                    <input  type="hidden" name="tripId" value="@Model.Id" />
+                    <input type="submit" value="Reject this Trip" class="btn btn-primary" />
+                </div>
+            </form>
+        }
+        else if (Model.Status == TMS_APP.Constants.TripStatus.Assigned)
+        {
+            <form asp-action="PickUpLoad" asp-controller="Driver" method="post">
+                <div class="form-group">
+                    <input type="hidden" name="tripId" value="@Model.Id" />
+                    <input type="submit" value="Pick Up Load" class="btn btn-primary" />
+                </div>
+            </form>
+        }
+        else if (Model.Status == TMS_APP.Constants.TripStatus.PickedUp)
+        {
+            <form asp-action="InTransportation" asp-controller="Driver" method="post">
+                <div class="form-group">
+                    <input type="hidden" name="tripId" value="@Model.Id" />
+                    <input type="submit" value="In Progress" class="btn btn-primary" />
+                </div>
+            </form>
+        }
+        else if (Model.Status == TMS_APP.Constants.TripStatus.InProgress)
+        {
+            <form asp-action="DeliveredTrip" asp-controller="Driver" method="post">
+                <div class="form-group">
+                    <input type="hidden" name="tripId" value="@Model.Id" />
+                    <input type="submit" value="Load Delivered" class="btn btn-primary" />
+                </div>
+            </form>
+        }
     </div>
 </div>

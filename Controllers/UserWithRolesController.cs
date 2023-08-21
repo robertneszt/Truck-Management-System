@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TMS_APP.Constants;
 using TMS_APP.Data;
-using TMS_APP.Migrations;
+/*using TMS_APP.Migrations;*/
 using TMS_APP.Models;
 using TMS_APP.Models.DTO;
-using static TMS_APP.Models.User;
+
 
 namespace TMS_APP.Controllers
 {

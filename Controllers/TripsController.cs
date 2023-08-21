@@ -152,21 +152,9 @@ namespace TMS_APP.Controllers
         // POST: Trips/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
-
-        //Weiguang commented out
-       /* public async Task<IActionResult> Create([Bind("Id,CustomerName,PickupLocationAddress,PickupLocationCity,PickupLocationCountry,DeliveryLocationAddress,DeliveryLocationCity,DeliveryLocationCountry,PickupDate,DeliveryDate,ShipmentWeight,TotalAmount,Quantity,Status,DriverName")] Trip trip)
-        {
-            if (ModelState.IsValid)
-            {
-                _dbcontext.Add(trip);
-                await _dbcontext.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(trip);
-        }*/
-
 
         //Weiguang modified the create method
 
@@ -176,9 +164,10 @@ namespace TMS_APP.Controllers
             {
                 Trip trip = driverTripView.trip;
 
-                trip.DriverId = driverTripView.UserId;
-                if (trip.DriverId != null)
+                
+                if (driverTripView.UserId != null)
                 {
+                    trip.DriverId = driverTripView.UserId;
                     var driver = await _userManager.FindByIdAsync(trip.DriverId);
                     if (driver != null)
                     {
@@ -190,6 +179,7 @@ namespace TMS_APP.Controllers
                     }
                     else
                     {
+                        trip.DriverId=null;
                         trip.DriverName=null;
                         trip.Status = TripStatus.Unassigned;
                         _dbcontext.Update(trip);
@@ -427,7 +417,7 @@ namespace TMS_APP.Controllers
                         if (driver != null)
                         {
                             trip.DriverName = driver?.FirstName + " " + driver?.LastName;
-                            trip.Status = TripStatus.Assigned;
+                            trip.Status = TripStatus.PendingAssign;
                             _dbcontext.Update(trip);
                             await _dbcontext.SaveChangesAsync();
                             return RedirectToAction("Index");

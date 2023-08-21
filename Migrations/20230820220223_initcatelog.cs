@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TMS_APP.Migrations
 {
     /// <inheritdoc />
-    public partial class mainfrommainBeforedrivertrip : Migration
+    public partial class initcatelog : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,7 +31,7 @@ namespace TMS_APP.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     HireDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -211,6 +211,31 @@ namespace TMS_APP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Pay",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TripId = table.Column<int>(type: "int", nullable: false),
+                    PayRate = table.Column<double>(type: "float", nullable: false),
+                    EstimateDistance = table.Column<double>(type: "float", nullable: false),
+                    ConfirmedDistance = table.Column<double>(type: "float", nullable: false),
+                    PayAdjuestment = table.Column<double>(type: "float", nullable: false),
+                    FinalPay = table.Column<double>(type: "float", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pay", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Pay_Trip_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trip",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Drivers",
                 columns: table => new
                 {
@@ -274,6 +299,11 @@ namespace TMS_APP.Migrations
                 name: "IX_Drivers_UserId",
                 table: "Drivers",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pay_TripId",
+                table: "Pay",
+                column: "TripId");
         }
 
         /// <inheritdoc />
@@ -298,7 +328,7 @@ namespace TMS_APP.Migrations
                 name: "Drivers");
 
             migrationBuilder.DropTable(
-                name: "Trip");
+                name: "Pay");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -308,6 +338,9 @@ namespace TMS_APP.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users2");
+
+            migrationBuilder.DropTable(
+                name: "Trip");
         }
     }
 }

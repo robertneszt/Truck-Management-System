@@ -12,8 +12,8 @@ using TMS_APP.Data;
 namespace TMS_APP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230818190025_mergefrommain")]
-    partial class mergefrommain
+    [Migration("20230820220223_initcatelog")]
+    partial class initcatelog
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -274,6 +274,43 @@ namespace TMS_APP.Migrations
                     b.ToTable("Drivers");
                 });
 
+            modelBuilder.Entity("TMS_APP.Models.Pay", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("ConfirmedDistance")
+                        .HasColumnType("float");
+
+                    b.Property<double>("EstimateDistance")
+                        .HasColumnType("float");
+
+                    b.Property<double>("FinalPay")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("PayAdjuestment")
+                        .HasColumnType("float");
+
+                    b.Property<double>("PayRate")
+                        .HasColumnType("float");
+
+                    b.Property<int>("TripId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TripId");
+
+                    b.ToTable("Pay");
+                });
+
             modelBuilder.Entity("TMS_APP.Models.Trip", b =>
                 {
                     b.Property<int>("Id")
@@ -428,6 +465,17 @@ namespace TMS_APP.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TMS_APP.Models.Pay", b =>
+                {
+                    b.HasOne("TMS_APP.Models.Trip", "Trip")
+                        .WithMany()
+                        .HasForeignKey("TripId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Trip");
                 });
 #pragma warning restore 612, 618
         }
