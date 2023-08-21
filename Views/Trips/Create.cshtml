@@ -155,9 +155,10 @@
                 <input asp-for="DriverName" class="form-control" />
                 <span asp-validation-for="DriverName" class="text-danger"></span>
             </div>*@
+            @*name="DriverId"*@
             <div class="form-group">
                 <label>Select Driver</label>
-                <select asp-items="@Model.DriverList" class="form-select border-0 shadow" name="DriverId">
+                <select asp-items="@Model.DriverList" class="form-select border-0 shadow"  asp-for="@Model.UserId">
                     <option value="" selected>--Select Driver--</option>
                 </select>
                 

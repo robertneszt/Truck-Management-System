@@ -12,8 +12,8 @@ using TMS_APP.Data;
 namespace TMS_APP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230820222434_remove-driver_user")]
-    partial class removedriver_user
+    [Migration("20230821172021_init-after-pay-table")]
+    partial class initafterpaytable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -258,26 +258,25 @@ namespace TMS_APP.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("ConfirmedDistance")
+                    b.Property<double?>("ConfirmedDistance")
                         .HasColumnType("float");
 
-                    b.Property<double>("EstimateDistance")
+                    b.Property<double?>("EstimateDistance")
                         .HasColumnType("float");
 
-                    b.Property<double>("FinalPay")
+                    b.Property<double?>("FinalPay")
                         .HasColumnType("float");
 
                     b.Property<string>("Note")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("PayAdjuestment")
+                    b.Property<double?>("PayAdjuestment")
                         .HasColumnType("float");
 
-                    b.Property<double>("PayRate")
+                    b.Property<double?>("PayRate")
                         .HasColumnType("float");
 
-                    b.Property<int>("TripId")
+                    b.Property<int?>("TripId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -310,6 +309,9 @@ namespace TMS_APP.Migrations
                     b.Property<string>("DeliveryLocationCountry")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DeliveryLocationState")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DriverId")
                         .HasColumnType("nvarchar(max)");
 
@@ -326,6 +328,9 @@ namespace TMS_APP.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PickupLocationCountry")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PickupLocationState")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Quantity")
@@ -400,9 +405,7 @@ namespace TMS_APP.Migrations
                 {
                     b.HasOne("TMS_APP.Models.Trip", "Trip")
                         .WithMany()
-                        .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TripId");
 
                     b.Navigation("Trip");
                 });

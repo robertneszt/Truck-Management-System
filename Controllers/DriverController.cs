@@ -86,9 +86,10 @@ namespace TMS_APP.Controllers
                 user.Email = obj.Email;
                 user.PhoneNumber = obj.PhoneNumber;
                 user.Availability = obj.Availability;
-                _unitOfWork.Save();
+                await _userManager.UpdateAsync(user);
+                await _dbcontext.SaveChangesAsync();
                 TempData["success"] = "You account updated successfully";
-                return RedirectToAction("Account");
+                return RedirectToAction("Index");
             }
             return View();
         }
@@ -237,12 +238,12 @@ namespace TMS_APP.Controllers
                     var trip = await _dbcontext.Trip.FindAsync(tripId);
                     if (trip != null)
                     {
-                        Pay pay = new()
+                      /*  Pay pay = new()
                         {
                             TripId = trip.Id,
                             // Add hard coded mile before Map is ready
                             EstimateDistance= 3000
-                        };
+                        };*/
                         trip.Status = TripStatus.PickedUp;
                         _dbcontext.Update(trip);
                         await _dbcontext.SaveChangesAsync();
@@ -255,7 +256,7 @@ namespace TMS_APP.Controllers
                 }
             }
 
-            return View();
+            return RedirectToAction("MyTrips");
         }
 
         //DeliveredTrip
@@ -308,7 +309,72 @@ namespace TMS_APP.Controllers
             return View();
         }
 
-        //
+        //Add trip to pay and update distance info:
+
+        //UpdateDistance
+
+        public async Task<IActionResult> UpdateDistance(int? tripId, string? estimateDistance)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (tripId !=null)
+                    {
+                        if (!string.IsNullOrEmpty(estimateDistance))
+                        {
+                            double num;
+                            bool success = Double.TryParse(estimateDistance, out num);
+                            if (success)
+                            {
+                                Pay newTripPay = new Pay()
+                                {
+                                    TripId = tripId,
+                                    EstimateDistance = num,
+
+                                };
+
+                                _dbcontext.Update(newTripPay);
+                                await _dbcontext.SaveChangesAsync();
+                                return RedirectToAction("MyTrips");
+                            }
+                            else
+                            {
+                                Pay newTripPay = new Pay()
+                                {
+                                    TripId = tripId,
+                                    EstimateDistance = null
+                                };
+
+                                _dbcontext.Update(newTripPay);
+                                await _dbcontext.SaveChangesAsync();
+                                return RedirectToAction("MyTrips");
+                            }
+
+                        }
+                        else
+                        {
+                            Pay newTripPay = new Pay()
+                            {
+                                TripId = tripId,
+                                EstimateDistance = null
+                            };
+
+                            _dbcontext.Update(newTripPay);
+                            await _dbcontext.SaveChangesAsync();
+                            return RedirectToAction("MyTrips");
+                        }
+                        
+                    }
+                                    
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction("TripDetail");
+        }
 
 
 

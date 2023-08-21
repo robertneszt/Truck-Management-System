@@ -163,6 +163,19 @@
                     @Html.DisplayFor(model => model.DriverName)
                 </td>
             </tr>
+            <tr>
+                    <td> Estimate Distance </td>
+                <td>
+
+                        <form asp-action="UpdateDistance" asp-controller="Driver" method="post">
+                            <input type="hidden" name="tripId" value="@Model.Id" />
+                            <input type="text" name="estimateDistance" id="estimateDistance" />
+@*                            <button type="button" onclick="updateDistance()">Input Distance</button>
+*@                            <input type="submit" value="Update distance" />
+                        </form>
+                
+                    </td>
+            </tr>
             </tbody>
         </table>
 
@@ -175,13 +188,14 @@
             <input type="text" value=" @Model.PickupLocationAddress  @Model.PickupLocationCity @Model.PickupLocationState @Model.PickupLocationCountry " id="origin">
             <label for="destination">Destination:</label>
             <input type="text" value="@Model.DeliveryLocationAddress  @Model.DeliveryLocationCity @Model.DeliveryLocationState @Model.DeliveryLocationCountry " id="destination">
+            
             <button type="button" onclick="calcRoute()">Get Route</button>
            
         </form>
         
-        <div id="result"></div>
+        <div id="result" class="display-4"></div>
         <br />
-        <div id="map" style="min-height:500px"></div>
+        <div id="map"  style="min-height:600px"></div>
 
     </div>
 </div>
@@ -225,7 +239,7 @@
             <form asp-action="InTransportation" asp-controller="Driver" method="post">
                 <div class="form-group">
                     <input type="hidden" name="tripId" value="@Model.Id" />
-                    <input type="text" hidden name="estimateDistance" id="estimateDistance" />
+                    
                     <input type="submit" value="In Progress" class="btn btn-primary" />
                 </div>
             </form>
@@ -248,6 +262,7 @@
         var destination = document.getElementById('destination').value;
 
         var service = new google.maps.DistanceMatrixService();
+        let estimateDistance;
         
         service.getDistanceMatrix(
             {
@@ -260,13 +275,33 @@
                 if (status === 'OK') {
                     var distance = response.rows[0].elements[0].distance.text;
                     var duration = response.rows[0].elements[0].duration.text;
-                    document.getElementById('result').innerHTML = 'Distance: ' + distance + '<br>Duration: ' + duration;
+                    document.getElementById('result').innerHTML = 'Distance: <strong>' + distance + '</strong><br>Duration: ' + duration;
                     //document.getElementById('estimateDistance').innerHTML = distance;
+                 
                 } else {
                     alert('Error: ' + status);
                 }
             }
         );
+               
+       // jQuery.noConflict();
+
+      //  function passDistance() {
+       //     var data = {
+       //         EstimateDistance: estimateDistance,
+       //     };
+      //      jQuery.ajax({
+      //          url: "/Driver/PickUpLoad",
+           //     type: "POST",
+         //       dataType: "json",
+         //       data: JSON.stringify(data),
+                //success: function (mydata) {
+                //    $("#UpdateDiv").html(mydata);
+                 //   history.pushState('', 'New URL: ' + href, href); // This Code lets you to change url howyouwant
+         //       });
+       //     return false;
+       // }
+       // passDistance();
 
         //Get route
         //Doc: https://developers.google.com/maps/documentation/javascript/directions
@@ -311,5 +346,41 @@
             }
         });
     }
+
+    function updateDistance(){
+        var origin = document.getElementById('origin').value;
+        var destination = document.getElementById('destination').value;
+
+        var service = new google.maps.DistanceMatrixService();
+        let estimateDistance;
+
+        let estimateDistanceField = document.getElementById('estimateDistance');
+
+        service.getDistanceMatrix(
+            {
+                origins: [origin],
+                destinations: [destination],
+                travelMode: 'DRIVING', // You can use other travel modes like 'WALKING' or 'BICYCLING'
+                unitSystem: google.maps.UnitSystem.METRIC,
+            },
+            function (response, status) {
+                if (status === 'OK') {
+                    var distance = response.rows[0].elements[0].distance.text;
+                    var duration = response.rows[0].elements[0].duration.text;
+                   // document.getElementById('result').innerHTML = 'Distance: <strong>' + distance + '</strong><br>Duration: ' + duration;
+                    //document.getElementById('estimateDistance').innerHTML = distance;
+                    estimateDistance = distance.slice(0, -3);
+                    console.log(distance)
+                    console.log(estimateDistance)
+                    console.log(typeof (estimateDistance))
+                } else {
+                    alert('Error: ' + status);
+                }
+            }
+        );
+
+        estimateDistanceField.value = estimateDistance;
+    }
     
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

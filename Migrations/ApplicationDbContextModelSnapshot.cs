@@ -255,26 +255,25 @@ namespace TMS_APP.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("ConfirmedDistance")
+                    b.Property<double?>("ConfirmedDistance")
                         .HasColumnType("float");
 
-                    b.Property<double>("EstimateDistance")
+                    b.Property<double?>("EstimateDistance")
                         .HasColumnType("float");
 
-                    b.Property<double>("FinalPay")
+                    b.Property<double?>("FinalPay")
                         .HasColumnType("float");
 
                     b.Property<string>("Note")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("PayAdjuestment")
+                    b.Property<double?>("PayAdjuestment")
                         .HasColumnType("float");
 
-                    b.Property<double>("PayRate")
+                    b.Property<double?>("PayRate")
                         .HasColumnType("float");
 
-                    b.Property<int>("TripId")
+                    b.Property<int?>("TripId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -403,9 +402,7 @@ namespace TMS_APP.Migrations
                 {
                     b.HasOne("TMS_APP.Models.Trip", "Trip")
                         .WithMany()
-                        .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TripId");
 
                     b.Navigation("Trip");
                 });

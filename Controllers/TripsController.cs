@@ -158,7 +158,8 @@ namespace TMS_APP.Controllers
 
         //Weiguang modified the create method
 
-        public async Task<IActionResult> Create(DriverTripViewModel? driverTripView, string DriverId)
+        //, string? DriverId
+        public async Task<IActionResult> Create(DriverTripViewModel? driverTripView)
         {
             if (ModelState.IsValid)
             {
@@ -168,9 +169,9 @@ namespace TMS_APP.Controllers
                 Trip trip = driverTripView.trip;
                     if (trip != null)
                     {
-                        if (DriverId != null)
+                        if (driverTripView.UserId != null)
                         {
-                            trip.DriverId = DriverId;
+                            trip.DriverId = driverTripView.UserId;
                             var driver = await _userManager.FindByIdAsync(trip.DriverId);
                             if (driver != null)
                             {
@@ -190,11 +191,22 @@ namespace TMS_APP.Controllers
                                 return RedirectToAction(nameof(Index));
                             }
                         }
+                        else
+                        {
+                            trip.DriverId = null;
+                            trip.DriverName = null;
+                            trip.Status = TripStatus.Unassigned;
+                            _dbcontext.Update(trip);
+                            await _dbcontext.SaveChangesAsync();
+                            return RedirectToAction(nameof(Index));
+                        }
+
                     }
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception e)
                 {
-                    throw;
+                   // var NotFoundViewModel = new NotFoundViewModel { Some Properties };
+                    return View("Error");
                 }
             }
             return View();

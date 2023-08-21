@@ -11,21 +11,21 @@ namespace TMS_APP.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [AllowNull]
-        public int TripId { get; set; }
+        public int? TripId { get; set; }
         [AllowNull]
         [ValidateNever]
-        public Trip Trip { get; set; }
+        public Trip? Trip { get; set; }
         [AllowNull]
-        public double PayRate { get; set; }
+        public double? PayRate { get; set; }
         [AllowNull]
-        public double EstimateDistance { get; set; }
+        public double? EstimateDistance { get; set; }
         [AllowNull]
-        public double ConfirmedDistance { get; set; }
+        public double? ConfirmedDistance { get; set; }
         [AllowNull]
-        public double PayAdjuestment { get; set; }
+        public double? PayAdjuestment { get; set; }
         [AllowNull]
-        public double FinalPay { get; set; }
+        public double? FinalPay { get; set; }
         [AllowNull]
-        public string Note { get; set; }
+        public string? Note { get; set; }
     }
 }
