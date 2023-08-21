@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿/*using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,7 +6,7 @@ namespace TMS_APP.Models
 {
     public class User
     {
-        public int Id { get; set; }
+       *//* public int Id { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
         [Required]
@@ -15,8 +15,9 @@ namespace TMS_APP.Models
         public string phone { get; set; }
         [NotMapped]
         public DateOnly dateOfBirth { get; set; }
-        public Roles role { get; set; }
-        public enum Roles { Admin, Dispacther, Driver }
+        //public Roles role { get; set; }
+        public enum Roles { Admin, Dispacther, Driver }*//*
 
     }
 }
+*/

@@ -120,10 +120,13 @@
                                         @*<label asp-for="@item.trip.Status" class="control-label"></label>*@
                             <select asp-for="@item.trip.Status" name="newStatus" class="form-control">
                                 <option disabled selected>--Select Status--</option>
-                                <option value=3>In Progress</option>
+                                <option value=5>Pending Assign</option>
+                                <option value=4>Assigned</option>
+                                <option value=3>Picked Up</option>
+                                <option value=2>In Progress</option>
                                 <option value=1>Delivered</option>
                                 <option value=0>Completed</option>
-                                <option value=5>Unassigned</option>
+                                <option value=6>Unassigned</option>
 
                             </select>
                             <span asp-validation-for="@item.Status"  class="text-danger"></span>

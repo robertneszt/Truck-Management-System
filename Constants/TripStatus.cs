@@ -12,6 +12,7 @@ namespace TMS_APP.Constants
         PickedUp=3,
         Assigned=4,
         /* [Display(Name = "Unassigned")]*/
-        Unassigned=5,
+        PendingAssign = 5,
+        Unassigned =6
     }
 }

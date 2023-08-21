@@ -10,6 +10,7 @@ using TMS_APP.Models.DTO;
 using TMS_APP.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using NuGet.Versioning;
 
 namespace TMS_APP.Controllers
 {
@@ -42,55 +43,18 @@ namespace TMS_APP.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        /*
-                [HttpPost]
-                public IActionResult Login(User model)
-                {
-                    // Simulate user authentication
-                    if (IsValidUser(model.email, model.password))
-                    {
-                        HttpContext.Session.SetString("UserEmail", model.email);
-                        HttpContext.Session.SetString("Role", "Driver");
-                        HttpContext.Session.SetInt32("UserId", 123);
-                        return RedirectToAction("Index"); // Redirect to home page
-                    }
-
-                    ModelState.AddModelError("", "Invalid email or password.");
-                    return View(model);
-                }
-
-                private bool IsValidUser(string email, string password)
-                {
-                    User user = _unitOfWork.user.Get(c => c.email == email);
-                    if (user == null || user.password != password)
-                    {
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                    // Simulate user validation
-
-                }*/
-
+    
         public async Task<IActionResult> Index()
         {
-            //string userEmail = HttpContext.Session.GetString("UserEmail");
-            /*  var userEmail = User.FindFirstValue(ClaimTypes.Email);
-              if (userEmail != null)
-              {
-                  ApplicationUser? user =await _userManager.FindByEmailAsync(userEmail);
-                  return View(user);
-              }*/
+           //Pass pending trip to notice field
+
             var user =await _userManager.GetUserAsync(User);
-            return View(user);
+
+            List<Trip> myTrips = await _dbcontext.Trip.Where(c => c.DriverId == user.Id).ToListAsync();
+
+            var pendingTrip = myTrips.FirstOrDefault(t => t.Status == TripStatus.PendingAssign);
+            return View(pendingTrip);
+                      
         }
 
       
@@ -103,15 +67,7 @@ namespace TMS_APP.Controllers
        
         public IActionResult Edit()
         {
-            /*if (HttpContext.Session == null)
-            {
-                return RedirectToAction("Login");
-            }
-            string userEmail = HttpContext.Session.GetString("UserEmail");
-
-            User user = _unitOfWork.user.Get(c => c.email == userEmail);
-
-            Driver driver = _unitOfWork.driver.Get(d => d.UserId == user.Id);*/
+           
 
             var user = _userManager.GetUserAsync(User).Result;
             return View(user);
@@ -121,12 +77,7 @@ namespace TMS_APP.Controllers
 
         public async Task<IActionResult> Edit(ApplicationUser obj)
         {
-            /*
-                        string userEmail = HttpContext.Session.GetString("UserEmail");
-                        User user = _unitOfWork.user.Get(c => c.email == userEmail);
-                        Driver driver = _unitOfWork.driver.Get(d => d.UserId == user.Id);*/
-
-            var user =await _userManager.GetUserAsync(User);
+             var user =await _userManager.GetUserAsync(User);
 
             if (ModelState.IsValid)
             {
@@ -135,48 +86,17 @@ namespace TMS_APP.Controllers
                 user.Email = obj.Email;
                 user.PhoneNumber = obj.PhoneNumber;
                 user.Availability = obj.Availability;
-                _unitOfWork.Save();
+                await _userManager.UpdateAsync(user);
+                await _dbcontext.SaveChangesAsync();
                 TempData["success"] = "You account updated successfully";
-                return RedirectToAction("Account");
+                return RedirectToAction("Index");
             }
             return View();
         }
 
-               
-        public IActionResult pwdReset()
-        {
-            if (HttpContext.Session == null)
-            {
-                return RedirectToAction("Login");
-            }
-            return View();
-        }
-
-        [HttpPost]
-
-        public IActionResult pwdReset(ChangePasswordViewModel model)
-        {
-            string userEmail = HttpContext.Session.GetString("UserEmail");
-
-            if (ModelState.IsValid)
-            {
-                // Simulate resetting the password
-                User user = _unitOfWork.user.Get(c => c.email == userEmail);
-                if (user != null)
-                {
-                    user.password = model.NewPassword;
-                    _unitOfWork.Save();
-                    return RedirectToAction("Login", "Driver"); // Redirect to login page after resetting
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "User not found.");
-                }
-            }
-            return View(model); ;
-
-        }
-
+     
+        // Weiguang 
+        // Display all available Trips
         public async Task<IActionResult> Trips()
         {
             List<Trip> myTrips = await _dbcontext.Trip.Where(c => c.Status==TripStatus.Unassigned).ToListAsync();
@@ -184,6 +104,7 @@ namespace TMS_APP.Controllers
                         Problem("No Trips available now.Please check with the dispatcher!");
         }
 
+        // Disaplay the user trips
         public async Task<IActionResult> MyTrips()
         {
             var user =await _userManager.GetUserAsync(User);
@@ -192,6 +113,7 @@ namespace TMS_APP.Controllers
                         Problem("You have no trips assigned yet. Please check with your dispatcher!");
         }
 
+        // Pay Page
         public async Task<IActionResult> payAdvise() {
             var user = await _userManager.GetUserAsync(User);
             List<DriverTripViewModel> tripViewModels = new List<DriverTripViewModel>();
@@ -201,11 +123,10 @@ namespace TMS_APP.Controllers
                     Trips = tripList,
                     User = user
                 };
-            return TripDirverView != null ?
-                          View(TripDirverView) :
-                          Problem("Entity set 'ApplicationDbContext.Trip'  is null.");
+            return  View(TripDirverView);
         }
 
+        // Driver Dashboard >> Trip detail page
         public async Task<IActionResult> TripDetail(int? id)
         {
             if (id == null || _dbcontext.Trip == null)
@@ -222,6 +143,7 @@ namespace TMS_APP.Controllers
             return View(trip);
         }
 
+        // Reject Trip
         public async Task<IActionResult> ReleaseTrip(int? tripId)
         {
             if (ModelState.IsValid)
@@ -245,6 +167,248 @@ namespace TMS_APP.Controllers
                 }
             }
 
+            return View();
+        }
+
+        // Accept Trip
+        public async Task<IActionResult> AcceptTrip(int? tripId)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var user =await _userManager.GetUserAsync(User);
+                    var trip = await _dbcontext.Trip.FindAsync(tripId);
+                    if (trip != null)
+                    {
+                        trip.Status = TripStatus.Unassigned;
+                        trip.DriverId = user.Id;
+                        trip.DriverName = user?.FirstName + " " + user?.LastName;
+                        trip.Status = TripStatus.Assigned;
+                        _dbcontext.Update(trip);
+                        await _dbcontext.SaveChangesAsync();
+                        return RedirectToAction("Index");
+                    }
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+            }
+
+            return View();
+        }
+
+        //Complete Trip:
+        
+
+        public async Task<IActionResult> CompleteTrip(int? tripId)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var trip = await _dbcontext.Trip.FindAsync(tripId);
+                    if (trip != null)
+                    {
+                        trip.Status = TripStatus.Complete;
+                        _dbcontext.Update(trip);
+                        await _dbcontext.SaveChangesAsync();
+                        return RedirectToAction("MyTrips");
+                    }
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+            }
+
+            return View();
+        }
+
+        // Pick up load:
+
+        
+        public async Task<IActionResult> PickUpLoad(int? tripId)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var trip = await _dbcontext.Trip.FindAsync(tripId);
+                    if (trip != null)
+                    {
+                      /*  Pay pay = new()
+                        {
+                            TripId = trip.Id,
+                            // Add hard coded mile before Map is ready
+                            EstimateDistance= 3000
+                        };*/
+                        trip.Status = TripStatus.PickedUp;
+                        _dbcontext.Update(trip);
+                        await _dbcontext.SaveChangesAsync();
+                        return RedirectToAction("MyTrips");
+                    }
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToAction("MyTrips");
+        }
+
+        //DeliveredTrip
+
+        public async Task<IActionResult> DeliveredTrip(int? tripId)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var trip = await _dbcontext.Trip.FindAsync(tripId);
+                    if (trip != null)
+                    {
+                        trip.Status = TripStatus.Delevered;
+                        _dbcontext.Update(trip);
+                        await _dbcontext.SaveChangesAsync();
+                        return RedirectToAction("MyTrips");
+                    }
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+            }
+            return View();
+        }
+
+        //Load in Transportation:
+
+        public async Task<IActionResult> InTransportation(int? tripId)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var trip = await _dbcontext.Trip.FindAsync(tripId);
+                    if (trip != null)
+                    {
+                        trip.Status = TripStatus.InProgress;
+                        _dbcontext.Update(trip);
+                        await _dbcontext.SaveChangesAsync();
+                        return RedirectToAction("MyTrips");
+                    }
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+            }
+            return View();
+        }
+
+        //Add trip to pay and update distance info:
+
+        //UpdateDistance
+
+        public async Task<IActionResult> UpdateDistance(int? tripId, string? estimateDistance)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (tripId !=null)
+                    {
+                        if (!string.IsNullOrEmpty(estimateDistance))
+                        {
+                            double num;
+                            bool success = Double.TryParse(estimateDistance, out num);
+                            if (success)
+                            {
+                                Pay newTripPay = new Pay()
+                                {
+                                    TripId = tripId,
+                                    EstimateDistance = num,
+
+                                };
+
+                                _dbcontext.Update(newTripPay);
+                                await _dbcontext.SaveChangesAsync();
+                                return RedirectToAction("MyTrips");
+                            }
+                            else
+                            {
+                                Pay newTripPay = new Pay()
+                                {
+                                    TripId = tripId,
+                                    EstimateDistance = null
+                                };
+
+                                _dbcontext.Update(newTripPay);
+                                await _dbcontext.SaveChangesAsync();
+                                return RedirectToAction("MyTrips");
+                            }
+
+                        }
+                        else
+                        {
+                            Pay newTripPay = new Pay()
+                            {
+                                TripId = tripId,
+                                EstimateDistance = null
+                            };
+
+                            _dbcontext.Update(newTripPay);
+                            await _dbcontext.SaveChangesAsync();
+                            return RedirectToAction("MyTrips");
+                        }
+                        
+                    }
+                                    
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction("TripDetail");
+        }
+
+
+
+        public async Task<IActionResult> ReleaseTripAndMarkUnavailable(int? tripId, string driverId)
+        {
+            
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var trip = await _dbcontext.Trip.FindAsync(tripId);
+                    if (trip != null)
+                    {
+                        trip.Status = TripStatus.Unassigned;
+                        trip.DriverId = null;
+                        trip.DriverName = null;
+                        _dbcontext.Update(trip);
+                        await _dbcontext.SaveChangesAsync();
+                        return RedirectToAction("MyTrips");
+                    }
+                    var driver = await _userManager.FindByIdAsync(driverId);
+                    if(driver != null)
+                    {
+                        driver.Availability = false; 
+                        await _dbcontext.SaveChangesAsync();
+                     
+                    }
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+            }
             return View();
         }
     }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TMS_APP.Migrations
 {
     /// <inheritdoc />
-    public partial class mainfrommainBeforedrivertrip : Migration
+    public partial class initafterpaytable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,7 +31,7 @@ namespace TMS_APP.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     HireDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -68,9 +68,11 @@ namespace TMS_APP.Migrations
                     CustomerName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PickupLocationAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PickupLocationCity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PickupLocationState = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PickupLocationCountry = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DeliveryLocationAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DeliveryLocationCity = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeliveryLocationState = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DeliveryLocationCountry = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PickupDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeliveryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -84,24 +86,6 @@ namespace TMS_APP.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Trip", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users2",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    firstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    lastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    role = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users2", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -211,24 +195,27 @@ namespace TMS_APP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Drivers",
+                name: "Pay",
                 columns: table => new
                 {
-                    _id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    PayRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Availability = table.Column<bool>(type: "bit", nullable: false)
+                    TripId = table.Column<int>(type: "int", nullable: true),
+                    PayRate = table.Column<double>(type: "float", nullable: true),
+                    EstimateDistance = table.Column<double>(type: "float", nullable: true),
+                    ConfirmedDistance = table.Column<double>(type: "float", nullable: true),
+                    PayAdjuestment = table.Column<double>(type: "float", nullable: true),
+                    FinalPay = table.Column<double>(type: "float", nullable: true),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Drivers", x => x._id);
+                    table.PrimaryKey("PK_Pay", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Drivers_Users2_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users2",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_Pay_Trip_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trip",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -271,9 +258,9 @@ namespace TMS_APP.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Drivers_UserId",
-                table: "Drivers",
-                column: "UserId");
+                name: "IX_Pay_TripId",
+                table: "Pay",
+                column: "TripId");
         }
 
         /// <inheritdoc />
@@ -295,10 +282,7 @@ namespace TMS_APP.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Drivers");
-
-            migrationBuilder.DropTable(
-                name: "Trip");
+                name: "Pay");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -307,7 +291,7 @@ namespace TMS_APP.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Users2");
+                name: "Trip");
         }
     }
 }

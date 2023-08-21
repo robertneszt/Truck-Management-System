@@ -76,7 +76,5 @@ namespace TMS_APP.Models
 
         [DisplayName("Driver Name")]
         public string? DriverName { get; set; }
-
-
-    }
+     }
 }
