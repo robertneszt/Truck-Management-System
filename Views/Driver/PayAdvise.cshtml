@@ -29,6 +29,8 @@
             </div>
             <hr />
             <br />
+            <div class="row">
+                <div class="col col-10">
             <h2>Current Trip and Pay Estimate</h2>
             <table class="table table-bordered">
                 <thead class="table-dark">
@@ -40,6 +42,7 @@
                             <strong>Mileage(KM) </strong>
                         </th>
                         <th><strong>Estimate Pay(CAD)</strong></th>
+                                <th> Note</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,8 +60,7 @@
                                 <td>
                                     @pay.FinalPay
                                 </td>
-                                <td>
-                                </td>
+                                        <td>@pay.Note</td>
                             </tr>
                         }
                     }
@@ -71,6 +73,8 @@
                     }
                 </tbody>
             </table>
+            </div>
+            </div>
             <hr />
             <br />
             <h2>Completed trips and Pay report</h2>
@@ -87,7 +91,9 @@
                             <strong>Mileage(Km) </strong>
                         </th>
                         <th><strong>Pay(CAD)</strong></th>
+                                <th> Note</th>
                             </tr>
+                            
                         </thead>
                         <tbody>
                             @if (Model.CompletedPays != null)
@@ -104,8 +110,7 @@
                                         <td>
                                             @pay.FinalPay
                                         </td>
-                                        <td>
-                                        </td>
+                                        <td>@pay.Note</td>
                                     </tr>
                                 }
                             }
