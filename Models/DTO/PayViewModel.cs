@@ -8,6 +8,8 @@ namespace TMS_APP.Models.DTO
         [AllowNull]
         public string? UserID { get; set; }
         [AllowNull]
+        public double? PayRate { get; set; }
+        [AllowNull]
         public string? UserName { get; set;}
         [AllowNull]
         public Pay? CurrentTripPay { get; set; }

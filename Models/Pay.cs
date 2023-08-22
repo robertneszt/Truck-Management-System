@@ -13,6 +13,8 @@ namespace TMS_APP.Models
         [AllowNull]
         public int? TripId { get; set; }
         [AllowNull]
+        public string? UserId { get; set; }
+        [AllowNull]
         [ValidateNever]
         public Trip? Trip { get; set; }
         [AllowNull]
@@ -29,6 +31,7 @@ namespace TMS_APP.Models
         public string? Note { get; set; }
 
         [AllowNull]
-        public DateOnly? PayDate { get; set; }
+        public DateTime? PayDate { get; set; }
+        public bool? IsPaid { get; set; }
     }
 }

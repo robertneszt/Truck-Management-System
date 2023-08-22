@@ -164,17 +164,47 @@
                 </td>
             </tr>
             <tr>
-                    <td> Estimate Distance </td>
-                <td>
+                    @if (Model.Status != TMS_APP.Constants.TripStatus.Delevered)
+                    {
+                        <td> Estimate Distance </td>
+                        <td>
 
-                        <form asp-action="UpdateDistance" asp-controller="Driver" method="post">
-                            <input type="hidden" name="tripId" value="@Model.Id" />
-                            <input type="text" name="estimateDistance" id="estimateDistance" />
-@*                            <button type="button" onclick="updateDistance()">Input Distance</button>
-*@                            <input type="submit" value="Update distance" />
-                        </form>
-                
-                    </td>
+                            <form asp-action="UpdateDistance" asp-controller="Driver" method="post">
+                                <input type="hidden" name="TripId" value="@Html.DisplayFor(model => model.Id)" />
+                                @if (Model.EstimateDistance == null)
+                                {
+                                    <input type="number" step="0.01" name="estimateDistance" value="@Html.DisplayFor(model => model.EstimateDistance)" id="estimateDistance" />
+                                }
+                                else
+                                {
+                                    <input type="number" step="0.01" name="estimateDistance" value="@Html.DisplayFor(model => model.EstimateDistance)" />
+                                }
+                                <input type="submit" value="Update distance" />
+                            </form>
+
+                        </td>
+                    }
+                    else
+                    {
+                        <td> Actual Distance </td>
+                        <td>
+
+                            <form asp-action="UpdateDistance" asp-controller="Driver" method="post">
+                                <input type="hidden" name="TripId" value="@Html.DisplayFor(model => model.Id)" />
+                                @if (Model.EstimateDistance == null)
+                                {
+                                    <input type="number" step="0.01" name="estimateDistance" value="@Html.DisplayFor(model => model.EstimateDistance)" id="estimateDistance" />
+                                }
+                                else
+                                {
+                                    <input type="number" step="0.01" name="estimateDistance" value="@Html.DisplayFor(model => model.EstimateDistance)" />
+                                }
+                                <input type="submit" value="Update distance" />
+                            </form>
+
+                        </td>
+                    }
+
             </tr>
             </tbody>
         </table>
@@ -218,21 +248,37 @@
     @*<a asp-action="TripDetail" asp-route-id=@Model.Id class="btn btn-primary"><i class="fa fa-pencil"></i>Check Detail</a>*@
     @if (Model.Status == TMS_APP.Constants.TripStatus.PendingAssign)
         {
+            <div class="row">
+                <div class="col-6">
+                    <form asp-action="AcceptTrip" asp-controller="Driver" method="post">
+                        <div class="form-group">
+                            <input type="hidden" name="tripId" value="@Model.Id" />
+                            <input type="submit" value="Accept this Trip" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+                <div class="col-6">
             <form asp-action="ReleaseTrip" asp-controller="Driver" method="post">
                 <div class="form-group">
                     <input  type="hidden" name="tripId" value="@Model.Id" />
                     <input type="submit" value="Reject this Trip" class="btn btn-primary" />
                 </div>
             </form>
+                </div>
+
+            </div>
         }
         else if (Model.Status == TMS_APP.Constants.TripStatus.Assigned)
         {
-            <form asp-action="PickUpLoad" asp-controller="Driver" method="post">
-                <div class="form-group">
-                    <input type="hidden" name="tripId" value="@Model.Id" />
-                    <input type="submit" value="Pick Up Load" class="btn btn-primary" />
-                </div>
-            </form>
+           
+           
+                    <form asp-action="PickUpLoad" asp-controller="Driver" method="post">
+                        <div class="form-group">
+                            <input type="hidden" name="tripId" value="@Model.Id" />
+                            <input type="submit" value="Pick Up Load" class="btn btn-primary" />
+                        </div>
+                    </form>
+               
         }
         else if (Model.Status == TMS_APP.Constants.TripStatus.PickedUp)
         {
@@ -263,6 +309,8 @@
 
         var service = new google.maps.DistanceMatrixService();
         let estimateDistance;
+
+        let estimateDistanceField = document.getElementById('estimateDistance');
         
         service.getDistanceMatrix(
             {
@@ -278,6 +326,13 @@
                     document.getElementById('result').innerHTML = 'Distance: <strong>' + distance + '</strong><br>Duration: ' + duration;
                     //document.getElementById('estimateDistance').innerHTML = distance;
                  
+                    //update distance in table
+                    estimateDistance = distance.slice(0, -3);
+                    console.log(distance)
+                    console.log(estimateDistance)
+                    console.log(typeof (estimateDistance))
+                    estimateDistanceField.value = parseFloat(estimateDistance);
+
                 } else {
                     alert('Error: ' + status);
                 }
@@ -368,18 +423,22 @@
                     var distance = response.rows[0].elements[0].distance.text;
                     var duration = response.rows[0].elements[0].duration.text;
                    // document.getElementById('result').innerHTML = 'Distance: <strong>' + distance + '</strong><br>Duration: ' + duration;
-                    //document.getElementById('estimateDistance').innerHTML = distance;
+                   
                     estimateDistance = distance.slice(0, -3);
                     console.log(distance)
                     console.log(estimateDistance)
                     console.log(typeof (estimateDistance))
+                    estimateDistanceField.value = parseFloat(estimateDistance);
+
                 } else {
                     alert('Error: ' + status);
                 }
             }
         );
 
-        estimateDistanceField.value = estimateDistance;
+        
+
+   // @Model.EstimateDistance = parseFloa(estimateDistance);
     }
     
 </script>

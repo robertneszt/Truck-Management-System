@@ -76,5 +76,7 @@ namespace TMS_APP.Models
 
         [DisplayName("Driver Name")]
         public string? DriverName { get; set; }
-     }
+        [AllowNull]
+        public double? EstimateDistance { get; set; }
+    }
 }
