@@ -27,5 +27,8 @@ namespace TMS_APP.Models
         public double? FinalPay { get; set; }
         [AllowNull]
         public string? Note { get; set; }
+
+        [AllowNull]
+        public DateOnly? PayDate { get; set; }
     }
 }
