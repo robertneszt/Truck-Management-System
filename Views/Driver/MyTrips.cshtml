@@ -102,12 +102,14 @@
                             }
                             else if (item.Status == TMS_APP.Constants.TripStatus.Delevered)
                             {
-                                <form asp-action="CompleteTrip" asp-controller="Driver" method="post">
+                                @*<form asp-action="CompleteTrip" asp-controller="Driver" method="post">
                                     <div class="form-group">
                                         <input type="hidden" name="tripId" value="@item.Id" />
                                         <input type="submit" value="Mark Completed" class="btn btn-primary" />
                                     </div>
-                                </form>
+                                </form>*@
+                                <strong>Please update the mileage and <br> wait for dispatcher mark the trip complete! </strong>
+
                             }
                             else if (item.Status == TMS_APP.Constants.TripStatus.Assigned)
                             

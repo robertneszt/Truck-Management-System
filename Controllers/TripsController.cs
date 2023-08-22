@@ -352,6 +352,7 @@ namespace TMS_APP.Controllers
         [HttpPost]
         public async Task<ActionResult> UpdateStatus(int? tripId, DriverTripViewModel TripDirverView, TripStatus newStatus)
         {
+
             if (tripId != TripDirverView.TripId)
             {
                 return NotFound();
@@ -362,8 +363,11 @@ namespace TMS_APP.Controllers
                 try
                 {
                     var trip = await _dbcontext.Trip.FindAsync(tripId);
+                    var pay = await _dbcontext.Pay.FirstOrDefaultAsync(p => p.TripId == tripId);
+                   
                     if (trip != null)
                     {
+                        
                         trip.Status = newStatus;
 
                         if (trip.Status == TripStatus.Unassigned)
@@ -374,10 +378,10 @@ namespace TMS_APP.Controllers
                             _dbcontext.Update(trip);
                             await _dbcontext.SaveChangesAsync();
                             return RedirectToAction("Index");
-                        }else if(trip.Status == TripStatus.InProgress)
+                        } else if (trip.Status == TripStatus.InProgress)
                         {
                             List<Trip> myTrips = await _dbcontext.Trip.Where(c => c.Status == TripStatus.InProgress).ToListAsync();
-                            if (myTrips.FirstOrDefault(c => c.DriverId == trip.DriverId)!=null)
+                            if (myTrips.FirstOrDefault(c => c.DriverId == trip.DriverId) != null)
                             {
                                 ViewBag.Message = string.Format("The Driver has another trip in progress!");
                                 return RedirectToAction("Index");
@@ -388,6 +392,39 @@ namespace TMS_APP.Controllers
                                 await _dbcontext.SaveChangesAsync();
                                 return RedirectToAction("Index");
                             }
+                        }
+                        else if (trip.Status == TripStatus.Complete) {
+                            var user = await _userManager.FindByIdAsync(trip.DriverId);
+
+                            if (pay != null)
+                            {
+                                pay.EstimateDistance = trip.EstimateDistance;
+                                pay.ConfirmedDistance = pay.EstimateDistance;
+                                pay.FinalPay = pay.PayRate * pay.ConfirmedDistance;
+                                pay.IsPaid = true;
+                                _dbcontext.Update(trip);
+                                _dbcontext.Update(pay);
+                                await _dbcontext.SaveChangesAsync();
+                                return RedirectToAction("Index");
+                            }
+                            else
+                            {
+                                Pay payRec = new()
+                                {
+                                    TripId = trip.Id,
+                                    UserId =trip.DriverId,
+                                    PayRate = user.PayRate,
+                                    EstimateDistance = trip.EstimateDistance,
+                                    ConfirmedDistance=trip.EstimateDistance,
+                                    IsPaid= true,
+                                    FinalPay= user.PayRate * trip.EstimateDistance
+                                };
+                                _dbcontext.Update(trip);
+                                _dbcontext.Update(payRec);
+                                await _dbcontext.SaveChangesAsync();
+                                return RedirectToAction("Index");
+                            }
+
                         }
                         else
                         {

@@ -4,7 +4,7 @@
 @{
     Layout = "~/Views/Shared/_LayoutForDriver.cshtml";
 }
-@model TMS_APP.Models.DTO.DriverTripViewModel
+@model TMS_APP.Models.DTO.PayViewModel
 
 @if (Model != null)
 {
@@ -14,52 +14,74 @@
 
         <div>
             <div>
-                <table class="table border-dark">
+                <table class="table  table-bordered">
                     <thead>
+                        <tr>
                     <th>
-                        <strong>Pay Rate: </strong> @Model.User.PayRate
+                        <strong>Pay Rate: </strong> @Model.PayRate
                     </th>
                     <th>
-                        <strong>My Total Trips: </strong> @Model.Trips.Count()
+                        <strong>My Total Trips: </strong> @Model.TotalTrips.Count()
                     </th>
+                        </tr>
                     </thead>
                 </table>
             </div>
             <hr />
             <br />
+            <div class="row">
+                <div class="col col-10">
             <h2>Current Trip and Pay Estimate</h2>
             <table class="table table-bordered">
-                <thead>
+                <thead class="table-dark">
                     <tr>
                         <th>
                             <strong>TripId: </strong>
                         </th>
                         <th>
-                            <strong>Estimate Mileage: </strong>
+                            <strong>Mileage(KM) </strong>
                         </th>
-                        <th><strong>Estimate Pay</strong></th>
+                        <th><strong>Estimate Pay(CAD)</strong></th>
+                                <th> Note</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
+                    @if (Model.UnfinishedPays!=null)
+                    {
+                        @foreach (var pay in Model.UnfinishedPays)
+                        {
+                            <tr>
+                                <td>
+                                    @pay.TripId
+                                </td>
+                                <td>
+                                    @pay.EstimateDistance
+                                </td>
+                                <td>
+                                    @pay.FinalPay
+                                </td>
+                                        <td>@pay.Note</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td> You have no estimate pay info here, or reach to your dispatcher</td>
+                        </tr>
+
+                    }
                 </tbody>
             </table>
+            </div>
+            </div>
             <hr />
             <br />
             <h2>Completed trips and Pay report</h2>
             <div class="row">
                 <div class="col col-10">
-                    <table class="table">
-                        <thead>
+                    <table class="table  table-bordered">
+                        <thead class="table-dark">
                             <tr>
 
                         <th>
@@ -68,30 +90,48 @@
                         <th>
                             <strong>Mileage(Km) </strong>
                         </th>
-                        <th><strong>Estimate Pay(CAD)</strong></th>
+                        <th><strong>Pay(CAD)</strong></th>
+                                <th> Note</th>
                             </tr>
+                            
                         </thead>
                         <tbody>
+                            @if (Model.CompletedPays != null)
+                            {
+                                @foreach (var pay in Model.CompletedPays)
+                                {
+                                    <tr>
+                                        <td>
+                                            @pay.TripId
+                                        </td>
+                                        <td>
+                                            @pay.EstimateDistance
+                                        </td>
+                                        <td>
+                                            @pay.FinalPay
+                                        </td>
+                                        <td>@pay.Note</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
                             <tr>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
+                                <td> You have no pay info here, or reach to your dispatcher</td>
                             </tr>
+
+                            }
+
                         </tbody>
                     </table>
                 </div>
-                <div class="col col-2">
+                @*<div class="col col-2">
                     <form>
                         <input type="text" hidden name="paySlipDate" />
                         <input type="date" class="form-group" />
                         <button type="submit">GO</button>
                     </form>
-                </div>
+                </div>*@
             </div>
             <hr />
             <br />
