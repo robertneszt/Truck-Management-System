@@ -14,14 +14,16 @@
 
         <div>
             <div>
-                <table class="table border-dark">
+                <table class="table  table-bordered">
                     <thead>
+                        <tr>
                     <th>
                         <strong>Pay Rate: </strong> @Model.PayRate
                     </th>
                     <th>
                         <strong>My Total Trips: </strong> @Model.TotalTrips.Count()
                     </th>
+                        </tr>
                     </thead>
                 </table>
             </div>
@@ -29,7 +31,7 @@
             <br />
             <h2>Current Trip and Pay Estimate</h2>
             <table class="table table-bordered">
-                <thead>
+                <thead class="table-dark">
                     <tr>
                         <th>
                             <strong>TripId: </strong>
@@ -74,8 +76,8 @@
             <h2>Completed trips and Pay report</h2>
             <div class="row">
                 <div class="col col-10">
-                    <table class="table">
-                        <thead>
+                    <table class="table  table-bordered">
+                        <thead class="table-dark">
                             <tr>
 
                         <th>
@@ -118,13 +120,13 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="col col-2">
+                @*<div class="col col-2">
                     <form>
                         <input type="text" hidden name="paySlipDate" />
                         <input type="date" class="form-group" />
                         <button type="submit">GO</button>
                     </form>
-                </div>
+                </div>*@
             </div>
             <hr />
             <br />
