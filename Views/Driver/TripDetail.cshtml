@@ -342,7 +342,6 @@
         //Get route
         //Doc: https://developers.google.com/maps/documentation/javascript/directions
         //initMap
-        //var directionsDisplay;
         function initMap() {
              var directionsService = new google.maps.DirectionsService();
              var directionsRenderer = new google.maps.DirectionsRenderer();
@@ -351,20 +350,15 @@
             zoom: 7,
             center: ottawa
         }
-
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
         directionsRenderer.setMap(map);
 
             calcRoute(directionsService, directionsRenderer);
          }
-        
         initMap();
-       
     }
     function calcRoute(directionsService, directionsRenderer) {
-       // var directionsService = new google.maps.DirectionsService();
-       // var directionsRenderer = new google.maps.DirectionsRenderer();
-        var start = document.getElementById('origin').value;
+         var start = document.getElementById('origin').value;
         var end = document.getElementById('destination').value;
         var request = {
             origin: start,
