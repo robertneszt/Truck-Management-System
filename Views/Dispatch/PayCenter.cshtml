@@ -39,6 +39,12 @@
                         <th>
                             Is Paid
                         </th>
+                             <th>
+                                Pay Date
+                            </th>
+                                <th>
+                                    Note
+                                </th>
                     </tr>
 
                 </thead>
@@ -75,7 +81,12 @@
                                     No (TripNotComplete)
                                 </td>
                             }
-
+                            <td>
+                                @pay.PayDate
+                            </td>
+                            <td>
+                                @pay.Note
+                            </td>
                         </tr>
                     }
                 </tbody>

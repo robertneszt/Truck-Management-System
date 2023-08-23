@@ -400,8 +400,10 @@ namespace TMS_APP.Controllers
                             {
                                 pay.EstimateDistance = trip.EstimateDistance;
                                 pay.ConfirmedDistance = pay.EstimateDistance;
+                                pay.PayRate = user.PayRate;
                                 pay.FinalPay = pay.PayRate * pay.ConfirmedDistance;
                                 pay.IsPaid = true;
+                                pay.PayDate = DateTime.Now;
                                 _dbcontext.Update(trip);
                                 _dbcontext.Update(pay);
                                 await _dbcontext.SaveChangesAsync();
@@ -416,7 +418,8 @@ namespace TMS_APP.Controllers
                                     PayRate = user.PayRate,
                                     EstimateDistance = trip.EstimateDistance,
                                     ConfirmedDistance=trip.EstimateDistance,
-                                    IsPaid= true,
+                                    PayDate = DateTime.Now,
+                                IsPaid = true,
                                     FinalPay= user.PayRate * trip.EstimateDistance
                                 };
                                 _dbcontext.Update(trip);
