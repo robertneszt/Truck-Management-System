@@ -47,11 +47,10 @@ namespace TMS_APP.Models
         [AllowNull]
 
         [DisplayName("Pick Date")]
-        public DateTime PickupDate { get; set; }
+        public DateTime PickupDate { get; set; } = DateTime.Now;
         [AllowNull]
-
         [DisplayName("Delivery Date")]
-        public DateTime DeliveryDate { get; set; }
+        public DateTime DeliveryDate { get; set; } = DateTime.Now;
         [AllowNull]
 
         [DisplayName("Weight")]

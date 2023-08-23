@@ -3,122 +3,149 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
-   
-   
+
+
 }
 
 <div class="row">
     <h1>Details</h1>
-   
-    <div id="weatherContent" class="column ">
-       
+</div>
+
+<div class="row flex-container">
+    <div class="column flex-item" id="weatherContent">
+        <h3>Weather Conditions</h3>
+        <!-- Add your weather data here -->
     </div>
 
-    <div id="distanceContent" class="column ">
+    <div class="column flex-item" id="convertedAmountsContent">
+        <h3>Total Amount for Transaction:</h3>
+        <div class="row">
+            <div class="col-sm-4">
+                <strong>At a pick-up location: </strong>
+            </div>
+            <div class="col-sm-8">
+                <span id="pickupConvertedAmount">N/A</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <strong>At delivery location: </strong>
+            </div>
+            <div class="col-sm-8">
+                <span id="deliveryConvertedAmount">N/A</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="column flex-item" id="distanceContent">
+        <!-- Add your distance content here -->
     </div>
 </div>
-<hr />
-    
+
+
+
         <div class="row">
             <h5>Trip</h5>
 
             <dl>
 
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.CustomerName)
+            @Html.DisplayNameFor(model => model.CustomerName)
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.CustomerName)
+            @Html.DisplayFor(model => model.CustomerName)
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.PickupLocationAddress)
+            @Html.DisplayNameFor(model => model.PickupLocationAddress)
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.PickupLocationAddress)
+            @Html.DisplayFor(model => model.PickupLocationAddress)
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.PickupLocationCity)
+            @Html.DisplayNameFor(model => model.PickupLocationCity)
                 </dt>
                 <dd class="col-sm-10 pickUpCity">
-                    @Html.DisplayFor(model => model.PickupLocationCity)
+            @Html.DisplayFor(model => model.PickupLocationCity)
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.PickupLocationState)
+            @Html.DisplayNameFor(model => model.PickupLocationState)
                 </dt>
                 <dd class="col-sm-10 pickUpState">
-                    @Html.DisplayFor(model => model.PickupLocationState)
+            @Html.DisplayFor(model => model.PickupLocationState)
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.PickupLocationCountry)
+            @Html.DisplayNameFor(model => model.PickupLocationCountry)
                 </dt>
                 <dd class="col-sm-10 pickUpCountry">
-                    @Html.DisplayFor(model => model.PickupLocationCountry)
+            @Html.DisplayFor(model => model.PickupLocationCountry)
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.DeliveryLocationAddress)
+            @Html.DisplayNameFor(model => model.DeliveryLocationAddress)
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.DeliveryLocationAddress)
+            @Html.DisplayFor(model => model.DeliveryLocationAddress)
                 </dd>
                 <dt class="col-sm-2 ">
-                    @Html.DisplayNameFor(model => model.DeliveryLocationCity)
+            @Html.DisplayNameFor(model => model.DeliveryLocationCity)
                 </dt>
                 <dd class="col-sm-10 deliveryCity">
-                    @Html.DisplayFor(model => model.DeliveryLocationCity)
+            @Html.DisplayFor(model => model.DeliveryLocationCity)
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.DeliveryLocationState)
+            @Html.DisplayNameFor(model => model.DeliveryLocationState)
                 </dt>
                 <dd class="col-sm-10 deliveryState">
-                    @Html.DisplayFor(model => model.DeliveryLocationState)
+            @Html.DisplayFor(model => model.DeliveryLocationState)
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.DeliveryLocationCountry)
+            @Html.DisplayNameFor(model => model.DeliveryLocationCountry)
                 </dt>
                 <dd class="col-sm-10 deliveryCountry">
-                    @Html.DisplayFor(model => model.DeliveryLocationCountry)
+            @Html.DisplayFor(model => model.DeliveryLocationCountry)
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.PickupDate)
+            @Html.DisplayNameFor(model => model.PickupDate)
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.PickupDate)
+            @Html.DisplayFor(model => model.PickupDate)
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.DeliveryDate)
+            @Html.DisplayNameFor(model => model.DeliveryDate)
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.DeliveryDate)
+            @Html.DisplayFor(model => model.DeliveryDate)
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.ShipmentWeight)
+            @Html.DisplayNameFor(model => model.ShipmentWeight)
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.ShipmentWeight)
+            @Html.DisplayFor(model => model.ShipmentWeight)
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.TotalAmount)
+           <span class="totalAmount">@Html.DisplayFor(model => model.TotalAmount)</span>
+
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.TotalAmount)
+            <span class="totalAmount">@Html.DisplayFor(model => model.TotalAmount)</span>
+
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Quantity)
+            @Html.DisplayNameFor(model => model.Quantity)
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Quantity)
+            @Html.DisplayFor(model => model.Quantity)
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Status)
+            @Html.DisplayNameFor(model => model.Status)
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Status)
+            @Html.DisplayFor(model => model.Status)
                 </dd>
                 <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.DriverName)
+            @Html.DisplayNameFor(model => model.DriverName)
                 </dt>
                 <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.DriverName)
+            @Html.DisplayFor(model => model.DriverName)
                 </dd>
 
 
@@ -128,9 +155,6 @@
 
         </div>
 
-    
-
-
 
 
 <div>
@@ -139,3 +163,60 @@
 </div>
 <script src="~/js/AppWeather.js"></script>
 <script src="~/js/distanceAPI.js"></script>
+
+<style>
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+    }
+
+    .flex-item {
+        flex: 1;
+        padding: 16px;
+    }
+
+</style>
+@section Scripts {
+       <script>
+         async function getExchangeRate() {
+             const baseCurrency = "CAD";
+             const apiKey = "2c8973f5acb7f128e221ab9a";
+             const pickupCountryElement = document.querySelector('.pickUpCountry');
+             const deliveryCountryElement = document.querySelector('.deliveryCountry');
+             const pickupCountry = pickupCountryElement.textContent.trim();
+             const deliveryCountry = deliveryCountryElement.textContent.trim();
+             const countryToCurrency = {
+                 "United States": "USD",
+                 "Canada": "CAD",
+                 "Australia": "AUD",
+                 // Add more country-currency mappings as needed
+             };
+             const pickupCurrency = countryToCurrency[pickupCountry];
+             const deliveryCurrency = countryToCurrency[deliveryCountry];
+             if (!pickupCurrency || !deliveryCurrency) {
+                 console.error("Currency not found for pick-up or delivery country");
+                 return;
+             }
+             const url = ` https://v6.exchangerate-api.com/v6/${apiKey}/latest/${baseCurrency}`;
+             try {
+                 const response = await fetch(url);
+                 const data = await response.json();
+                 console.log(data.conversion_rates)
+                 //console.log(data.conversion_rates[deliveryCurrency] + deliveryCurrency);
+                 const pickupExchangeRate = data.conversion_rates[pickupCurrency];
+                 const deliveryExchangeRate = data.conversion_rates[deliveryCurrency];
+                 const totalAmountElement = document.querySelector('.totalAmount');
+                 const totalAmount = parseFloat(totalAmountElement.textContent);
+                 const pickupConvertedAmount = (totalAmount * pickupExchangeRate).toFixed(2);
+                 const deliveryConvertedAmount = (totalAmount * deliveryExchangeRate).toFixed(2);
+                 document.getElementById('pickupConvertedAmount').textContent = ` ${totalAmount.toFixed(2)} ${baseCurrency} or ${pickupConvertedAmount} ${pickupCurrency}`;
+                 document.getElementById('deliveryConvertedAmount').textContent = ` ${totalAmount.toFixed(2)} ${baseCurrency} or ${deliveryConvertedAmount} ${deliveryCurrency}`;
+             } catch (error) {
+                 console.error("Error fetching exchange rate:", error);
+             }
+         }
+         window.onload = getExchangeRate;
+    </script>
+}
+
