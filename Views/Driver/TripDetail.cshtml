@@ -215,9 +215,9 @@
         
         <form >
             <label for="origin">Origin:</label>
-            <input type="text" value=" @Model.PickupLocationAddress  @Model.PickupLocationCity @Model.PickupLocationState @Model.PickupLocationCountry " id="origin">
+            <input type="text" value=" @Model.PickupLocationAddress, @Model.PickupLocationCity @Model.PickupLocationState @Model.PickupLocationCountry " id="origin">
             <label for="destination">Destination:</label>
-            <input type="text" value="@Model.DeliveryLocationAddress  @Model.DeliveryLocationCity @Model.DeliveryLocationState @Model.DeliveryLocationCountry " id="destination">
+            <input type="text" value="@Model.DeliveryLocationAddress, @Model.DeliveryLocationCity @Model.DeliveryLocationState @Model.DeliveryLocationCountry " id="destination">
             
             <button type="button" onclick="calcRoute()">Get Route</button>
            
@@ -234,7 +234,7 @@
     <div class="form-check">
        
         <br />
-        <input class="form-check-input" style="width:1.5em;height:1.5em;" type="checkbox" name="Confirmed" />
+        <input class="form-check-input" style="width:1.5em;height:1.5em;" type="checkbox" name="Confirmed" id="confirmCheck" onchange="togglePickUp()" />
         <label class="form-check-label"><strong>** I verified and confirmed the load info before picking up!</strong></label>
     </div>
     
@@ -270,12 +270,10 @@
         }
         else if (Model.Status == TMS_APP.Constants.TripStatus.Assigned)
         {
-           
-           
                     <form asp-action="PickUpLoad" asp-controller="Driver" method="post">
                         <div class="form-group">
                             <input type="hidden" name="tripId" value="@Model.Id" />
-                            <input type="submit" value="Pick Up Load" class="btn btn-primary" />
+                            <input id="pickupButton" type="submit" value="Pick Up Load" class="btn btn-primary" disabled/>
                         </div>
                     </form>
                
@@ -303,14 +301,14 @@
 </div>
 
 <script>
+    let estimateDistanceField = document.getElementById('estimateDistance');
+    let estimateDistance;
     function calculateDistance() {
         var origin = document.getElementById('origin').value;
         var destination = document.getElementById('destination').value;
-
+             
         var service = new google.maps.DistanceMatrixService();
-        let estimateDistance;
 
-        let estimateDistanceField = document.getElementById('estimateDistance');
         
         service.getDistanceMatrix(
             {
@@ -339,29 +337,11 @@
             }
         );
                
-       // jQuery.noConflict();
-
-      //  function passDistance() {
-       //     var data = {
-       //         EstimateDistance: estimateDistance,
-       //     };
-      //      jQuery.ajax({
-      //          url: "/Driver/PickUpLoad",
-           //     type: "POST",
-         //       dataType: "json",
-         //       data: JSON.stringify(data),
-                //success: function (mydata) {
-                //    $("#UpdateDiv").html(mydata);
-                 //   history.pushState('', 'New URL: ' + href, href); // This Code lets you to change url howyouwant
-         //       });
-       //     return false;
-       // }
-       // passDistance();
+      
 
         //Get route
         //Doc: https://developers.google.com/maps/documentation/javascript/directions
         //initMap
-        //var directionsDisplay;
         function initMap() {
              var directionsService = new google.maps.DirectionsService();
              var directionsRenderer = new google.maps.DirectionsRenderer();
@@ -370,20 +350,15 @@
             zoom: 7,
             center: ottawa
         }
-
         var map = new google.maps.Map(document.getElementById('map'), mapOptions);
         directionsRenderer.setMap(map);
 
             calcRoute(directionsService, directionsRenderer);
          }
-        
         initMap();
-       
     }
     function calcRoute(directionsService, directionsRenderer) {
-       // var directionsService = new google.maps.DirectionsService();
-       // var directionsRenderer = new google.maps.DirectionsRenderer();
-        var start = document.getElementById('origin').value;
+         var start = document.getElementById('origin').value;
         var end = document.getElementById('destination').value;
         var request = {
             origin: start,
@@ -435,10 +410,15 @@
                 }
             }
         );
-
-        
-
+    
    // @Model.EstimateDistance = parseFloa(estimateDistance);
+    }
+    let PickUpButton = document.getElementById('pickupButton');
+
+
+    function togglePickUp() {
+
+        PickUpButton.disabled = !PickUpButton.disabled;
     }
     
 </script>
