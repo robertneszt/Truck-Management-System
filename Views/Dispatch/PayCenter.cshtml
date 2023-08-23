@@ -1,0 +1,92 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<Pay>
+
+    <div class="text-center">
+        <h1>Driver Pay Center</h1>
+        <hr />
+
+        <div>
+        @if (Model != null)
+        {
+            <table class="table table-bordered">
+                <thead class="table-primary">
+                    <tr>
+                        <th>
+                            Pay ID
+                        </th>
+                        <th>
+                            Trip ID
+                        </th>
+                        <th>
+                            Driver ID
+                        </th>
+                        <th>
+                            Driver Name
+                        </th>
+                        <th>
+                            Pay Rate
+                        </th>
+                        <th>
+                            Trip Distance
+                        </th>
+                        <th>
+                            Pay Total
+                        </th>
+                        <th>
+                            Is Paid
+                        </th>
+                    </tr>
+
+                </thead>
+                <tbody class="table-hover">
+                    @foreach (var pay in Model)
+                    {
+                        <tr>
+                            <td>
+                                @pay.Id
+                            </td>
+                            <td>
+                                @pay.TripId
+                            </td>
+                            <td>
+                                @pay.UserId
+                            </td>
+                            <td>@pay.Trip.DriverName</td>
+                            <td>@pay.PayRate</td>
+                            <td>
+                                @pay.ConfirmedDistance
+                            </td>
+                            <td>
+                                @pay.FinalPay
+                            </td>
+                            @if (pay.IsPaid==true)
+                            {
+                                <td>
+                                    Yes
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    No (TripNotComplete)
+                                </td>
+                            }
+
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        }
+        else
+        {
+            <p class="alert-danger"> There is no pay history!</p>
+        }
+
+        </div>
+
+    </div>

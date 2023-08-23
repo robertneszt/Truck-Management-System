@@ -109,8 +109,23 @@ namespace YourApplication.Controllers
             }
             return RedirectToAction("DriverManagement");
         }
+        public async Task<IActionResult> PayCenter()
+        {
+            List<Pay> AllPay = await _dbcontext.Pay.ToListAsync();
 
+            foreach (Pay pay in AllPay) {
+                var trip = await _dbcontext.Trip.FindAsync(pay.TripId);
+                if (trip != null)
+                {
+                    pay.Trip = trip;
+                }
+            }
+            
+            return View(AllPay);
     }
+    }
+
+    
 
 }
 
