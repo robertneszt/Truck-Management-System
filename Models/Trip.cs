@@ -19,13 +19,13 @@ namespace TMS_APP.Models
         [AllowNull]
         [DisplayName("Pick up Address")]
         public string? PickupLocationAddress { get; set; }
-        [AllowNull]
+        [Required]
         [DisplayName("Pick City")]
         public string? PickupLocationCity { get; set; }
-        [AllowNull]
+        [Required]
         [DisplayName("Pick State/Province")]
         public string? PickupLocationState { get; set; }
-        [AllowNull]
+        [Required]
 
         [DisplayName("Pick Country")]
         public string? PickupLocationCountry { get; set; }
@@ -33,14 +33,14 @@ namespace TMS_APP.Models
 
         [DisplayName("Delivery Address")]
         public string? DeliveryLocationAddress { get; set; }
-        [AllowNull]
+        [Required]
 
         [DisplayName("Delivery City")]
         public string? DeliveryLocationCity { get; set; }
-        [AllowNull]
+        [Required]
         [DisplayName("Delivery State/Province")]
         public string? DeliveryLocationState { get; set; }
-        [AllowNull]
+        [Required]
 
         [DisplayName("Delivery Country")]
         public string? DeliveryLocationCountry { get; set; }

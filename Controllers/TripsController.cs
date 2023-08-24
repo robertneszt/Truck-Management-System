@@ -234,10 +234,7 @@ namespace TMS_APP.Controllers
                         UserName = user.UserName,
                         LastName = user.LastName,
                         Availability = user.Availability,
-                       /* PayRate = user.PayRate,
-                        PhoneNumber = user.PhoneNumber,
-                        Email = user.Email*/
-
+                    
                     });
 
                 }
@@ -260,8 +257,7 @@ namespace TMS_APP.Controllers
                 })
 
             };
-
-            
+                       
             return View(TripDirverView);
         }
 
